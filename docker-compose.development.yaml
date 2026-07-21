@@ -24,6 +24,20 @@ services:
     volumes:
       - pgadmin_data:/var/lib/pgadmin
 
+  minio:
+    container_name: minio-blobstorage
+    image: quay.io/minio/aistor/minio:latest
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ./minio/data:/mnt/data
+      - ./minio/minio.license:/minio.license
+      - ./minio/certs:/etc/minio/certs
+    command: >
+      minio server /mnt/data --license /minio.license
+
 volumes:
   pgadmin_data:
   postgresql_data:
