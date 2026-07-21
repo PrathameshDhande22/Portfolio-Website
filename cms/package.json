@@ -1,6 +1,6 @@
 {
-  "name": "portfolio-cms",
-  "version": "0.1.0",
+  "name": "cms",
+  "version": "0.0.1",
   "private": true,
   "description": "A Strapi application",
   "scripts": {
