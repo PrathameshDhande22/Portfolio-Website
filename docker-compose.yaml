@@ -1,0 +1,29 @@
+name: development-server
+services:
+  postgres-db:
+    container_name: postgressql
+    image: postgres:18-bookworm
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin1234
+    restart: unless-stopped
+    volumes:
+      - postgresql_data:/var/lib/postgresql
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      - PGADMIN_DEFAULT_PASSWORD=test
+      - PGADMIN_DEFAULT_EMAIL=test@prathamesh.com
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  pgadmin_data:
+  postgresql_data:
