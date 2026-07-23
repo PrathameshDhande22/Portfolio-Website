@@ -38,6 +38,21 @@ services:
     command: >
       minio server /mnt/data --license /minio.license
 
+  papercut:
+    image: changemakerstudiosus/papercut-smtp:latest
+    container_name: papercut-smtp
+    ports:
+      - "37408:8080"
+      - "2525:2525"
+    volumes:
+      - papercut-messages:/app/Incoming
+    environment:
+      - SmtpServer__IP=0.0.0.0
+      - SmtpServer__Port=2525
+      - Urls=http://0.0.0.0:8080
+    restart: unless-stopped
+
 volumes:
   pgadmin_data:
   postgresql_data:
+  papercut-messages:
