@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_home_navigations",
+  "info": {
+    "displayName": "Navigation",
+    "icon": "house"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "Order": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "SectionId": {
+      "type": "string",
+      "required": true
+    },
+    "Visible": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    }
+  },
+  "config": {}
+}

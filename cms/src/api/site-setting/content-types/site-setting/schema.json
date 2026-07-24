@@ -1,0 +1,69 @@
+{
+  "kind": "singleType",
+  "collectionName": "site_settings",
+  "info": {
+    "singularName": "site-setting",
+    "pluralName": "site-settings",
+    "displayName": "Site Settings"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "SiteName": {
+      "type": "string",
+      "required": true
+    },
+    "Designation": {
+      "type": "string",
+      "required": true
+    },
+    "ProfileImage": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Resume": {
+      "type": "string",
+      "required": true
+    },
+    "CopyRightText": {
+      "type": "string"
+    },
+    "Location": {
+      "type": "string",
+      "required": true
+    },
+    "Email": {
+      "type": "email",
+      "required": true
+    },
+    "AvailabilityStatus": {
+      "type": "string",
+      "required": false
+    },
+    "Favicon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "AskAI": {
+      "type": "component",
+      "component": "ai.ai",
+      "repeatable": false,
+      "required": true
+    },
+    "Navigation": {
+      "type": "component",
+      "component": "home.navigation",
+      "repeatable": false,
+      "required": true
+    }
+  }
+}
