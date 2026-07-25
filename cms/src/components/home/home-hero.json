@@ -1,0 +1,58 @@
+{
+  "collectionName": "components_home_home_heroes",
+  "info": {
+    "displayName": "HomeHero"
+  },
+  "options": {},
+  "attributes": {
+    "Name": {
+      "type": "string",
+      "required": true
+    },
+    "Description": {
+      "type": "text",
+      "required": true
+    },
+    "ProfileImage": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "AboutTitle": {
+      "type": "string",
+      "required": true
+    },
+    "Company": {
+      "type": "string",
+      "required": true
+    },
+    "CompanyDescription": {
+      "type": "text",
+      "required": true
+    },
+    "OpentonewRolesText": {
+      "type": "string"
+    },
+    "OpentoNewRolesDescription": {
+      "type": "text"
+    },
+    "GithubUsername": {
+      "type": "string"
+    },
+    "TypingText": {
+      "type": "component",
+      "component": "shared.typing-texts",
+      "repeatable": true,
+      "required": true
+    },
+    "Buttons": {
+      "type": "component",
+      "component": "shared.button",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

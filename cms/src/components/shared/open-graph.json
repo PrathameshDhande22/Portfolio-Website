@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_shared_open_graphs",
+  "info": {
+    "displayName": "OpenGraph"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "text"
+    },
+    "Image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Url": {
+      "type": "string"
+    },
+    "Type": {
+      "type": "enumeration",
+      "enum": [
+        "website",
+        "article",
+        "profile"
+      ]
+    }
+  },
+  "config": {}
+}

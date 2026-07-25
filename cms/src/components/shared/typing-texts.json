@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_shared_typing_texts",
+  "info": {
+    "displayName": "TypingTexts"
+  },
+  "options": {},
+  "attributes": {
+    "StartText": {
+      "type": "string",
+      "required": true
+    },
+    "Text": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "config": {}
+}

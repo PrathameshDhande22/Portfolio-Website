@@ -1,0 +1,50 @@
+{
+  "collectionName": "components_shared_seos",
+  "info": {
+    "displayName": "SEO"
+  },
+  "options": {},
+  "attributes": {
+    "MetaTitle": {
+      "type": "string",
+      "required": true
+    },
+    "MetaDescription": {
+      "type": "text",
+      "required": true
+    },
+    "Keywords": {
+      "type": "string",
+      "required": false
+    },
+    "CanonicalURL": {
+      "type": "string"
+    },
+    "Robots": {
+      "type": "enumeration",
+      "default": "index, follow",
+      "enum": [
+        "index, follow",
+        "index, nofollow",
+        "noindex, follow",
+        "noindex, nofollow"
+      ]
+    },
+    "OpenGraph": {
+      "type": "component",
+      "component": "shared.open-graph",
+      "repeatable": false
+    },
+    "TwitterCard": {
+      "type": "component",
+      "component": "shared.twitter-card",
+      "repeatable": false
+    },
+    "StructuredData": {
+      "type": "component",
+      "component": "shared.structured-data",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

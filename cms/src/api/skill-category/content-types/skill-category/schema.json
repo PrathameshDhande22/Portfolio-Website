@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "skill_categories",
+  "info": {
+    "singularName": "skill-category",
+    "pluralName": "skill-categories",
+    "displayName": "SkillCategory"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "string",
+      "required": true
+    },
+    "Order": {
+      "type": "integer",
+      "required": true,
+      "default": 1
+    },
+    "Visible": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

@@ -10,14 +10,15 @@
       "type": "string",
       "required": true
     },
+    "Page": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::pages.pages"
+    },
     "Order": {
       "type": "integer",
       "required": true,
       "default": 0
-    },
-    "SectionId": {
-      "type": "string",
-      "required": true
     },
     "Visible": {
       "type": "boolean",

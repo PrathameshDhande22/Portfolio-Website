@@ -62,8 +62,18 @@
     "Navigation": {
       "type": "component",
       "component": "home.navigation",
-      "repeatable": false,
+      "repeatable": true,
       "required": true
+    },
+    "SocialLinks": {
+      "type": "component",
+      "component": "home.social-links",
+      "repeatable": true
+    },
+    "Footer": {
+      "type": "component",
+      "component": "home.footer-links",
+      "repeatable": true
     }
   }
 }

@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_shared_nexts",
+  "info": {
+    "displayName": "Next",
+    "icon": "arrowRight"
+  },
+  "options": {},
+  "attributes": {
+    "Badge": {
+      "type": "component",
+      "component": "shared.badge",
+      "repeatable": false
+    },
+    "Text": {
+      "type": "string",
+      "required": true
+    },
+    "Button": {
+      "type": "component",
+      "component": "shared.button",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

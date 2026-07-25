@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_home_footer_links",
+  "info": {
+    "displayName": "Footer Links"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "Url": {
+      "type": "string",
+      "required": true
+    },
+    "OpenInNewTab": {
+      "type": "boolean",
+      "default": true
+    },
+    "Order": {
+      "type": "integer",
+      "required": false,
+      "default": 0
+    }
+  },
+  "config": {}
+}

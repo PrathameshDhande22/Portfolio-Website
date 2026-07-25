@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "robots",
+  "info": {
+    "singularName": "robot",
+    "pluralName": "robots",
+    "displayName": "Robots"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "robotstxt": {
+      "type": "richtext"
+    }
+  }
+}

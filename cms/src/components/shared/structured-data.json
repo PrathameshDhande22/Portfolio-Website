@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_shared_structured_data",
+  "info": {
+    "displayName": "StructuredData"
+  },
+  "options": {},
+  "attributes": {
+    "Enable": {
+      "type": "boolean",
+      "default": false
+    },
+    "JSONSchema": {
+      "type": "json"
+    }
+  },
+  "config": {}
+}

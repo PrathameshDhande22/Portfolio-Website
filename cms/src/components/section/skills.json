@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_section_skills",
+  "info": {
+    "displayName": "Skills"
+  },
+  "options": {},
+  "attributes": {
+    "Categories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::skill-category.skill-category"
+    }
+  },
+  "config": {}
+}

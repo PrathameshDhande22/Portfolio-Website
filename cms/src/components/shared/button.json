@@ -1,0 +1,43 @@
+{
+  "collectionName": "components_shared_buttons",
+  "info": {
+    "displayName": "Button"
+  },
+  "options": {},
+  "attributes": {
+    "Variant": {
+      "type": "enumeration",
+      "required": true,
+      "default": "primary",
+      "enum": [
+        "primary",
+        "secondary",
+        "tertiary",
+        "info",
+        "warning"
+      ]
+    },
+    "Icon": {
+      "type": "string"
+    },
+    "Text": {
+      "type": "string",
+      "required": true
+    },
+    "Url": {
+      "type": "string"
+    },
+    "OpenInNewTab": {
+      "type": "boolean"
+    },
+    "IconAlign": {
+      "type": "enumeration",
+      "default": "Right",
+      "enum": [
+        "Left",
+        "Right"
+      ]
+    }
+  },
+  "config": {}
+}

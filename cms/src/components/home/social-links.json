@@ -1,0 +1,48 @@
+{
+  "collectionName": "components_home_social_links",
+  "info": {
+    "displayName": "Social Links"
+  },
+  "options": {},
+  "attributes": {
+    "Platform": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "github",
+        "linkedin",
+        "twitter",
+        "instagram",
+        "facebook",
+        "youtube",
+        "medium",
+        "devto",
+        "stackoverflow",
+        "leetcode",
+        "hackerrank",
+        "codepen",
+        "behance",
+        "dribbble",
+        "email",
+        "website"
+      ]
+    },
+    "Icon": {
+      "type": "string",
+      "required": true
+    },
+    "Url": {
+      "type": "string",
+      "required": true
+    },
+    "Order": {
+      "type": "integer",
+      "default": 1
+    },
+    "Visible": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "config": {}
+}
