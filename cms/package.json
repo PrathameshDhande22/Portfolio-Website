@@ -15,7 +15,6 @@
     "upgrade:dry": "npx @strapi/upgrade latest --dry"
   },
   "dependencies": {
-    "@strapi-community/plugin-seo": "^2.1.1",
     "@strapi/plugin-documentation": "5.51.0",
     "@strapi/plugin-users-permissions": "5.51.0",
     "@strapi/provider-email-nodemailer": "^5.51.0",
@@ -39,6 +38,7 @@
   },
   "strapi": {
     "uuid": "1b16b7fa-617c-4e89-89ff-a029ae68d1ca",
-    "installId": "84430271c27b32cb056d07a0a57acf5e0519509acd8935a249189417c18fca3d"
+    "installId": "84430271c27b32cb056d07a0a57acf5e0519509acd8935a249189417c18fca3d",
+    "telemetryDisabled": true
   }
 }
