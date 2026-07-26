@@ -1,7 +1,8 @@
 {
   "collectionName": "components_shared_buttons",
   "info": {
-    "displayName": "Button"
+    "displayName": "Button",
+    "icon": "play"
   },
   "options": {},
   "attributes": {

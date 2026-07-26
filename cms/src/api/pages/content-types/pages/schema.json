@@ -30,7 +30,9 @@
       "components": [
         "home.home-hero",
         "shared.hero",
-        "shared.badge"
+        "shared.badge",
+        "section.skills",
+        "shared.next"
       ]
     }
   }

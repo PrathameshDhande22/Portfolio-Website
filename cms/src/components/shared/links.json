@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_shared_links",
+  "info": {
+    "displayName": "Links",
+    "icon": "link"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "Text": {
+      "type": "string",
+      "required": true
+    },
+    "Url": {
+      "type": "string",
+      "required": true
+    },
+    "Icon": {
+      "type": "string"
+    },
+    "OpenInNewTab": {
+      "type": "boolean",
+      "default": false
+    },
+    "IconAlign": {
+      "type": "enumeration",
+      "enum": [
+        "right",
+        "left",
+        "center"
+      ]
+    }
+  },
+  "config": {}
+}

@@ -17,8 +17,9 @@
     },
     "Category": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::skill-category.skill-category"
+      "relation": "manyToOne",
+      "target": "api::skill-category.skill-category",
+      "inversedBy": "Skills"
     },
     "Icon": {
       "type": "media",

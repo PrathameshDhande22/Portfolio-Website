@@ -1,7 +1,8 @@
 {
   "collectionName": "components_shared_badges",
   "info": {
-    "displayName": "Badge"
+    "displayName": "Badge",
+    "icon": "oneToOne"
   },
   "options": {},
   "attributes": {

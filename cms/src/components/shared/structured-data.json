@@ -1,7 +1,8 @@
 {
   "collectionName": "components_shared_structured_data",
   "info": {
-    "displayName": "StructuredData"
+    "displayName": "StructuredData",
+    "icon": "bulletList"
   },
   "options": {},
   "attributes": {

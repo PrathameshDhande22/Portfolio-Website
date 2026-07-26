@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "project_tags",
+  "info": {
+    "singularName": "project-tag",
+    "pluralName": "project-tags",
+    "displayName": "ProjectTags"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Tag": {
+      "type": "string"
+    },
+    "Technology": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::skill.skill"
+    },
+    "Project": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::project.project",
+      "inversedBy": "Tags"
+    }
+  }
+}

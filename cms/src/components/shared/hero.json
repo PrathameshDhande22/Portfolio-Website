@@ -1,7 +1,8 @@
 {
   "collectionName": "components_shared_heroes",
   "info": {
-    "displayName": "Hero"
+    "displayName": "Hero",
+    "icon": "user"
   },
   "options": {},
   "attributes": {

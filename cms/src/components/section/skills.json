@@ -1,7 +1,8 @@
 {
   "collectionName": "components_section_skills",
   "info": {
-    "displayName": "Skills"
+    "displayName": "Section",
+    "icon": "file"
   },
   "options": {},
   "attributes": {
@@ -9,6 +10,11 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::skill-category.skill-category"
+    },
+    "Projects": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::project.project"
     }
   },
   "config": {}

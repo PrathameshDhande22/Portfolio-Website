@@ -1,7 +1,8 @@
 {
   "collectionName": "components_shared_typing_texts",
   "info": {
-    "displayName": "TypingTexts"
+    "displayName": "TypingTexts",
+    "icon": "italic"
   },
   "options": {},
   "attributes": {

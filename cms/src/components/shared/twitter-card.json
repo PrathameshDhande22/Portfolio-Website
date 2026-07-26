@@ -1,7 +1,8 @@
 {
   "collectionName": "components_shared_twitter_cards",
   "info": {
-    "displayName": "TwitterCard"
+    "displayName": "TwitterCard",
+    "icon": "twitter"
   },
   "options": {},
   "attributes": {
