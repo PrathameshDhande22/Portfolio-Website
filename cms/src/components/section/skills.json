@@ -15,6 +15,31 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::project.project"
+    },
+    "Experiences": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::experience.experience"
+    },
+    "Timelines": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::time-line.time-line"
+    },
+    "Educations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::education.education"
+    },
+    "Certifications": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::certification.certification"
+    },
+    "Blogs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::blog.blog"
     }
   },
   "config": {}

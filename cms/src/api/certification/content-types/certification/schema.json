@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "certifications",
+  "info": {
+    "singularName": "certification",
+    "pluralName": "certifications",
+    "displayName": "Certifications"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "Description": {
+      "type": "string",
+      "required": false
+    },
+    "Active": {
+      "type": "boolean",
+      "default": true
+    },
+    "CertificateID": {
+      "type": "string"
+    },
+    "Certifier": {
+      "type": "string"
+    },
+    "Issued": {
+      "type": "date"
+    },
+    "Expires": {
+      "type": "date"
+    },
+    "VerifyLink": {
+      "type": "component",
+      "component": "shared.links",
+      "repeatable": false
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "educations",
+  "info": {
+    "singularName": "education",
+    "pluralName": "educations",
+    "displayName": "Education"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Timeline": {
+      "type": "component",
+      "component": "shared.time-line",
+      "repeatable": false,
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_shared_time_lines",
+  "info": {
+    "displayName": "TimeLine",
+    "icon": "clock"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "SubTitle": {
+      "type": "string"
+    },
+    "ShortTitle": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "richtext"
+    },
+    "Badges": {
+      "type": "component",
+      "component": "shared.badge-tag",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

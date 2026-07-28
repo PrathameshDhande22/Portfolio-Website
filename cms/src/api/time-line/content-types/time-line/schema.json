@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "time_lines",
+  "info": {
+    "singularName": "time-line",
+    "pluralName": "time-lines",
+    "displayName": "TimeLine"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Timeline": {
+      "type": "component",
+      "component": "shared.time-line",
+      "repeatable": false,
+      "required": true
+    }
+  }
+}

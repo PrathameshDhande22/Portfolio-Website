@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "blog_contents",
+  "info": {
+    "singularName": "blog-content",
+    "pluralName": "blog-contents",
+    "displayName": "BlogContent"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Blog": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::blog.blog",
+      "inversedBy": "BlogContent"
+    },
+    "Content": {
+      "type": "richtext"
+    },
+    "Next": {
+      "type": "component",
+      "component": "shared.next",
+      "repeatable": false
+    }
+  }
+}

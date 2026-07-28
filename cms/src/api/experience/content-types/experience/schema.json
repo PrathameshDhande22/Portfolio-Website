@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "experiences",
+  "info": {
+    "singularName": "experience",
+    "pluralName": "experiences",
+    "displayName": "Experiences"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Experience": {
+      "type": "component",
+      "component": "shared.time-line",
+      "repeatable": false,
+      "required": true
+    }
+  }
+}
