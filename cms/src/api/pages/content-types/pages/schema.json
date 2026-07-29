@@ -32,7 +32,11 @@
         "shared.hero",
         "shared.badge",
         "section.skills",
-        "shared.next"
+        "shared.next",
+        "shared.links",
+        "home.social-links",
+        "section.contact-form",
+        "section.resume"
       ]
     }
   }

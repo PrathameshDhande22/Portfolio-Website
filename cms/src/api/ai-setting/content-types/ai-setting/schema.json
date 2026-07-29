@@ -1,0 +1,38 @@
+{
+  "kind": "singleType",
+  "collectionName": "ai_settings",
+  "info": {
+    "singularName": "ai-setting",
+    "pluralName": "ai-settings",
+    "displayName": "AI Setting"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "TopTitle": {
+      "type": "string",
+      "required": true
+    },
+    "Header": {
+      "type": "string",
+      "required": true
+    },
+    "Description": {
+      "type": "text",
+      "required": false
+    },
+    "ExistingMessage": {
+      "type": "component",
+      "component": "section.existing-message",
+      "repeatable": true
+    },
+    "Warning": {
+      "type": "text"
+    },
+    "SendMessagePlaceholder": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_section_existing_messages",
+  "info": {
+    "displayName": "Existing Message",
+    "icon": "cog"
+  },
+  "options": {},
+  "attributes": {
+    "Text": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

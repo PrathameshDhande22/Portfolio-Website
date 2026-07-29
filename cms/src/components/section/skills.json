@@ -6,40 +6,127 @@
   },
   "options": {},
   "attributes": {
+    "ShowAll": {
+      "type": "boolean",
+      "default": false
+    },
+    "Type": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "Skills",
+        "Projects",
+        "Experience",
+        "Timeline",
+        "Certifications",
+        "Educations",
+        "Blogs"
+      ]
+    },
     "Categories": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::skill-category.skill-category"
+      "target": "api::skill-category.skill-category",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "Type"
+            },
+            "Skills"
+          ]
+        }
+      }
     },
     "Projects": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::project.project"
+      "target": "api::project.project",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "Type"
+            },
+            "Projects"
+          ]
+        }
+      }
     },
     "Experiences": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::experience.experience"
+      "target": "api::experience.experience",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "Type"
+            },
+            "Experience"
+          ]
+        }
+      }
     },
     "Timelines": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::time-line.time-line"
+      "target": "api::time-line.time-line",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "Type"
+            },
+            "Timeline"
+          ]
+        }
+      }
     },
     "Educations": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::education.education"
+      "target": "api::education.education",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "Type"
+            },
+            "Educations"
+          ]
+        }
+      }
     },
     "Certifications": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::certification.certification"
+      "target": "api::certification.certification",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "Type"
+            },
+            "Certifications"
+          ]
+        }
+      }
     },
     "Blogs": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::blog.blog"
+      "target": "api::blog.blog",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "Type"
+            },
+            "Blogs"
+          ]
+        }
+      }
     }
   },
   "config": {}

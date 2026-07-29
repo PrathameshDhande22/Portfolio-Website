@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_section_contact_forms",
+  "info": {
+    "displayName": "Contact Form",
+    "icon": "phone"
+  },
+  "options": {},
+  "attributes": {
+    "YourName": {
+      "type": "string",
+      "required": true
+    },
+    "EmailText": {
+      "type": "string",
+      "required": true
+    },
+    "Subject": {
+      "type": "string"
+    },
+    "Message": {
+      "type": "text",
+      "required": true
+    },
+    "SendMessage": {
+      "type": "component",
+      "component": "shared.button",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

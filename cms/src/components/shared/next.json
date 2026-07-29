@@ -15,6 +15,9 @@
       "type": "string",
       "required": false
     },
+    "Description": {
+      "type": "richtext"
+    },
     "Button": {
       "type": "component",
       "component": "shared.button",

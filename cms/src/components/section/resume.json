@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_section_resumes",
+  "info": {
+    "displayName": "Resume",
+    "icon": "filePdf"
+  },
+  "options": {},
+  "attributes": {
+    "Resume": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "files"
+      ]
+    }
+  },
+  "config": {}
+}
