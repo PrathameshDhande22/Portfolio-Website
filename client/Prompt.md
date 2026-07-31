@@ -1,0 +1,42 @@
+# Next.JS Portfolio Website
+
+Need to create the Portfolio website you will be provided with accurate information regarding how to create and which styling to use, how to write the code, where to look for the docs all will be provided to you. Just go through these complete plan for Implementation and follow as the plan says. Do not invent on your own. Follow the Proper instructions and act accordingly.
+
+### Reference Site: https://prathameshsystenics.github.io/PrathameshPortfolio/
+Here is the reference site of the Portfolio how it looks it is just the template you need to use the same CSS and structure but just load the data from the CMS. Read these site firstly before going to the plan. Fetch each page it contains every css and font. 
+
+## Description
+
+Portfolio website will completely depend on the strapi as the Content Manager System. All the content for the protfolio website will receive from these cms only. Strapi will create the pages dynamically from their own cms and similar it will render in these page. Strapi is completely the source of the truth for the complete data. 
+
+## Instructions
+- Firstly read the strapi structure carefully how it is being implemented.
+- Read the NextJS folder structure. The application have already installed the required libraries like Strapi Client, ShadCN, TailwindCSS v4, Framer Motion aka Motion. If you need to install new libraries firstly consult with me regarding whether to install or not. Do not install any library on your own. 
+- Read the plan throughly then firstly think what else is missing from these. 
+- After reading firstly ask the questions if you have doubt regarding the implementation how it gonna clear those first only instead of asking later when starting the implementation. 
+- Follow the Solid Principles properly whenever writing the code. Segration is important over these project because everything is being loaded from the Strapi only. 
+- You will be provided with MCP Docs for **NextJS**, **Strapi**, **Shadcn**, and **Motion**. Read those docs whenever you find any difficulties while implementing do not invent on your own. 
+- You will be provided with the screenshot regarding the portfolio website if you cannot fetch the website link correctly. 
+- After understanding the task correctly if all investigation and planning is done then divide each task or say each page then implement one by one and let it be reiviewed it by me. 
+
+## Coding Instructions
+1. When ever you create the `page.tsx` or `layout.tsx` always use the type props which nextjs generate like `LayoutProps`, or `PageProps`. 
+2. Do not Write the old tailwindcss which will say that these can be used instead of these. Use always new tailwindcss.
+3. If you need to touch the strapi api server then firstly consult with me that what changes are you going to do in that strapi what it would result in. But try not to touch the Strapi Server code. 
+4. Follow the exact folder structure that will be going to be provided to you. 
+5. When you are going to add the new component from the shadcn then also consult from me also.
+6. Do not write the comments on each single line through out the project. 
+7. Do not write the function comments also, whenever creating a new function or component, but create the filename or function name in such a way that from name only it understand what that components or function does. 
+8. Do not try to invent the function or create the new function every time try to reuse the function which you or we already have or used in the packages.  
+9. If the implementation or work is getting in one line of code then use that approach only instead of creating the complex function which will not understand.
+10. Keep it simple, allow the code to be understand by human clearly what it is written. 
+11. Follow DRY principles whenever implementing. 
+12. While writting the code try to write in a optimized way. The load time for loading the website must be minimal.
+13. All the strapi client call must be on the server side only there should be not client side data loading via API. You will be explained with each pages how to implement those. 
+14. Firstly Understand the Strapi how the data is being displayed below section will help to understand the Strapi Section correctly. You will be explained each collection type we have. 
+
+## Strapi Explanation
+Go through the strapi code `/cms` to understand how components and collection types are design.
+
+
+## Implementation Plan
