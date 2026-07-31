@@ -17,7 +17,7 @@ Portfolio website will completely depend on the strapi as the Content Manager Sy
 - Follow the Solid Principles properly whenever writing the code. Segration is important over these project because everything is being loaded from the Strapi only. 
 - You will be provided with MCP Docs for **NextJS**, **Strapi**, **Shadcn**, and **Motion**. Read those docs whenever you find any difficulties while implementing do not invent on your own. 
 - You will be provided with the screenshot regarding the portfolio website if you cannot fetch the website link correctly. 
-- After understanding the task correctly if all investigation and planning is done then divide each task or say each page then implement one by one and let it be reiviewed it by me. 
+- After understanding the task correctly if all investigation and planning is done then divide each task or say each page then implement one by one and let it be reviewed it by me. 
 
 ## Coding Instructions
 1. When ever you create the `page.tsx` or `layout.tsx` always use the type props which nextjs generate like `LayoutProps`, or `PageProps`. 
@@ -34,9 +34,38 @@ Portfolio website will completely depend on the strapi as the Content Manager Sy
 12. While writting the code try to write in a optimized way. The load time for loading the website must be minimal.
 13. All the strapi client call must be on the server side only there should be not client side data loading via API. You will be explained with each pages how to implement those. 
 14. Firstly Understand the Strapi how the data is being displayed below section will help to understand the Strapi Section correctly. You will be explained each collection type we have. 
+15. Use the NextJS 16, the installed version is 16, make the use of the inbuilt functions, enable the `CacheComponents` whereever want to cache the data use the `use cache` directive read the docs regarding these and understand the concept. 
+16. Use the server action wherever it is applicable because our most of the work will be based on the server side only. 
+17. Make use of the typescript correctly. Do not use any in any function or type firstly always define the type. Which makes the code readable. 
 
 ## Strapi Explanation
 Go through the strapi code `/cms` to understand how components and collection types are design.
 
+**Site Settings**, **AI Settings** and **Robots** these are the single type settings which define, and it must be loaded when the site is loaded for the first time. Robots are basically the `robots.txt` which are directly served using the Strapi. 
+
+We have **Pages** as the Collection Type where all the pages are stored and each entry in these is the separate page. Each have the component. With Data prefilled in it. It also contains the component Named as **Section** which have the type which specifies which type of data to load then according to it loads. 
+Section Component can contain data like
+    - Skills
+    - Blog
+    - Certification
+    - Contact
+    - Education
+    - Experience
+    - Project
+
+**Blog** Page just display the title and etc, but not the blog content to read the Blog-Content need to call the collection Type for **BlogContent**. 
+
+**Version** is the collection type where on specific page we will load all the version of these website with the changelog. 
+
+Read each `schema.json` to understand throughly most important part is the `section` component which does all part of rendering. Also look for the component how they are defined and what types they have. 
+
+Map the component easily from provided template website
+- Divider -> Divider which contains left and right text
+- Next Component
+- Button Component with having the variant and text
+- Hero for each page except the home page will have the different HomeHero as the component due to the data shown in the home page is totally different.
+- 
 
 ## Implementation Plan
+
+
