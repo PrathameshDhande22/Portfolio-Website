@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   output: "standalone",
   turbopack: { root: __dirname },
   images: {
+    dangerouslyAllowLocalIP: process.env.NODE_ENV !== "production",
     remotePatterns: [
       {
         protocol: mediaOrigin.protocol === "https:" ? "https" : "http",

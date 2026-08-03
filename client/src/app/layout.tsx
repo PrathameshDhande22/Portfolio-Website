@@ -55,8 +55,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             askAiLabel={settings.AskAI?.Enabled ? settings.AskAI.Text : null}
           />
 
-          <div className="pt-bar nav:ml-rail nav:pt-0">
-            <main id="main">{children}</main>
+          <div className="flex min-h-dvh flex-col pt-bar nav:ml-rail nav:pt-0">
+            <main id="main" className="flex-1">
+              {children}
+            </main>
             <SiteFooter copyright={settings.CopyRightText} links={footerLinks} />
           </div>
         </AppProviders>

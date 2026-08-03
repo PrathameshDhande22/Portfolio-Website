@@ -68,12 +68,12 @@ import {
   FaGlobe,
   FaInstagram,
   FaJava,
-  FaLinkedin,
   FaMedium,
   FaStackOverflow,
   FaXTwitter,
   FaYoutube,
 } from "react-icons/fa6";
+import { FaLinkedinIn } from "react-icons/fa";
 import {
   LuArrowLeft,
   LuArrowRight,
@@ -162,7 +162,7 @@ export const ICON_REGISTRY: Record<string, IconType> = {
   FaGlobe,
   FaInstagram,
   FaJava,
-  FaLinkedin,
+  FaLinkedinIn,
   FaMedium,
   FaStackOverflow,
   FaXTwitter,
@@ -189,7 +189,7 @@ export const ICON_REGISTRY: Record<string, IconType> = {
 
 export const PLATFORM_ICON: Record<string, IconType> = {
   github: SiGithub,
-  linkedin: FaLinkedin,
+  linkedin: FaLinkedinIn,
   twitter: FaXTwitter,
   instagram: FaInstagram,
   facebook: FaFacebook,

@@ -30,7 +30,9 @@
     --container-wrap: 1320px;
 
     --breakpoint-ask: 521px;
+    --breakpoint-tile: 660px;
     --breakpoint-nav: 981px;
+    --breakpoint-wide: 1120px;
 
     --radius-tile: 10px;
 

@@ -21,13 +21,13 @@ export const ENDPOINT = {
   skillCategories: "skill-categories",
   timeLines: "time-lines",
   versions: "versions",
-} as const;
+};
 
 export const SINGLE_ENDPOINT = {
   siteSettings: "site-setting",
   aiSettings: "ai-setting",
   robots: "robot",
-} as const;
+};
 
 export const CACHE_TAG = {
   siteSettings: "site-settings",
@@ -36,7 +36,7 @@ export const CACHE_TAG = {
   pages: "pages",
   blogs: "blogs",
   versions: "versions",
-} as const;
+};
 
 export const SEO_POPULATE = {
   populate: {
@@ -44,9 +44,9 @@ export const SEO_POPULATE = {
     TwitterCard: { populate: "*" },
     StructuredData: true,
   },
-} as const;
+};
 
 export const PAGE_POPULATE = {
   SEO: SEO_POPULATE,
   Content: { populate: "*" },
-} as const;
+};
