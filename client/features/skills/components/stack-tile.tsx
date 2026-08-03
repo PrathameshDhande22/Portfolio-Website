@@ -6,10 +6,10 @@ import type { SectionBlock } from "@/types/components";
 const TILE_LIMIT = 8;
 
 export async function StackTile({ section }: { section: SectionBlock }) {
-  const selected = section.Categories.map((category) => category.documentId);
+  const selected = (section.Categories ?? []).map((category) => category.documentId);
   const categories = await getSkillCategories(section.ShowAll ? undefined : selected);
   const skills = categories
-    .flatMap((category) => category.Skills)
+    .flatMap((category) => category.Skills ?? [])
     .sort((a, b) => a.Order - b.Order)
     .slice(0, section.ShowAll ? undefined : TILE_LIMIT);
 

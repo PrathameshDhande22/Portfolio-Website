@@ -1,9 +1,13 @@
 import { Markdown } from "@/features/shared/components/markdown";
 import { Reveal } from "@/features/shared/components/reveal";
+import { TagList } from "@/features/shared/components/tag-list";
 import type { TimeLineEntry } from "@/types/components";
 
 export function TimelineItem({ entry }: { entry: TimeLineEntry }) {
-  const badges = [...entry.Badges].sort((a, b) => a.Order - b.Order);
+  const tags = [...(entry.Badges ?? [])]
+    .sort((a, b) => a.Order - b.Order)
+    .filter((badge) => badge.Skill)
+    .map((badge) => ({ id: badge.id, label: badge.Skill!.Name, highlight: badge.Highlight }));
 
   return (
     <Reveal
@@ -20,22 +24,7 @@ export function TimelineItem({ entry }: { entry: TimeLineEntry }) {
         <div className="mb-[0.7rem] text-[0.8rem] font-medium text-ink-3">{entry.SubTitle}</div>
       ) : null}
       <Markdown content={entry.Description} className="max-w-[62ch]" />
-      {badges.length > 0 ? (
-        <ul className="m-0 mt-3 flex list-none flex-wrap gap-[0.35rem] p-0">
-          {badges.map((badge) => (
-            <li
-              key={badge.id}
-              className={`rounded-full border px-[0.6rem] py-[0.2rem] text-[0.74rem] font-medium whitespace-nowrap transition-colors ${
-                badge.Highlight
-                  ? "border-accent bg-accent text-accent-ink"
-                  : "border-line text-ink-2 hover:border-ink-3 hover:text-ink"
-              }`}
-            >
-              {badge.Skill?.Name}
-            </li>
-          ))}
-        </ul>
-      ) : null}
+      <TagList tags={tags} className="mt-3" />
     </Reveal>
   );
 }

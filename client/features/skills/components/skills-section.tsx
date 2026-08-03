@@ -4,7 +4,7 @@ import { Reveal } from "@/features/shared/components/reveal";
 import type { SectionBlock } from "@/types/components";
 
 export async function SkillsSection({ section }: { section: SectionBlock }) {
-  const selected = section.Categories.map((category) => category.documentId);
+  const selected = (section.Categories ?? []).map((category) => category.documentId);
   const categories = await getSkillCategories(section.ShowAll ? undefined : selected);
 
   return (
@@ -16,11 +16,11 @@ export async function SkillsSection({ section }: { section: SectionBlock }) {
               {category.Name}
             </h3>
             <span className="ml-auto text-[0.74rem] font-semibold tracking-[0.06em] text-ink-3">
-              {category.Skills.length}
+              {(category.Skills ?? []).length}
             </span>
           </div>
           <ul className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(min(210px,100%),1fr))] gap-[0.55rem] p-0">
-            {[...category.Skills]
+            {[...(category.Skills ?? [])]
               .sort((a, b) => a.Order - b.Order)
               .map((skill) => (
                 <SkillCard key={skill.documentId} skill={skill} />
