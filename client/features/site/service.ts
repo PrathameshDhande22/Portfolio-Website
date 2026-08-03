@@ -14,9 +14,9 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         ProfileImage: true,
         Favicon: true,
         AskAI: true,
-        Navigation: { populate: { Page: true } },
         SocialLinks: true,
         Footer: true,
+        Navigation: { populate: "*" },
       },
     });
 
@@ -30,7 +30,7 @@ export async function getAiSettings(): Promise<AiSettings> {
 
   const response = await strapiClient()
     .single(SINGLE_ENDPOINT.aiSettings)
-    .find({ populate: { ExistingMessage: true } });
+    .find({ populate: "*" });
 
   return response.data as unknown as AiSettings;
 }

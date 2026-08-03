@@ -38,52 +38,15 @@ export const CACHE_TAG = {
   versions: "versions",
 } as const;
 
-const badgesPopulate = {
-  Badges: { populate: { Skill: { populate: { Icon: true } } } },
-} as const;
-
-const timelinePopulate = { populate: badgesPopulate } as const;
-
-const sectionPopulate = {
-  Categories: { populate: { Skills: { populate: { Icon: true } } } },
-  Projects: {
-    populate: {
-      Thumbnail: true,
-      Screenshots: true,
-      Tags: { populate: { Technology: { populate: { Icon: true } } } },
-      Links: true,
-    },
-  },
-  Experiences: { populate: { Experience: timelinePopulate } },
-  Timelines: { populate: { Timeline: timelinePopulate } },
-  Educations: { populate: { Timeline: timelinePopulate } },
-  Certifications: { populate: { VerifyLink: true } },
-  Blogs: { populate: { Thumbnail: true, Skill: { populate: { Icon: true } } } },
-} as const;
-
 export const SEO_POPULATE = {
   populate: {
-    OpenGraph: { populate: { Image: true } },
-    TwitterCard: { populate: { Image: true } },
+    OpenGraph: { populate: "*" },
+    TwitterCard: { populate: "*" },
     StructuredData: true,
   },
 } as const;
 
 export const PAGE_POPULATE = {
   SEO: SEO_POPULATE,
-  Content: {
-    on: {
-      "home.home-hero": {
-        populate: { ProfileImage: true, TypingText: true, Buttons: true },
-      },
-      "shared.hero": true,
-      "shared.badge": true,
-      "shared.links": true,
-      "home.social-links": true,
-      "shared.next": { populate: { Divider: true, Button: true } },
-      "section.contact-form": { populate: { SendMessage: true } },
-      "section.resume": { populate: { Resume: true } },
-      "section.skills": { populate: sectionPopulate },
-    },
-  },
+  Content: { populate: "*" },
 } as const;

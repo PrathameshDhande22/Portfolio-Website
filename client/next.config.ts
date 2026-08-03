@@ -18,6 +18,10 @@ const nextConfig: NextConfig = {
     ],
   },
   poweredByHeader: false,
+  logging: {
+    fetches: { fullUrl: true, hmrRefreshes: true },
+    browserToTerminal: "warn",
+  },
   async redirects() {
     return [{ source: "/home", destination: "/", permanent: true }];
   },
