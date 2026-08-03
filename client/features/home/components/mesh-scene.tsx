@@ -47,6 +47,8 @@ export function MeshScene({ still }: { still: boolean }) {
       gl={{ alpha: true, antialias: true }}
       frameloop={still ? "demand" : "always"}
       dpr={[1, 2]}
+      resize={{ debounce: 0, scroll: false }}
+      style={{ width: "100%", height: "100%" }}
     >
       <Icosphere still={still} />
     </Canvas>
