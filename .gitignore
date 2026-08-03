@@ -1,2 +1,4 @@
 minio/*
 cms/types/*
+node_modules/*
+.next/*
