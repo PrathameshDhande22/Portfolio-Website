@@ -36,6 +36,12 @@ export const CACHE_TAG = {
   pages: "pages",
   blogs: "blogs",
   versions: "versions",
+  skills: "skills",
+  projects: "projects",
+  experiences: "experiences",
+  educations: "educations",
+  timelines: "timelines",
+  certifications: "certifications",
 };
 
 export const SEO_POPULATE = {

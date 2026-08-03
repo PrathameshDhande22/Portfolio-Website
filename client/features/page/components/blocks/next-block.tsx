@@ -11,9 +11,7 @@ export function NextBlock({ blocks }: { blocks: NextBlockData[] }) {
     <div>
       {block.Divider ? <SectionLabel left={block.Divider.LeftText} right={block.Divider.RightText} /> : null}
       {block.Text ? (
-        <h2 className="mb-[0.7rem] font-display text-[1.5rem] leading-[1.15] font-semibold tracking-[-0.02em] text-ink">
-          {block.Text}
-        </h2>
+        <p className="max-w-[64ch] text-[1rem] leading-[1.75] text-ink-2">{block.Text}</p>
       ) : null}
       <Markdown content={block.Description} />
       {block.Button.length > 0 ? (
