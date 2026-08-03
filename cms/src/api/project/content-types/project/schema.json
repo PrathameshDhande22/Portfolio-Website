@@ -52,6 +52,11 @@
       "relation": "oneToMany",
       "target": "api::project-tag.project-tag",
       "mappedBy": "Project"
+    },
+    "Links": {
+      "type": "component",
+      "component": "shared.links",
+      "repeatable": true
     }
   }
 }
