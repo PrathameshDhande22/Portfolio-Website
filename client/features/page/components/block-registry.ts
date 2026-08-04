@@ -6,6 +6,8 @@ import { NextBlock } from "./blocks/next-block";
 import { LinkBlock } from "./blocks/link-block";
 import { SocialLinksBlock } from "./blocks/social-links-block";
 import { SectionBlock } from "./blocks/section-block";
+import { ContactFormBlock } from "@/features/contact/components/contact-form-block";
+import { ResumeDownload } from "@/features/contact/components/resume-download";
 
 type BlockOf<K extends PageBlockName> = Extract<PageBlock, { __component: K }>;
 
@@ -19,4 +21,6 @@ export const BLOCK_REGISTRY: BlockRegistry = {
   "shared.links": LinkBlock,
   "home.social-links": SocialLinksBlock,
   "section.skills": SectionBlock,
+  "section.contact-form": ContactFormBlock,
+  "section.resume": ResumeDownload,
 };

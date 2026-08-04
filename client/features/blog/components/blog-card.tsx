@@ -37,7 +37,7 @@ export async function BlogCard({ blog, minutes }: { blog: Blog; minutes: number 
           <span className="text-[0.74rem] font-semibold tracking-[0.06em] text-ink-3">{minutes} min read</span>
         </div>
 
-        <h3 className="mb-2 font-display text-[1.1rem] leading-[1.25] font-semibold tracking-[-0.02em] text-ink transition-colors group-hover:text-accent">
+        <h3 className="mb-2 font-display text-[1.1rem] leading-tight font-semibold tracking-[-0.02em] text-ink transition-colors group-hover:text-accent">
           {blog.Title}
         </h3>
 
