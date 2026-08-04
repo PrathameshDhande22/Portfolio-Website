@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import type { PageBlock, PageBlockName } from "@/types/components";
+import type { SearchParams } from "@/types/search-params";
 import { HeroBlock } from "./blocks/hero-block";
 import { NextBlock } from "./blocks/next-block";
 import { LinkBlock } from "./blocks/link-block";
@@ -9,7 +10,7 @@ import { SectionBlock } from "./blocks/section-block";
 type BlockOf<K extends PageBlockName> = Extract<PageBlock, { __component: K }>;
 
 export type BlockRegistry = {
-  [K in PageBlockName]?: ComponentType<{ blocks: BlockOf<K>[] }>;
+  [K in PageBlockName]?: ComponentType<{ blocks: BlockOf<K>[]; searchParams?: SearchParams }>;
 };
 
 export const BLOCK_REGISTRY: BlockRegistry = {

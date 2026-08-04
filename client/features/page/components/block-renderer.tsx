@@ -2,6 +2,7 @@ import type { ComponentType } from "react";
 import { SectionLabel } from "@/features/shared/components/section-label";
 import { BLOCK_REGISTRY } from "./block-registry";
 import type { Divider, PageBlock } from "@/types/components";
+import type { SearchParams } from "@/types/search-params";
 
 const DIVIDER_BLOCK = "shared.badge";
 const REPEATABLE_BLOCKS = new Set(["home.social-links"]);
@@ -32,11 +33,19 @@ function groupBlocks(content: PageBlock[]): BlockGroup[] {
   return groups;
 }
 
-export function BlockRenderer({ content }: { content: PageBlock[] }) {
+export function BlockRenderer({
+  content,
+  searchParams,
+}: {
+  content: PageBlock[];
+  searchParams?: SearchParams;
+}) {
   return groupBlocks(content).map(({ divider, blocks }) => {
     const [first] = blocks;
     const Block = first
-      ? (BLOCK_REGISTRY[first.__component] as ComponentType<{ blocks: PageBlock[] }> | undefined)
+      ? (BLOCK_REGISTRY[first.__component] as
+          | ComponentType<{ blocks: PageBlock[]; searchParams?: SearchParams }>
+          | undefined)
       : undefined;
 
     if (!divider && !Block) return null;
@@ -47,7 +56,7 @@ export function BlockRenderer({ content }: { content: PageBlock[] }) {
         className="border-t border-line py-[clamp(2.25rem,4.5vw,3.25rem)] first:border-t-0"
       >
         {divider ? <SectionLabel left={divider.LeftText} right={divider.RightText} /> : null}
-        {Block ? <Block blocks={blocks} /> : null}
+        {Block ? <Block blocks={blocks} searchParams={searchParams} /> : null}
       </section>
     );
   });

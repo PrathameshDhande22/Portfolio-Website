@@ -10,6 +10,7 @@ function toSlug(segments: string[]): string | null {
 
 export async function generateStaticParams() {
   const slugs = await getPageSlugs();
+
   return slugs.filter((slug) => slug !== "home").map((slug) => ({ slug: [slug] }));
 }
 
@@ -20,11 +21,11 @@ export async function generateMetadata({ params }: PageProps<"/[...slug]">): Pro
   return pageMetadata(page?.SEO, `/${slug}`);
 }
 
-export default async function DynamicPage({ params }: PageProps<"/[...slug]">) {
+export default async function DynamicPage({ params, searchParams }: PageProps<"/[...slug]">) {
   const slug = toSlug((await params).slug);
   const page = slug ? await getPageBySlug(slug) : null;
 
   if (!page) notFound();
 
-  return <PageRenderer page={page} />;
+  return <PageRenderer page={page} searchParams={searchParams} />;
 }

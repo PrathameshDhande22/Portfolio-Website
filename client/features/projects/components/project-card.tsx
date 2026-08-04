@@ -20,7 +20,11 @@ export async function ProjectCard({ project }: { project: Project }) {
   const years = await formatYearRange(project.StartYear, project.EndYear);
 
   return (
-    <Reveal className="grid grid-cols-1 items-start gap-[1.9rem] border-t border-line py-7 last:border-b tile:grid-cols-[minmax(0,300px)_minmax(0,1fr)]">
+    <Reveal
+      className={`grid grid-cols-1 items-start gap-[1.9rem] border-t border-line py-7 last:border-b ${
+        shots.length > 0 ? "tile:grid-cols-[minmax(0,300px)_minmax(0,1fr)]" : ""
+      }`}
+    >
       {shots.length > 0 ? <ProjectGallery shots={shots} title={project.Title} /> : null}
 
       <div className="min-w-0">

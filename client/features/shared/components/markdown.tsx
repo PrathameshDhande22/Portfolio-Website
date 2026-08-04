@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
-import rehypeHighlight from "rehype-highlight";
+import rehypeShikiFromHighlighter from "@shikijs/rehype/core";
+import { highlighter, SHIKI_THEMES } from "@/lib/highlighter";
 
 export function headingSlug(children: ReactNode): string {
   return toPlainText(children)
@@ -55,11 +56,6 @@ const articleComponents: Components = {
   blockquote: ({ children }) => (
     <blockquote className="my-6 border-l-2 border-accent pl-4 text-ink-2 italic">{children}</blockquote>
   ),
-  pre: ({ children }) => (
-    <pre className="mb-5 overflow-x-auto rounded-tile bg-slab px-[1.15rem] py-4 font-mono text-[0.84rem] leading-[1.6] text-slab-fg">
-      {children}
-    </pre>
-  ),
   table: ({ children }) => (
     <div className="mb-5 overflow-x-auto">
       <table className="w-full border-collapse text-left text-[0.9rem]">{children}</table>
@@ -90,7 +86,17 @@ export function Markdown({ content, variant = "prose", className }: MarkdownProp
     >
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={isArticle ? [rehypeHighlight] : []}
+        rehypePlugins={
+          isArticle
+            ? [
+                [
+                  rehypeShikiFromHighlighter,
+                  highlighter,
+                  { themes: SHIKI_THEMES, defaultLanguage: "text", fallbackLanguage: "text" },
+                ],
+              ]
+            : []
+        }
         components={isArticle ? articleComponents : proseComponents}
       >
         {content}

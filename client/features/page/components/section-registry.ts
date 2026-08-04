@@ -3,9 +3,11 @@ import { SkillsSection } from "@/features/skills/components/skills-section";
 import { createTimelineSection } from "@/features/timeline/components/timeline-section";
 import { ProjectsSection } from "@/features/projects/components/projects-section";
 import { CertificationsSection } from "@/features/certifications/components/certifications-section";
+import { BlogsSection } from "@/features/blog/components/blogs-section";
 import type { SectionBlock, SectionType } from "@/types/components";
+import type { SearchParams } from "@/types/search-params";
 
-export type SectionComponent = ComponentType<{ section: SectionBlock }>;
+export type SectionComponent = ComponentType<{ section: SectionBlock; searchParams?: SearchParams }>;
 
 export const SECTION_REGISTRY: Partial<Record<SectionType, SectionComponent>> = {
   Skills: SkillsSection,
@@ -14,4 +16,5 @@ export const SECTION_REGISTRY: Partial<Record<SectionType, SectionComponent>> = 
   Educations: createTimelineSection("Educations"),
   Projects: ProjectsSection,
   Certifications: CertificationsSection,
+  Blogs: BlogsSection,
 };
