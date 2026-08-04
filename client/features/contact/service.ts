@@ -2,37 +2,20 @@
 
 import { headers } from "next/headers";
 import { ENDPOINT, strapiClient } from "@/features/shared/service";
+import { EMAIL_PATTERN, MAX_MESSAGE, type ContactFormState, type ContactInput } from "./constants";
 
-export interface ContactFormState {
-  status: "idle" | "success" | "error";
-  message: string;
-  errors?: Partial<Record<"Name" | "Email" | "Message", string>>;
-}
-
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MAX_MESSAGE = 1000;
-
-export async function submitContact(
-  _previous: ContactFormState,
-  formData: FormData
-): Promise<ContactFormState> {
-  if (formData.get("company")) {
+export async function submitContact(input: ContactInput): Promise<ContactFormState> {
+  if (input.company) {
     return { status: "success", message: "Thanks, your message has been sent." };
   }
 
-  const Name = String(formData.get("Name") ?? "").trim();
-  const Email = String(formData.get("Email") ?? "").trim();
-  const Subject = String(formData.get("Subject") ?? "").trim();
-  const Message = String(formData.get("Message") ?? "").trim();
+  const Name = input.Name?.trim() ?? "";
+  const Email = input.Email?.trim() ?? "";
+  const Message = input.Message?.trim() ?? "";
+  const Subject = input.Subject?.trim();
 
-  const errors: ContactFormState["errors"] = {};
-  if (!Name) errors.Name = "Please tell me your name.";
-  if (!EMAIL.test(Email)) errors.Email = "Please enter a valid email address.";
-  if (!Message) errors.Message = "Please write a message.";
-  else if (Message.length > MAX_MESSAGE) errors.Message = `Please keep it under ${MAX_MESSAGE} characters.`;
-
-  if (Object.keys(errors).length > 0) {
-    return { status: "error", message: "Please fix the highlighted fields.", errors };
+  if (!Name || !EMAIL_PATTERN.test(Email) || !Message || Message.length > MAX_MESSAGE) {
+    return { status: "error", message: "That submission was not valid. Please check the fields and try again." };
   }
 
   const headerList = await headers();

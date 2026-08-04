@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/features/shared/components/icon";
 import { ThemeToggle } from "@/features/shared/components/theme-toggle";
 import { AskAiLauncher } from "@/features/ai/components/ask-ai-launcher";
+import type { AiSettings } from "@/types/content";
 
 const MENU_ID = "rail-navigation";
 
@@ -29,9 +30,18 @@ interface RailNavProps {
   navigation: RailNavItem[];
   social: RailSocialItem[];
   askAiLabel: string | null;
+  aiSettings: AiSettings | null;
 }
 
-export function RailNav({ siteName, designation, availability, navigation, social, askAiLabel }: RailNavProps) {
+export function RailNav({
+  siteName,
+  designation,
+  availability,
+  navigation,
+  social,
+  askAiLabel,
+  aiSettings,
+}: RailNavProps) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -104,7 +114,7 @@ export function RailNav({ siteName, designation, availability, navigation, socia
         ) : null}
 
         <div className="flex gap-1.5 nav:gap-2">
-          {askAiLabel ? <AskAiLauncher label={askAiLabel} /> : null}
+          {askAiLabel && aiSettings ? <AskAiLauncher label={askAiLabel} settings={aiSettings} /> : null}
           <ThemeToggle />
           <Button
             variant="secondary"
