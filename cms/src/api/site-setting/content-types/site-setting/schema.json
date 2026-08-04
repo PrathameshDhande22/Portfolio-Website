@@ -53,6 +53,13 @@
         "images"
       ]
     },
+    "Logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
     "AskAI": {
       "type": "component",
       "component": "ai.ai",
