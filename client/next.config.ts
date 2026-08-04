@@ -20,6 +20,8 @@ const nextConfig: NextConfig = {
   },
   poweredByHeader: false,
   logging: {
+    incomingRequests: true,
+    serverFunctions: true,
     fetches: { fullUrl: true, hmrRefreshes: true },
     browserToTerminal: "warn",
   },
