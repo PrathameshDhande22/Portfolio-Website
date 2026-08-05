@@ -1,6 +1,6 @@
 import { headingSlug } from "@/features/shared/components/markdown";
 
-const HEADING = /^##\s+(.+)$/gm;
+const HEADING = /^#{1,3}\s+(.+?)\s*#*$/gm;
 
 export function ArticleToc({ markdown }: { markdown: string | null | undefined }) {
   if (!markdown) return null;

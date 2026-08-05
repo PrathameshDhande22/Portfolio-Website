@@ -38,6 +38,14 @@ const proseComponents: Components = {
 
 const articleComponents: Components = {
   ...proseComponents,
+  h1: ({ children }) => (
+    <h2
+      id={headingSlug(children)}
+      className="mt-9 mb-3 scroll-mt-6 font-display text-[1.35rem] font-semibold tracking-[-0.02em] text-ink first:mt-0"
+    >
+      {children}
+    </h2>
+  ),
   h2: ({ children }) => (
     <h2
       id={headingSlug(children)}
@@ -71,7 +79,9 @@ interface MarkdownProps {
   className?: string;
 }
 
-export function Markdown({ content, variant = "prose", className }: MarkdownProps) {
+export async function Markdown({ content, variant = "prose", className }: MarkdownProps) {
+  "use cache";
+
   if (!content) return null;
 
   const isArticle = variant === "article";
