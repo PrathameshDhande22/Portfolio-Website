@@ -26,13 +26,11 @@ export const ENDPOINT = {
 export const SINGLE_ENDPOINT = {
   siteSettings: "site-setting",
   aiSettings: "ai-setting",
-  robots: "robot",
 };
 
 export const CACHE_TAG = {
   siteSettings: "site-settings",
   aiSettings: "ai-settings",
-  robots: "robots",
   pages: "pages",
   blogs: "blogs",
   versions: "versions",

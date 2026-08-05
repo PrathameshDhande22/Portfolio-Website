@@ -9,5 +9,5 @@ export async function getAiSettings(): Promise<AiSettings> {
 
   const response = await strapiClient().single(SINGLE_ENDPOINT.aiSettings).find({ populate: "*" });
 
-  return response.data as unknown as AiSettings;
+  return response.data as AiSettings;
 }

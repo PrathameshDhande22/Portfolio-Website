@@ -20,7 +20,7 @@ export async function getBlogs(page = 1, pageSize = BLOG_PAGE_SIZE): Promise<Pag
       pagination: { page, pageSize, withCount: true },
     });
 
-  const items = response.data as unknown as Blog[];
+  const items = response.data as Blog[];
 
   return {
     items,
@@ -37,7 +37,7 @@ export async function getBlogSlugs(): Promise<string[]> {
     .collection(ENDPOINT.blogs)
     .find({ fields: ["Slug"], pagination: { pageSize: 100 } });
 
-  return (response.data as unknown as Blog[]).map((blog) => blog.Slug);
+  return (response.data as Blog[]).map((blog) => blog.Slug);
 }
 
 export async function getBlogBySlug(slug: string): Promise<Blog | null> {
@@ -53,7 +53,7 @@ export async function getBlogBySlug(slug: string): Promise<Blog | null> {
       pagination: { pageSize: 1 },
     });
 
-  return (response.data[0] as unknown as Blog) ?? null;
+  return (response.data[0] as Blog) ?? null;
 }
 
 export async function getBlogContent(slug: string): Promise<BlogContent | null> {
@@ -69,5 +69,5 @@ export async function getBlogContent(slug: string): Promise<BlogContent | null> 
       pagination: { pageSize: 1 },
     });
 
-  return (response.data[0] as unknown as BlogContent) ?? null;
+  return (response.data[0] as BlogContent) ?? null;
 }

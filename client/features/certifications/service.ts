@@ -16,5 +16,5 @@ export async function getCertifications(documentIds?: string[]): Promise<Certifi
       pagination: { pageSize: 100 },
     });
 
-  return response.data as unknown as Certification[];
+  return response.data as Certification[];
 }

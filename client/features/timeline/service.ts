@@ -50,7 +50,7 @@ export async function getTimelineEntries(
       pagination: { pageSize: 100 },
     });
 
-  return (response.data as unknown as Record<string, TimeLineEntry>[])
+  return (response.data as Record<string, TimeLineEntry>[])
     .map((item) => item[source.field])
     .filter(Boolean);
 }

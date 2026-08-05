@@ -20,5 +20,5 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       },
     });
 
-  return response.data as unknown as SiteSettings;
+  return response.data as SiteSettings;
 }

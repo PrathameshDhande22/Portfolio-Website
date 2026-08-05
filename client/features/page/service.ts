@@ -15,7 +15,7 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
       pagination: { pageSize: 1 },
     });
 
-  return (response.data[0] as unknown as Page) ?? null;
+  return (response.data[0] as Page) ?? null;
 }
 
 export async function getPageSlugs(): Promise<string[]> {
@@ -27,5 +27,5 @@ export async function getPageSlugs(): Promise<string[]> {
     .collection(ENDPOINT.pages)
     .find({ fields: ["Slug"], pagination: { pageSize: 100 } });
 
-  return (response.data as unknown as Page[]).map((page) => page.Slug);
+  return (response.data as Page[]).map((page) => page.Slug);
 }
