@@ -1,0 +1,14 @@
+node_modules
+build
+dist
+.git
+.env
+.env.*
+!.env.example
+.tmp
+.cache
+Dockerfile
+.dockerignore
+npm-debug.log*
+yarn-error.log*
+README.md
