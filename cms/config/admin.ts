@@ -23,7 +23,15 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Admin => 
   ai: {
     enabled: true
   },
-  
+  preview: {
+    enabled: false,
+    config: {
+      handler(uid, params) {
+        return null
+      },
+    }
+  }
+
 });
 
 export default config;
