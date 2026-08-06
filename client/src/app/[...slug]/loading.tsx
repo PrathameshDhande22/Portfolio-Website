@@ -1,4 +1,7 @@
-import { SectionSkeleton, TerminalLoader } from "@/features/shared/components/loading";
+import {
+  SectionSkeleton,
+  TerminalLoader,
+} from "@/features/shared/components/loading";
 
 export default function PageLoading() {
   return (

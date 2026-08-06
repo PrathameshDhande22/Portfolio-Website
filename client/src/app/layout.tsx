@@ -29,7 +29,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const settings = await getSiteSettings();
   const aiSettings = settings.AskAI?.Enabled ? await getAiSettings() : null;
 
-  const navigation = settings.Navigation.filter((item) => item.Visible && item.Page)
+  const navigation = settings.Navigation.filter(
+    (item) => item.Visible && item.Page,
+  )
     .sort((a, b) => a.Order - b.Order)
     .map((item) => ({
       title: item.Title,
@@ -38,12 +40,20 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
 
   const social = settings.SocialLinks.filter((item) => item.Visible)
     .sort((a, b) => a.Order - b.Order)
-    .map((item) => ({ platform: item.Platform, icon: item.Icon, url: item.Url }));
+    .map((item) => ({
+      platform: item.Platform,
+      icon: item.Icon,
+      url: item.Url,
+    }));
 
   const footerLinks = [...settings.Footer].sort((a, b) => a.Order - b.Order);
 
   return (
-    <html lang="en" suppressHydrationWarning className={cn(archivo.variable, interTight.variable)}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={cn(archivo.variable, interTight.variable)}
+    >
       <body className="overflow-x-clip bg-paper font-text text-[16px] leading-[1.6] text-ink antialiased before:pointer-events-none before:fixed before:inset-0 before:-z-10 before:bg-[radial-gradient(var(--ink-3)_1px,transparent_1px)] before:bg-size-[24px_24px] before:opacity-[0.13] before:content-['']">
         <AppProviders>
           <ScrollProgress />
@@ -62,7 +72,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             <main id="main" className="flex-1">
               {children}
             </main>
-            <SiteFooter copyright={settings.CopyRightText} links={footerLinks} />
+            <SiteFooter
+              copyright={settings.CopyRightText}
+              links={footerLinks}
+            />
           </div>
         </AppProviders>
       </body>

@@ -10,7 +10,12 @@ interface ErrorViewProps {
   reset?: () => void;
 }
 
-export function ErrorView({ title, description, error, reset }: ErrorViewProps) {
+export function ErrorView({
+  title,
+  description,
+  error,
+  reset,
+}: ErrorViewProps) {
   const showDetail = process.env.NODE_ENV !== "production" && error;
 
   return (
@@ -24,7 +29,9 @@ export function ErrorView({ title, description, error, reset }: ErrorViewProps) 
       </h1>
 
       {error?.digest ? (
-        <p className="mb-6 font-mono text-[0.8rem] text-ink-3">Reference: {error.digest}</p>
+        <p className="mb-6 font-mono text-[0.8rem] text-ink-3">
+          Reference: {error.digest}
+        </p>
       ) : null}
 
       {showDetail ? (

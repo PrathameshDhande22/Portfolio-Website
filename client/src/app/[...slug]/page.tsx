@@ -11,17 +11,24 @@ function toSlug(segments: string[]): string | null {
 export async function generateStaticParams() {
   const slugs = await getPageSlugs();
 
-  return slugs.filter((slug) => slug !== "home").map((slug) => ({ slug: [slug] }));
+  return slugs
+    .filter((slug) => slug !== "home")
+    .map((slug) => ({ slug: [slug] }));
 }
 
-export async function generateMetadata({ params }: PageProps<"/[...slug]">): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps<"/[...slug]">): Promise<Metadata> {
   const slug = toSlug((await params).slug);
   const page = slug ? await getPageBySlug(slug) : null;
 
   return pageMetadata(page?.SEO, `/${slug}`);
 }
 
-export default async function DynamicPage({ params, searchParams }: PageProps<"/[...slug]">) {
+export default async function DynamicPage({
+  params,
+  searchParams,
+}: PageProps<"/[...slug]">) {
   const slug = toSlug((await params).slug);
   const page = slug ? await getPageBySlug(slug) : null;
 

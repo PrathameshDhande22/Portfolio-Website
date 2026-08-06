@@ -1,5 +1,8 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { SectionSkeleton, TerminalLoader } from "@/features/shared/components/loading";
+import {
+  SectionSkeleton,
+  TerminalLoader,
+} from "@/features/shared/components/loading";
 
 export default function BlogLoading() {
   return (
@@ -9,7 +12,11 @@ export default function BlogLoading() {
         <TerminalLoader
           trace={[
             { method: "GET", path: "/api/page?slug=blog", status: "200" },
-            { method: "GET", path: "/api/blogs?pagination[page]=1", status: "200" },
+            {
+              method: "GET",
+              path: "/api/blogs?pagination[page]=1",
+              status: "200",
+            },
           ]}
           pending="rendering posts"
         />

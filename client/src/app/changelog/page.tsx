@@ -7,7 +7,11 @@ import { formatDate } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Changelog",
-  robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: { index: false, follow: false },
+  },
 };
 
 export default async function ChangelogPage() {

@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LuArrowLeft } from "react-icons/lu";
-import { getBlogBySlug, getBlogContent, getBlogSlugs } from "@/features/blog/service";
+import {
+  getBlogBySlug,
+  getBlogContent,
+  getBlogSlugs,
+} from "@/features/blog/service";
 import { ArticleToc } from "@/features/blog/components/article-toc";
 import { Markdown } from "@/features/shared/components/markdown";
 import { CmsButton } from "@/features/shared/components/cms-button";
@@ -20,7 +24,10 @@ export async function generateStaticParams() {
 }
 
 async function articleContext() {
-  const [settings, listing] = await Promise.all([getSiteSettings(), getPageBySlug("blog")]);
+  const [settings, listing] = await Promise.all([
+    getSiteSettings(),
+    getPageBySlug("blog"),
+  ]);
 
   return {
     siteUrl: env.siteUrl,
@@ -30,7 +37,9 @@ async function articleContext() {
   };
 }
 
-export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps<"/blog/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const blog = await getBlogBySlug(slug);
 
@@ -39,13 +48,18 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): P
   return articleMetadata(blog, await articleContext());
 }
 
-export default async function BlogArticlePage({ params }: PageProps<"/blog/[slug]">) {
+export default async function BlogArticlePage({
+  params,
+}: PageProps<"/blog/[slug]">) {
   const { slug } = await params;
   const blog = await getBlogBySlug(slug);
 
   if (!blog) notFound();
 
-  const [content, context] = await Promise.all([getBlogContent(slug), articleContext()]);
+  const [content, context] = await Promise.all([
+    getBlogContent(slug),
+    articleContext(),
+  ]);
   const published = await formatDate(blog.publishedAt ?? blog.createdAt);
   const minutes = readingMinutes(content?.Content);
 
@@ -70,8 +84,12 @@ export default async function BlogArticlePage({ params }: PageProps<"/blog/[slug
                 {blog.Skill.Name}
               </span>
             ) : null}
-            <span className="text-[0.74rem] font-semibold tracking-[0.06em] text-ink-3">{published}</span>
-            <span className="text-[0.74rem] font-semibold tracking-[0.06em] text-ink-3">{minutes} min read</span>
+            <span className="text-[0.74rem] font-semibold tracking-[0.06em] text-ink-3">
+              {published}
+            </span>
+            <span className="text-[0.74rem] font-semibold tracking-[0.06em] text-ink-3">
+              {minutes} min read
+            </span>
           </div>
 
           <h1 className="mb-3 max-w-[24ch] font-display text-[clamp(1.9rem,4vw,2.85rem)] leading-[1.15] font-semibold tracking-[-0.03em] text-ink">
@@ -93,7 +111,9 @@ export default async function BlogArticlePage({ params }: PageProps<"/blog/[slug
         {content?.Next ? (
           <footer className="mt-14 border-t border-line pt-8">
             {content.Next.Text ? (
-              <p className="mb-4 text-[1rem] leading-[1.75] text-ink-2">{content.Next.Text}</p>
+              <p className="mb-4 text-[1rem] leading-[1.75] text-ink-2">
+                {content.Next.Text}
+              </p>
             ) : null}
             {content.Next.Button.length > 0 ? (
               <div className="flex flex-wrap gap-[0.6rem]">
