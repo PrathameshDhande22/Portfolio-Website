@@ -5,7 +5,6 @@ const mediaOrigin = new URL(process.env.MEDIA_URL ?? "http://localhost:9000");
 const nextConfig: NextConfig = {
   cacheComponents: true,
   reactCompiler: true,
-  output: "standalone",
   turbopack: { root: __dirname },
   images: {
     dangerouslyAllowLocalIP: process.env.NODE_ENV !== "production",
