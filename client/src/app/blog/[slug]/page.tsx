@@ -8,6 +8,7 @@ import {
   getBlogSlugs,
 } from "@/features/blog/service";
 import { ArticleToc } from "@/features/blog/components/article-toc";
+import { tocFromMarkdown } from "@/features/blog/lib/toc";
 import { Markdown } from "@/features/shared/components/markdown";
 import { CmsButton } from "@/features/shared/components/cms-button";
 import { formatDate, readingMinutes } from "@/lib/format";
@@ -105,7 +106,7 @@ export default async function BlogArticlePage({
 
         <div className="grid grid-cols-1 items-start gap-10 nav:grid-cols-[minmax(0,1fr)_200px]">
           <Markdown content={content?.Content} variant="article" />
-          <ArticleToc markdown={content?.Content} />
+          <ArticleToc entries={tocFromMarkdown(content?.Content)} />
         </div>
 
         {content?.Next ? (

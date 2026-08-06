@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 export const TILE_BASE =
-  "relative flex min-w-0 flex-col overflow-hidden rounded-[18px] border border-line bg-surface p-6 shadow-[0_1px_2px_#1412280a,0_8px_24px_-16px_#1412282e] transition-[transform,border-color,box-shadow] duration-300 ease-smooth hover:-translate-y-1 hover:border-accent tile:col-span-2";
+  "relative flex min-w-0 flex-col overflow-hidden rounded-[18px] border border-line bg-surface p-6 shadow-(--tile-shadow) transition-[transform,border-color,box-shadow] duration-300 ease-smooth hover:-translate-y-1 hover:border-accent tile:col-span-2";
 
 export function Tile({ className, children }: { className?: string; children: ReactNode }) {
   return <section className={cn(TILE_BASE, className)}>{children}</section>;

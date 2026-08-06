@@ -14,7 +14,7 @@ export function IntroTile({ hero }: { hero: HomeHero }) {
     <section
       className={cn(
         TILE_BASE,
-        "justify-center border-transparent bg-slab p-[clamp(2rem,3.5vw,3.25rem)] text-slab-fg shadow-[0_14px_40px_-18px_#0000008c] hover:border-transparent wide:col-span-4"
+        "justify-center border-transparent bg-slab p-[clamp(2rem,3.5vw,3.25rem)] text-slab-fg shadow-(--tile-shadow-strong) hover:border-transparent wide:col-span-4"
       )}
     >
       <MeshSphere />

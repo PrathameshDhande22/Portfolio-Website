@@ -16,7 +16,7 @@ function FieldError({ message }: { message?: string }) {
   if (!message) return null;
 
   return (
-    <small role="alert" className="text-[0.78rem] text-red-500">
+    <small role="alert" className="text-[0.78rem] text-danger">
       {message}
     </small>
   );
@@ -88,7 +88,7 @@ export function ContactForm({ labels }: { labels: ContactFormLabels }) {
       <div className="grid gap-2">
         <Label htmlFor={`${id}-message`} className="justify-between">
           {labels.Message}
-          <span className={`text-[0.74rem] ${messageLength > MAX_MESSAGE ? "text-red-500" : "text-ink-3"}`}>
+          <span className={`text-[0.74rem] ${messageLength > MAX_MESSAGE ? "text-danger" : "text-ink-3"}`}>
             {messageLength} / {MAX_MESSAGE}
           </span>
         </Label>
@@ -120,7 +120,7 @@ export function ContactForm({ labels }: { labels: ContactFormLabels }) {
       </div>
 
       {result?.status === "error" ? (
-        <p role="alert" className="text-[0.85rem] text-red-500">
+        <p role="alert" className="text-[0.85rem] text-danger">
           {result.message}
         </p>
       ) : null}

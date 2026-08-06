@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "katex/dist/katex.min.css";
 
 @custom-variant dark ([data-theme="dark"] &);
 
@@ -19,6 +20,13 @@
     --color-slab-accent: var(--slab-accent);
     --color-slab-accent-ink: var(--slab-accent-ink);
     --color-slab-muted: var(--slab-muted);
+    --color-danger: var(--danger);
+    --color-warning: var(--warning);
+    --color-heat-0: var(--heat-0);
+    --color-heat-1: var(--heat-1);
+    --color-heat-2: var(--heat-2);
+    --color-heat-3: var(--heat-3);
+    --color-heat-4: var(--heat-4);
 
     --font-display: var(--font-archivo), system-ui, sans-serif;
     --font-text: var(--font-inter-tight), system-ui, sans-serif;
@@ -63,6 +71,16 @@
     --slab-accent: #d2dc95;
     --slab-accent-ink: #1a2007;
     --slab-muted: #a8ac8e;
+    --danger: #b3261e;
+    --warning: #d97706;
+    --status-online: #22c55e;
+    --heat-0: #e4e1d9;
+    --heat-1: #c3cba8;
+    --heat-2: #9aa878;
+    --heat-3: #6f8149;
+    --heat-4: #485824;
+    --tile-shadow: 0 1px 2px #1412280a, 0 8px 24px -16px #1412282e;
+    --tile-shadow-strong: 0 14px 40px -18px #0000008c;
 }
 
 [data-theme="dark"] {
@@ -81,6 +99,16 @@
     --slab-accent: #d2dc95;
     --slab-accent-ink: #1a2007;
     --slab-muted: #a8ac8e;
+    --danger: #f2b8b5;
+    --warning: #f0b429;
+    --status-online: #22c55e;
+    --heat-0: #36372f;
+    --heat-1: #5c6440;
+    --heat-2: #889255;
+    --heat-3: #aec077;
+    --heat-4: #d2dc95;
+    --tile-shadow: 0 1px 2px #0000004d, 0 8px 24px -16px #0009;
+    --tile-shadow-strong: 0 14px 40px -18px #000000b3;
 }
 
 @keyframes rise {
@@ -115,7 +143,7 @@
 @keyframes pulse-dot {
     0%,
     100% {
-        box-shadow: 0 0 0 3px #22c55e38;
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--status-online) 22%, transparent);
     }
     50% {
         box-shadow: 0 0 0 6px transparent;
@@ -176,12 +204,42 @@
 }
 
 @layer components {
+    .callout {
+        margin-bottom: 1.25rem;
+        border-radius: var(--radius-tile);
+        border-left: 3px solid var(--accent);
+        background: color-mix(in srgb, var(--accent) 8%, transparent);
+        padding: 0.9rem 1.1rem;
+    }
+
+    .callout-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.35rem;
+        font-weight: 600;
+        color: var(--ink);
+    }
+
+    .callout[data-callout="warning"],
+    .callout[data-callout="caution"],
+    .callout[data-callout="danger"] {
+        border-left-color: var(--warning);
+        background: color-mix(in srgb, var(--warning) 8%, transparent);
+    }
+
+    .katex-display {
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 0.25rem 0;
+    }
+
     .shiki {
         margin-bottom: 1.25rem;
         overflow-x: auto;
         border-radius: var(--radius-tile);
         padding: 1rem 1.15rem;
-        font-size: 0.84rem;
+        font-size: 0.92rem;
         line-height: 1.6;
     }
 

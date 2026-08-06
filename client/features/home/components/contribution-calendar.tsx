@@ -4,10 +4,7 @@ import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import type { Activity } from "react-activity-calendar";
 
-const THEME = {
-  light: ["#e4e1d9", "#c3cba8", "#9aa878", "#6f8149", "#485824"],
-  dark: ["#36372f", "#5c6440", "#889255", "#aec077", "#d2dc95"],
-};
+const RAMP = ["--heat-0", "--heat-1", "--heat-2", "--heat-3", "--heat-4"].map((name) => `var(${name})`);
 
 const ActivityCalendar = dynamic(
   () => import("react-activity-calendar").then((module) => module.ActivityCalendar),
@@ -21,7 +18,7 @@ export function ContributionCalendar({ days }: { days: Activity[] }) {
     <ActivityCalendar
       data={days}
       colorScheme={resolvedTheme === "dark" ? "dark" : "light"}
-      theme={THEME}
+      theme={{ light: RAMP, dark: RAMP }}
       blockSize={11}
       blockMargin={3}
       blockRadius={2}
