@@ -125,10 +125,6 @@ export interface AiSettings extends StrapiEntity {
   SendMessagePlaceholder: string | null;
 }
 
-export interface Robots extends StrapiEntity {
-  robotstxt: string | null;
-}
-
 export interface ContactSubmission {
   Name: string;
   Email: string;

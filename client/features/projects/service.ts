@@ -21,5 +21,5 @@ export async function getProjects(documentIds?: string[]): Promise<Project[]> {
       pagination: { pageSize: 100 },
     });
 
-  return response.data as unknown as Project[];
+  return response.data as Project[];
 }

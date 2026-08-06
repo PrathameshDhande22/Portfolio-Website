@@ -18,5 +18,5 @@ export async function getSkillCategories(documentIds?: string[]): Promise<SkillC
       pagination: { pageSize: 100 },
     });
 
-  return response.data as unknown as SkillCategory[];
+  return response.data as SkillCategory[];
 }

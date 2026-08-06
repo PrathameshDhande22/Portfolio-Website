@@ -26,6 +26,6 @@ export async function formatYearRange(
 ): Promise<string> {
   "use cache";
   if (!start) return "";
-  const from = moment(start).format("YYYY");
-  return `${from} → ${end ? moment(end).format("YYYY") : "now"}`;
+
+  return `${moment(start).format("YYYY")} → ${end ? moment(end).format("YYYY") : "now"}`;
 }

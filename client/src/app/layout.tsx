@@ -5,6 +5,7 @@ import { env } from "@/lib/env";
 import { resolveImage } from "@/lib/media";
 import { AppProviders } from "@/providers";
 import { getSiteSettings } from "@/features/site/service";
+import { getAiSettings } from "@/features/ai/service";
 import { RailNav } from "@/features/site/components/rail-nav";
 import { SiteFooter } from "@/features/site/components/site-footer";
 import { ScrollProgress } from "@/features/site/components/scroll-progress";
@@ -26,6 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const settings = await getSiteSettings();
+  const aiSettings = settings.AskAI?.Enabled ? await getAiSettings() : null;
 
   const navigation = settings.Navigation.filter((item) => item.Visible && item.Page)
     .sort((a, b) => a.Order - b.Order)
@@ -53,6 +55,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             navigation={navigation}
             social={social}
             askAiLabel={settings.AskAI?.Enabled ? settings.AskAI.Text : null}
+            aiSettings={aiSettings}
           />
 
           <div className="flex min-h-dvh flex-col pt-bar nav:ml-rail nav:pt-0">

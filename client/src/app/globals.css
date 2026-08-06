@@ -176,53 +176,21 @@
 }
 
 @layer components {
-    .hljs-comment,
-    .hljs-quote {
-        color: var(--ink-3);
-        font-style: italic;
+    .shiki {
+        margin-bottom: 1.25rem;
+        overflow-x: auto;
+        border-radius: var(--radius-tile);
+        padding: 1rem 1.15rem;
+        font-size: 0.84rem;
+        line-height: 1.6;
     }
 
-    .hljs-keyword,
-    .hljs-selector-tag,
-    .hljs-literal,
-    .hljs-type {
-        color: var(--accent);
-        font-weight: 600;
-    }
-
-    .hljs-string,
-    .hljs-doctag,
-    .hljs-regexp,
-    .hljs-addition {
-        color: #7c9a3e;
-    }
-
-    .hljs-number,
-    .hljs-symbol,
-    .hljs-attr,
-    .hljs-variable,
-    .hljs-template-variable {
-        color: #b58a3c;
-    }
-
-    .hljs-title,
-    .hljs-name,
-    .hljs-section,
-    .hljs-built_in {
-        color: var(--ink);
-        font-weight: 600;
-    }
-
-    .hljs-meta,
-    .hljs-deletion {
-        color: var(--ink-2);
-    }
-
-    .hljs-emphasis {
-        font-style: italic;
-    }
-
-    .hljs-strong {
-        font-weight: 700;
+    [data-theme="dark"] .shiki,
+    [data-theme="dark"] .shiki span {
+        color: var(--shiki-dark) !important;
+        background-color: var(--shiki-dark-bg) !important;
+        font-style: var(--shiki-dark-font-style) !important;
+        font-weight: var(--shiki-dark-font-weight) !important;
+        text-decoration: var(--shiki-dark-text-decoration) !important;
     }
 }
