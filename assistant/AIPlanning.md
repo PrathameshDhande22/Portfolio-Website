@@ -38,6 +38,7 @@ Below screenshot is the flowchart how AI will respond for the asked question
 - It will give the response like the below the JSON.
   ```json
   {
+    "action": "respond", "retrieve",
     "structured": [
       {
         "source": "",
@@ -47,11 +48,13 @@ Below screenshot is the flowchart how AI will respond for the asked question
     "semantic": {
       "enabled": false,
       "query": ""
-    }
+    },
+    "message": ""
   }
   ```
 - After Getting the response from the planner model then it will call these tools parallel then return to build the context
 - The Response or Answer model will respond for the context gathered. 
+- If the asked question does not belong to our context then return the response directly from the Planner LLM only for avoid the additional cost for the Answer LLM. 
 
 ### Restrictions
 - The API Call must be only from the next js
