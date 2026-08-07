@@ -1,0 +1,38 @@
+{
+  "kind": "singleType",
+  "collectionName": "llm_settings",
+  "info": {
+    "singularName": "llm-setting",
+    "pluralName": "llm-settings",
+    "displayName": "LLMSetting"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Planner": {
+      "type": "component",
+      "component": "ai.model-config",
+      "repeatable": false,
+      "required": true
+    },
+    "Response": {
+      "type": "component",
+      "component": "ai.model-config",
+      "repeatable": false,
+      "required": true
+    },
+    "Embedding": {
+      "type": "component",
+      "component": "ai.model-config",
+      "repeatable": false,
+      "required": true
+    },
+    "MaxDailyResponses": {
+      "type": "biginteger",
+      "required": true,
+      "default": "100"
+    }
+  }
+}

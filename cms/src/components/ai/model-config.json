@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_ai_model_configs",
+  "info": {
+    "displayName": "Model Config",
+    "icon": "connector"
+  },
+  "options": {},
+  "attributes": {
+    "Connector": {
+      "type": "enumeration",
+      "required": true,
+      "default": "OpenAI",
+      "enum": [
+        "AzureOpenAI",
+        "OpenAI",
+        "Mistral",
+        "Gemini"
+      ]
+    },
+    "SystemPrompt": {
+      "type": "richtext",
+      "required": true
+    },
+    "BaseURL": {
+      "type": "string",
+      "required": true
+    },
+    "Temperature": {
+      "type": "decimal",
+      "required": false,
+      "default": 0
+    },
+    "MaxTokens": {
+      "type": "biginteger"
+    }
+  },
+  "config": {}
+}

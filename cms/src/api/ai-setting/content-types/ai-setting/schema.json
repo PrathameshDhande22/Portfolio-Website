@@ -4,7 +4,7 @@
   "info": {
     "singularName": "ai-setting",
     "pluralName": "ai-settings",
-    "displayName": "AI Setting"
+    "displayName": "ChatBot"
   },
   "options": {
     "draftAndPublish": false
