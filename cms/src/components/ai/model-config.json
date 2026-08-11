@@ -17,12 +17,16 @@
         "Gemini"
       ]
     },
-    "SystemPrompt": {
-      "type": "richtext",
-      "required": true
-    },
     "BaseURL": {
       "type": "string",
+      "required": true
+    },
+    "Model_Name": {
+      "type": "string",
+      "required": true
+    },
+    "SystemPrompt": {
+      "type": "richtext",
       "required": true
     },
     "Temperature": {
