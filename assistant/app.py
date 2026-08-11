@@ -1,7 +1,16 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, status
+from cms.client import client
 from routes.test_route import router as test
 
-app = FastAPI(debug=True)
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    async with client:
+        yield
+
+
+app = FastAPI(debug=True, lifespan=lifespan)
 
 
 @app.get("/health", status_code=status.HTTP_200_OK, response_model=dict[str, str])
