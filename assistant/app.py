@@ -2,6 +2,7 @@ from fastapi import FastAPI, status
 from contextlib import asynccontextmanager
 from routes.test_route import router as test
 from cms.client import strapi_client
+from core import setup_logging
 
 
 @asynccontextmanager
@@ -10,7 +11,7 @@ async def lifespan(_: FastAPI):
     await strapi_client.close_client()
 
 
-
+setup_logging()
 app = FastAPI(debug=True, lifespan=lifespan)
 
 

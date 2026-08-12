@@ -1,3 +1,4 @@
+import logging
 from typing import Literal
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI, AzureChatOpenAI
@@ -5,6 +6,8 @@ from langchain_mistralai import ChatMistralAI
 from langchain.chat_models import BaseChatModel
 from core import LLMProviderException
 from config import settings
+
+logger = logging.getLogger(__name__)
 
 
 def get_llm_provider(
@@ -14,6 +17,11 @@ def get_llm_provider(
     max_tokens: int = 1024,
     base_url: str = None,
 ) -> BaseChatModel:
+    logger.info(
+        "Selected Model Provider as %r with Model name %r",
+        provider_name,
+        model_name,
+    )
     match provider_name:
         case "OpenAI":
             return ChatOpenAI(

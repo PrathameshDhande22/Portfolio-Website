@@ -1,3 +1,4 @@
+import logging
 from typing import TypeVar
 from httpx import AsyncClient
 from pydantic import BaseModel
@@ -5,6 +6,8 @@ from config import settings
 from models import StrapiResponse, LLMSettings
 
 T = TypeVar("T")
+
+logger = logging.getLogger(__name__)
 
 
 class StrapiClient:
@@ -19,6 +22,7 @@ class StrapiClient:
         return self.client
 
     async def get(self, endpoint: str, response_model: type[T] | BaseModel) -> T:
+        logger.info("Call the endpoint=%s", endpoint)
         response = await self.client.get(endpoint)
         response.raise_for_status()
         return response_model.model_validate(response.json())
