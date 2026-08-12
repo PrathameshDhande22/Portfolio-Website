@@ -3,12 +3,12 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI, AzureChatOpenAI
 from langchain_mistralai import ChatMistralAI
 from langchain.chat_models import BaseChatModel
-from assistant.core import LLMProviderException
+from core import LLMProviderException
 from config import settings
 
 
 def get_llm_provider(
-    provider_name: Literal["OpenAI", "AzureOpenAI", "MistralAI", "GoogleGemini"],
+    provider_name: Literal["OpenAI", "AzureOpenAI", "Mistral", "Gemini"],
     model_name: str,
     temperature: float = 0.5,
     max_tokens: int = 1024,
@@ -32,7 +32,7 @@ def get_llm_provider(
                 max_tokens=max_tokens,
                 max_retries=2,
             )
-        case "MistralAI":
+        case "Mistral":
             return ChatMistralAI(
                 api_key=settings.mistral_api_key,
                 model=model_name,
@@ -40,7 +40,7 @@ def get_llm_provider(
                 max_tokens=max_tokens,
                 max_retries=2,
             )
-        case "GoogleGemini":
+        case "Gemini":
             return ChatGoogleGenerativeAI(
                 model=model_name,
                 temperature=temperature,
