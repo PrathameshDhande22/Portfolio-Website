@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ai_knowledges",
+  "info": {
+    "singularName": "ai-knowledge",
+    "pluralName": "ai-knowledges",
+    "displayName": "AIKnowledge"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "Media": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "SourceType": {
+      "type": "enumeration",
+      "enum": [
+        "Blog",
+        "Resume",
+        "Custom",
+        "FAQ"
+      ]
+    },
+    "Content": {
+      "type": "richtext"
+    }
+  }
+}
