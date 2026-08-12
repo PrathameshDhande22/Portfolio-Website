@@ -1,1 +1,1 @@
-from models.strapi import StrapiData, StrapiResponse, LLMSettings,ModelConfiguration
+from .strapi import StrapiData, StrapiResponse, LLMSettings,ModelConfiguration
