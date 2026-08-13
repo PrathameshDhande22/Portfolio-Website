@@ -19,7 +19,7 @@
     },
     "BaseURL": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "Model_Name": {
       "type": "string",
