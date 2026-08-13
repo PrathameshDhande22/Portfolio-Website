@@ -1,1 +1,21 @@
-from .strapi import StrapiData, StrapiResponse, LLMSettings,ModelConfiguration
+from .strapi import (
+    StrapiData,
+    StrapiResponse,
+    ModelConfiguration,
+    LLMSettings,
+    StrapiLink,
+    BadgeTag,
+    TimelineComponent,
+    SocialLink,
+    FooterLink,
+    SkillCategory,
+    Skill,
+    ProjectTag,
+    Project,
+    Education,
+    Certification,
+    TimeLine,
+    Experience,
+    Page,
+    SiteSettings,
+)
