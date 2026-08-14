@@ -4,12 +4,15 @@ from routes.test_route import router as test
 from routes.sync_route import sync_router
 from cms.client import strapi_client
 from core import setup_logging
+from db import close_db, init_db
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    yield 
+    await init_db()
+    yield
     await strapi_client.close_client()
+    await close_db()
 
 
 setup_logging()
