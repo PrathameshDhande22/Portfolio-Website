@@ -1,15 +1,14 @@
-from contextlib import asynccontextmanager
 from fastapi import FastAPI, status
 from contextlib import asynccontextmanager
 from routes.test_route import router as test
+from routes.sync_route import sync_router
 from cms.client import strapi_client
 from core import setup_logging
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    async with strapi_client:
-        yield 
+    yield 
     await strapi_client.close_client()
 
 
@@ -23,3 +22,4 @@ def health_check():
 
 
 app.include_router(router=test)
+app.include_router(router=sync_router)
