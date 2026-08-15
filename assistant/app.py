@@ -2,9 +2,10 @@ from fastapi import FastAPI, HTTPException, Request, status
 from contextlib import asynccontextmanager
 from fastapi.responses import JSONResponse
 import uvicorn
-from models.response import Response
+from embedding import get_vector_store
+from models import Response
 from routes import sync_router, router as test
-from cms.client import strapi_client
+from strapi.client import strapi_client
 from core import setup_logging
 from db import close_db, init_db
 
@@ -12,6 +13,7 @@ from db import close_db, init_db
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     await init_db()
+    await get_vector_store()
     yield
     await strapi_client.close_client()
     await close_db()

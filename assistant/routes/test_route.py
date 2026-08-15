@@ -1,5 +1,7 @@
-from typing import List, Literal, Optional
-from fastapi import APIRouter, HTTPException, Query
+from datetime import datetime, timezone
+from typing import Annotated, List, Literal, Optional
+from uuid import uuid4
+from fastapi import APIRouter, Body, HTTPException, Query
 from embedding.provider import get_embedding_provider
 from models import (
     LLMSettings,
@@ -13,11 +15,13 @@ from models import (
     SiteSettings,
 )
 from langchain.messages import AIMessage
-from cms.client import strapi_client
+from strapi.client import strapi_client
 from llm import get_llm_provider
+from embedding import get_vector_store
 
 
 router = APIRouter(tags=["Test"], prefix="/test")
+
 
 @router.get("/llm-settings", response_model=StrapiResponse[LLMSettings])
 async def get_llm_settings():
@@ -25,15 +29,18 @@ async def get_llm_settings():
         return await strapi_client.get_model_settings()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
+
+
 @router.get("/embedding")
 async def generate_embeddings():
     try:
-        provider = get_embedding_provider("Mistral","mistral-embed")
-        embeddings_generate:list[float] = await provider.aembed_query("These is Prathamesh")
+        provider = get_embedding_provider("Mistral", "mistral-embed")
+        embeddings_generate: list[float] = await provider.aembed_query(
+            "These is Prathamesh"
+        )
         return embeddings_generate
     except Exception as e:
-        raise HTTPException(500,str(e))
+        raise HTTPException(500, str(e))
 
 
 @router.post("/chat", response_model=AIMessage)
@@ -44,6 +51,31 @@ async def test_chat():
         )
         response = provider.invoke("who are you")
         return response
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/embed-save")
+async def test_vector_store(text: Annotated[str, Body()]):
+    try:
+        texts = [text]
+        texts_metadata = [
+            {
+                "source_type": "project",
+                "source_id": "portfolio-project-001",
+                "chunk_index": 0,
+                "content_hash": "a8f5f167f44f4964e6c998dee827110c",
+                "embedding_model": "text-embedding-3-small",
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": None,
+            }
+        ]
+        ids = [uuid4()]
+
+        store = await get_vector_store()
+        ids = await store.aadd_texts(texts, texts_metadata, ids=ids)
+        return ids
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -67,6 +99,7 @@ async def get_skills(
         return await strapi_client.get_skills(by=by, name=name)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @router.get("/projects", response_model=StrapiResponse[List[Project]])
 async def get_projects(
@@ -118,7 +151,6 @@ async def get_timeline():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-
 @router.get("/experiences", response_model=StrapiResponse[List[Experience]])
 async def get_experiences(
     name: Optional[str] = Query(
@@ -132,6 +164,7 @@ async def get_experiences(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @router.get("/page", response_model=StrapiResponse[List[Page]])
 async def get_page(
     slug: str = Query(
@@ -144,7 +177,6 @@ async def get_page(
         return await strapi_client.get_page(slug=slug)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 
 @router.get("/site-settings", response_model=StrapiResponse[SiteSettings])
