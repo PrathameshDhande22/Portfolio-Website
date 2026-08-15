@@ -21,7 +21,7 @@ async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit
 
 async def init_db() -> None:
     async with engine.begin() as conn:
-        await conn.execute(CreateSchema("assistant",True))
+        await conn.execute(CreateSchema("assistant", True))
         await conn.run_sync(SQLModel.metadata.create_all)
     logger.info("Database ready, tables=%s", sorted(SQLModel.metadata.tables))
 
