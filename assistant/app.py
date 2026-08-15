@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 import uvicorn
 from embedding import get_vector_store
 from models import Response
-from routes import sync_router, router as test
+from routes import sync_router, router as test, chat_router
 from strapi.client import strapi_client
 from core import setup_logging
 from db import close_db, init_db
@@ -39,6 +39,7 @@ def health_check():
 
 app.include_router(router=test)
 app.include_router(router=sync_router)
+app.include_router(router=chat_router)
 
 
 if __name__ == "__main__":
