@@ -63,7 +63,7 @@ async def test_vector_store(text: Annotated[str, Body()]):
         texts_metadata = [
             {
                 "source_type": "project",
-                "source_id": "portfolio-project-001",
+                "source_id": str(uuid4()),
                 "chunk_index": 0,
                 "content_hash": "a8f5f167f44f4964e6c998dee827110c",
                 "embedding_model": "text-embedding-3-small",
