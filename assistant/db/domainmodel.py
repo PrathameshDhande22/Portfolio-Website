@@ -5,10 +5,7 @@ from uuid import UUID
 from pgvector.sqlalchemy import VECTOR
 from sqlalchemy import Column, DateTime, Index, Text
 from sqlmodel import Field, SQLModel
-
 from models.enums import SyncStatus
-
-EMBEDDING_DIM = 1024
 
 
 def utcnow() -> datetime:
@@ -41,7 +38,7 @@ class Knowledge(SQLModel, table=True):
     chunk_index: int = Field(nullable=False)
     content: str = Field(sa_column=Column(Text, nullable=False))
     content_hash: str = Field(nullable=False, max_length=64)
-    embeddings: list[float] = Field(sa_type=VECTOR(EMBEDDING_DIM), nullable=False)
+    embeddings: list[float] = Field(sa_type=VECTOR(1024), nullable=False)
     embedding_model: str = Field(nullable=False, max_length=50)
     created_at: datetime = Field(
         default_factory=utcnow,
