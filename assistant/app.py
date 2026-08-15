@@ -1,7 +1,6 @@
 from fastapi import FastAPI, status
 from contextlib import asynccontextmanager
-from routes.test_route import router as test
-from routes.sync_route import sync_router
+from routes import sync_router, router as test
 from cms.client import strapi_client
 from core import setup_logging
 from db import close_db, init_db
