@@ -23,3 +23,8 @@ dependencies = [
 
 [tool.fastapi]
 entrypoint = "app:app"
+
+[dependency-groups]
+dev = [
+    "debugpy>=1.8.21",
+]
