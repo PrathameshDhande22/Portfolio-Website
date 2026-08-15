@@ -1,10 +1,9 @@
 from typing import List, Literal, Optional
 from fastapi import APIRouter, HTTPException, Query
+from embedding.provider import get_embedding_provider
 from models import (
     LLMSettings,
     StrapiResponse,
-    SkillCategory,
-    Skill,
     Project,
     Education,
     Certification,
@@ -26,6 +25,15 @@ async def get_llm_settings():
         return await strapi_client.get_model_settings()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@router.get("/embedding")
+async def generate_embeddings():
+    try:
+        provider = get_embedding_provider("Mistral","mistral-embed")
+        embeddings_generate:list[float] = await provider.aembed_query("These is Prathamesh")
+        return embeddings_generate
+    except Exception as e:
+        raise HTTPException(500,str(e))
 
 
 @router.post("/chat", response_model=AIMessage)
