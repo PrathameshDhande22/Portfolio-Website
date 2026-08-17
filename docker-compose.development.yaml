@@ -9,6 +9,13 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=admin1234
     restart: unless-stopped
+    command:
+      - bash
+      - -c
+      - |
+        apt-get update
+        apt-get install -y postgresql-18-pgvector
+        exec docker-entrypoint.sh postgres
     volumes:
       - postgresql_data:/var/lib/postgresql
 
