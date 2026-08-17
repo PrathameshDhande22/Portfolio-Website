@@ -37,7 +37,7 @@ async def get_vector_store() -> VectorStore:
         index = HNSWIndex()
         await store.aapply_vector_index(index)
     except Exception as e:
-        logger.error("Already exists ", exc_info=True)
+        logger.error("Already exists HNSWIndex")
         pass
 
     return store

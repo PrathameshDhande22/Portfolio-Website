@@ -20,7 +20,7 @@ async def lifespan(_: FastAPI):
 
 
 setup_logging()
-app = FastAPI(debug=True, lifespan=lifespan)
+app = FastAPI(debug=True, lifespan=lifespan, title="Portfolio Assistant")
 
 
 @app.exception_handler(HTTPException)

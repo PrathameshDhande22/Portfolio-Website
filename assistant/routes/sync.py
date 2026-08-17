@@ -1,10 +1,11 @@
 import logging
 from typing import Annotated
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from services import add_new_sync
 from sqlalchemy.ext.asyncio import AsyncSession
 from db import get_session
 from models import Response
+from services.sync_service import sync_knowledge_data
 
 sync_router = APIRouter(tags=["Sync"])
 logger = logging.getLogger(__name__)
@@ -24,6 +25,7 @@ logger = logging.getLogger(__name__)
     },
 )
 async def sync_knowledge(
+    backgroundtasks: BackgroundTasks,
     session: Annotated[AsyncSession, Depends(get_session)],
 ) -> Response:
     sync_progress = await add_new_sync(session)
@@ -32,4 +34,6 @@ async def sync_knowledge(
             status_code=status.HTTP_409_CONFLICT,
             detail="Already in Sync",
         )
+    backgroundtasks.add_task(sync_knowledge_data, session=session)
+
     return Response(status="success", message="Sync queued")
