@@ -144,6 +144,9 @@ class StrapiClient:
             "/ai-knowledges", StrapiResponse[List[AIKnowledge]], {"populate": "*"}
         )
 
+    async def get_blog_content(self):
+        return await self.get("/blog-contents", params={"populate": "*"})
+
     async def close_client(self):
         await self.client.aclose()
 

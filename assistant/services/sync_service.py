@@ -55,6 +55,8 @@ async def sync_knowledge_data(session: AsyncSession):
 
         for ai_data in ai_strapi_data.data:
             logger.info("Processing the Syncing for the title=%s", ai_data.Title)
+            
+            
 
     except Exception as e:
         logger.error(
