@@ -13,6 +13,7 @@ from models import (
     Experience,
     Page,
     SiteSettings,
+    AIKnowledge
 )
 from langchain.messages import AIMessage
 from strapi.client import strapi_client
@@ -94,11 +95,16 @@ async def get_skills(
         "or SkillCategory.Name (by=Category).",
     ),
 ):
-    """Test endpoint – fetch skills with optional grouping and name filter."""
+    """Test endpoint - fetch skills with optional grouping and name filter."""
     try:
         return await strapi_client.get_skills(by=by, name=name)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/ai-knowledge", response_model=StrapiResponse[List[AIKnowledge]])
+async def get_aiknowledges() -> StrapiResponse[List[AIKnowledge]]:
+    return await strapi_client.get_ai_knowledge()
 
 
 @router.get("/projects", response_model=StrapiResponse[List[Project]])

@@ -15,6 +15,7 @@ from models import (
     Experience,
     Page,
     SiteSettings,
+    AIKnowledge,
 )
 
 T = TypeVar("T")
@@ -121,6 +122,11 @@ class StrapiClient:
             "&populate[Footer][populate]=*"
             "&populate[AskAI][populate]=*",
             StrapiResponse[SiteSettings],
+        )
+
+    async def get_ai_knowledge(self) -> StrapiResponse[List[AIKnowledge]]:
+        return await self.get(
+            "/ai-knowledges?populate=*", StrapiResponse[List[AIKnowledge]]
         )
 
     async def close_client(self):

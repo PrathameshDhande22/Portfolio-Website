@@ -17,6 +17,7 @@ from .strapi import (
     TimeLine,
     Experience,
     Page,
+    AIKnowledge,
     SiteSettings,
 )
 from .enums import SyncStatus

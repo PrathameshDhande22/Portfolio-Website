@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from typing import Any, Generic, List, Literal, Optional, TypeVar
+from typing import Any, Generic, List, Literal, Optional, TypeVar, NewType
 from pydantic import BaseModel
 
 T = TypeVar("T")
@@ -126,9 +126,22 @@ class Page(StrapiData):
 class SocialLink(BaseModel):
     id: int
     Platform: Literal[
-        "github", "linkedin", "twitter", "instagram", "facebook",
-        "youtube", "medium", "devto", "stackoverflow", "leetcode",
-        "hackerrank", "codepen", "behance", "dribbble", "email", "website",
+        "github",
+        "linkedin",
+        "twitter",
+        "instagram",
+        "facebook",
+        "youtube",
+        "medium",
+        "devto",
+        "stackoverflow",
+        "leetcode",
+        "hackerrank",
+        "codepen",
+        "behance",
+        "dribbble",
+        "email",
+        "website",
     ]
     Icon: str
     Url: str
@@ -156,3 +169,28 @@ class SiteSettings(StrapiData):
     Navigation: Optional[List[Any]] = None
     SocialLinks: Optional[List[SocialLink]] = None
     Footer: Optional[List[FooterLink]] = None
+
+
+class StrapiMedia(StrapiData):
+    name: str
+    alternativeText: Optional[str] = None
+    caption: Optional[str] = None
+    focalPoint: Optional[Any] = None
+    width: Optional[int] = None
+    height: Optional[int] = None
+    formats: Optional[dict[str, Any]] = None
+    hash: str
+    ext: str
+    mime: str
+    size: float
+    url: str
+    previewUrl: Optional[str] = None
+    provider: str
+    provider_metadata: Optional[dict[str, Any]] = None
+
+
+class AIKnowledge(StrapiData):
+    Title: str
+    SourceType: Literal["Resume", "Blog", "Custom", "FAQ"]
+    Media: Optional[StrapiMedia] = None
+    Content: Optional[str] = None
