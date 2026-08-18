@@ -1,13 +1,26 @@
 from datetime import date, datetime
 from typing import Any, Generic, List, Literal, Optional, TypeVar, NewType
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 T = TypeVar("T")
 
 
+class StrapiPagination(BaseModel):
+    page: Optional[int] = None
+    pageSize: Optional[int] = None
+    pageCount: Optional[int] = None
+    start: Optional[int] = None
+    limit: Optional[int] = None
+    total: Optional[int] = None
+
+
+class StrapiMeta(BaseModel):
+    pagination: Optional[StrapiPagination] = None
+
+
 class StrapiResponse(BaseModel, Generic[T]):
     data: T
-    meta: dict
+    meta: StrapiMeta = Field(default_factory=StrapiMeta)
 
 
 class StrapiData(BaseModel):
@@ -193,4 +206,20 @@ class AIKnowledge(StrapiData):
     Title: str
     SourceType: Literal["Resume", "Blog", "Custom", "FAQ"]
     Media: Optional[StrapiMedia] = None
+    Content: Optional[str] = None
+
+
+class Blog(StrapiData):
+    Title: str
+    Slug: str
+    Description: Optional[str] = None
+    Skill: Optional[Skill] = None
+    Thumbnail: Optional[StrapiMedia] = None
+
+
+BlogArticle = Blog
+
+
+class BlogContent(StrapiData):
+    Blog: Optional[BlogArticle] = None
     Content: Optional[str] = None
