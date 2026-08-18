@@ -1,6 +1,6 @@
 import hashlib
 import logging
-from typing import List
+from typing import List, NamedTuple
 
 from langchain_text_splitters import (
     MarkdownHeaderTextSplitter,
@@ -16,7 +16,22 @@ CHARS_PER_TOKEN = 4
 CHUNK_SIZE = 700 * CHARS_PER_TOKEN
 CHUNK_OVERLAP = CHUNK_SIZE // 10
 
-HEADERS_TO_SPLIT_ON = [("#", "h1"), ("##", "h2"), ("###", "h3")]
+
+class MarkdownHeader(NamedTuple):
+    separator: str
+    key: str
+
+
+class Section(NamedTuple):
+    text: str
+    headings: List[str]
+
+
+HEADERS_TO_SPLIT_ON = [
+    MarkdownHeader("#", "h1"),
+    MarkdownHeader("##", "h2"),
+    MarkdownHeader("###", "h3"),
+]
 
 _text_splitter = RecursiveCharacterTextSplitter(
     chunk_size=CHUNK_SIZE,
@@ -39,30 +54,30 @@ def chunk_text(text: str, title: str, markdown: bool = True) -> List[KnowledgeCh
 
     if markdown:
         sections = [
-            (
-                section.page_content,
-                [
-                    section.metadata[key]
-                    for _, key in HEADERS_TO_SPLIT_ON
-                    if section.metadata.get(key)
+            Section(
+                text=section.page_content,
+                headings=[
+                    section.metadata[header.key]
+                    for header in HEADERS_TO_SPLIT_ON
+                    if section.metadata.get(header.key)
                 ],
             )
             for section in _header_splitter.split_text(cleaned)
         ]
         logger.info("Markdown title=%r split into sections=%d", title, len(sections))
     else:
-        sections = [(cleaned, [])]
+        sections = [Section(text=cleaned, headings=[])]
 
     chunks: List[KnowledgeChunk] = []
-    for section_text, headings in sections:
-        for piece in _text_splitter.split_text(section_text):
+    for section in sections:
+        for piece in _text_splitter.split_text(section.text):
             piece = piece.strip()
             if not piece:
                 continue
 
             header = f"# {title}"
-            if headings:
-                header = f"{header}\n{' > '.join(headings)}"
+            if section.headings:
+                header = f"{header}\n{' > '.join(section.headings)}"
             content = f"{header}\n\n{piece}"
 
             chunks.append(

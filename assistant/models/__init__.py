@@ -30,6 +30,7 @@ from .knowledge import (
     ExistingChunk,
     KnowledgeChunk,
     SourceDocument,
+    SourceKey,
     SourceSyncResult,
     SourceType,
     SyncState,
