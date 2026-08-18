@@ -1,4 +1,4 @@
-from .chunker import chunk_markdown, chunk_plain_text, compute_hash
+from .chunker import chunk_text
 from .loaders import is_pdf, load_pdf_text
 from .processor import process
 from .provider import get_embedding_provider
