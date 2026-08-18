@@ -46,7 +46,7 @@ def get_embedding_provider(
             )
 
 
-async def get_provider() -> Embeddings | None:
+async def get_provider() -> Embeddings:
     try:
         logger.info("Getting the embedding configuration from the strapi client")
         model_settings = await strapi_client.get_model_settings()
@@ -54,7 +54,8 @@ async def get_provider() -> Embeddings | None:
             model_settings.data.Embedding.Connector,
             model_settings.data.Embedding.Model_Name,
         )
-    except Exception as e:
+    except Exception:
         logger.error(
             "Error occured while getting the embedding provider", exc_info=True
         )
+        raise
