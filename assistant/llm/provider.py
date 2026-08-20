@@ -16,11 +16,13 @@ def get_llm_provider(
     temperature: float = 0.5,
     max_tokens: int = 1024,
     base_url: str = None,
+    disable_streaming: bool = False,
 ) -> BaseChatModel:
     logger.info(
-        "Selected Model Provider as %r with Model name %r",
+        "Selected Model Provider as %r with Model name %r streaming=%s",
         provider_name,
         model_name,
+        not disable_streaming,
     )
     match provider_name:
         case "OpenAI":
@@ -30,6 +32,7 @@ def get_llm_provider(
                 api_key=settings.openai_api_key,
                 max_tokens=max_tokens,
                 max_retries=2,
+                disable_streaming=disable_streaming,
             )
         case "AzureOpenAI":
             return AzureChatOpenAI(
@@ -39,6 +42,7 @@ def get_llm_provider(
                 temperature=temperature,
                 max_tokens=max_tokens,
                 max_retries=2,
+                disable_streaming=disable_streaming,
             )
         case "Mistral":
             return ChatMistralAI(
@@ -47,6 +51,7 @@ def get_llm_provider(
                 temperature=temperature,
                 max_tokens=max_tokens,
                 max_retries=2,
+                disable_streaming=disable_streaming,
             )
         case "Gemini":
             return ChatGoogleGenerativeAI(
@@ -55,6 +60,7 @@ def get_llm_provider(
                 api_key=settings.gemini_api_key,
                 max_tokens=max_tokens,
                 max_retries=2,
+                disable_streaming=disable_streaming,
             )
         case _:
             raise LLMProviderException(

@@ -1,3 +1,4 @@
+from .chat_service import stream_chat
 from .knowledge_service import (
     build_chunk_id,
     delete_chunks_from,

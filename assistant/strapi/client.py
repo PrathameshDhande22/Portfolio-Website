@@ -17,6 +17,7 @@ from models import (
     Page,
     SiteSettings,
     AIKnowledge,
+    Blog,
     BlogContent,
 )
 
@@ -105,6 +106,7 @@ class StrapiClient:
         self,
         tag: Optional[str] = None,
         name: Optional[str] = None,
+        category: Optional[str] = None,
     ) -> StrapiResponse[List[Project]]:
         params: Params = {
             "populate[Tags][populate]": "*",
@@ -114,6 +116,8 @@ class StrapiClient:
             params["filters[Tags][Tag][$containsi]"] = tag
         if name:
             params["filters[Title][$containsi]"] = name
+        if category:
+            params["filters[Category][$containsi]"] = category
         return await self.get_all("/projects", StrapiResponse[List[Project]], params)
 
     async def get_education(self) -> StrapiResponse[List[Education]]:
@@ -172,6 +176,16 @@ class StrapiClient:
         return await self.get_all(
             "/ai-knowledges", StrapiResponse[List[AIKnowledge]], params
         )
+
+    async def get_blogs(
+        self,
+        name: Optional[str] = None,
+    ) -> StrapiResponse[List[Blog]]:
+        params: Params = {"populate": "*"}
+        if name:
+            params["filters[$or][0][Title][$containsi]"] = name
+            params["filters[$or][1][Description][$containsi]"] = name
+        return await self.get_all("/blogs", StrapiResponse[List[Blog]], params)
 
     async def get_blog_contents(self) -> StrapiResponse[List[BlogContent]]:
         params: Params = {"populate[Blog][populate]": "*"}

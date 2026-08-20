@@ -25,7 +25,7 @@ from .strapi import (
     Blog,
     BlogContent,
 )
-from .enums import SyncStatus
+from .enums import ChatStage, SyncStatus
 from .knowledge import (
     ExistingChunk,
     KnowledgeChunk,
@@ -35,5 +35,24 @@ from .knowledge import (
     SourceType,
     SyncState,
     SyncSummary,
+)
+from .chat import (
+    ChatMessage,
+    DeltaEvent,
+    DoneEvent,
+    ErrorEvent,
+    MetaEvent,
+    PlanEvent,
+    UsageEvent,
+    ChatRequest,
+    ChatRole,
+    PlannerAction,
+    PlannerDecision,
+    RetrievalFilter,
+    RetrievalSource,
+    RetrievedContext,
+    SemanticQuery,
+    StructuredQuery,
+    TokenUsage,
 )
 from .response import Response
