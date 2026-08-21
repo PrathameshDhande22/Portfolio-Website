@@ -6,6 +6,7 @@ from langchain_mistralai import ChatMistralAI
 from langchain.chat_models import BaseChatModel
 from core import LLMProviderException
 from config import settings
+from models import ModelConfiguration
 
 logger = logging.getLogger(__name__)
 
@@ -66,3 +67,16 @@ def get_llm_provider(
             raise LLMProviderException(
                 f"Unsupported LLM Provider: {provider_name}. Supported providers are: OpenAI, AzureOpenAI, MistralAI, GoogleGemini."
             )
+
+
+def get_chat_model(
+    config: ModelConfiguration, disable_streaming: bool = False
+) -> BaseChatModel:
+    return get_llm_provider(
+        provider_name=config.Connector,
+        model_name=config.Model_Name,
+        temperature=config.Temperature,
+        max_tokens=config.MaxTokens or 1024,
+        base_url=config.BaseURL,
+        disable_streaming=disable_streaming,
+    )

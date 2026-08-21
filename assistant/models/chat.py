@@ -79,18 +79,6 @@ class PlannerDecision(BaseModel):
     )
 
 
-class RetrievedContext(BaseModel):
-    markdown: str = Field(description="Everything gathered, rendered as markdown for the model")
-    sources: List[str] = Field(default_factory=list, description="Collections that returned rows")
-    chunk_ids: List[str] = Field(default_factory=list, description="Vector chunk ids retrieved")
-
-
-class TokenUsage(BaseModel):
-    input_tokens: int = 0
-    output_tokens: int = 0
-    total_tokens: int = 0
-
-
 class MetaEvent(BaseModel):
     thread_id: UUID = Field(description="Conversation id to send back on the next turn")
 
