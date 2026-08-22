@@ -27,7 +27,6 @@ from .strapi import (
 )
 from .enums import SyncStatus
 from .knowledge import (
-    ExistingChunk,
     KnowledgeChunk,
     SourceDocument,
     SourceKey,
