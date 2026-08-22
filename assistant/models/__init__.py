@@ -1,6 +1,9 @@
 from .strapi import (
     StrapiData,
     StrapiResponse,
+    StrapiMedia,
+    StrapiMeta,
+    StrapiPagination,
     ModelConfiguration,
     LLMSettings,
     StrapiLink,
@@ -19,6 +22,17 @@ from .strapi import (
     Page,
     AIKnowledge,
     SiteSettings,
+    Blog,
+    BlogContent,
 )
 from .enums import SyncStatus
+from .knowledge import (
+    KnowledgeChunk,
+    SourceDocument,
+    SourceKey,
+    SourceSyncResult,
+    SourceType,
+    SyncState,
+    SyncSummary,
+)
 from .response import Response
