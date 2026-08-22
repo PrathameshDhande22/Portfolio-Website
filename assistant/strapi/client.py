@@ -180,9 +180,7 @@ class StrapiClient:
         )
 
     async def get_blog_contents(self) -> StrapiResponse[List[BlogContent]]:
-        params: Params = {
-            "populate[Blog][populate][Skill][populate][Category]": "true"
-        }
+        params: Params = {"populate[Blog][populate][Skill][populate][Category]": "true"}
         return await self.get_all(
             "/blog-contents", StrapiResponse[List[BlogContent]], params
         )
