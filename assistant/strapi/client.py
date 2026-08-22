@@ -1,5 +1,5 @@
 import logging
-from typing import Any, List, Literal, Optional, TypeAlias, TypeVar, Union
+from typing import Any, Final, List, Literal, Optional, TypeAlias, TypeVar, Union
 from httpx import AsyncClient, QueryParams
 from pydantic import BaseModel
 from config import settings
@@ -27,8 +27,8 @@ Params: TypeAlias = dict[str, Union[str, List[str]]]
 
 logger = logging.getLogger(__name__)
 
-MAX_PAGE_SIZE = 100
-MAX_PAGES = 100
+MAX_PAGE_SIZE: Final = 100
+MAX_PAGES: Final = 100
 
 
 class StrapiClient:
@@ -117,7 +117,9 @@ class StrapiClient:
         return await self.get_all("/projects", StrapiResponse[List[Project]], params)
 
     async def get_education(self) -> StrapiResponse[List[Education]]:
-        params: Params = {"populate[Timeline][populate]": "*"}
+        params: Params = {
+            "populate[Timeline][populate][Badges][populate][Skill]": "true"
+        }
         return await self.get_all(
             "/educations", StrapiResponse[List[Education]], params
         )
@@ -135,14 +137,18 @@ class StrapiClient:
         )
 
     async def get_timeline(self) -> StrapiResponse[List[TimeLine]]:
-        params: Params = {"populate[Timeline][populate]": "*"}
+        params: Params = {
+            "populate[Timeline][populate][Badges][populate][Skill]": "true"
+        }
         return await self.get_all("/time-lines", StrapiResponse[List[TimeLine]], params)
 
     async def get_experiences(
         self,
         name: Optional[str] = None,
     ) -> StrapiResponse[List[Experience]]:
-        params: Params = {"populate[Experience][populate]": "*"}
+        params: Params = {
+            "populate[Experience][populate][Badges][populate][Skill]": "true"
+        }
         if name:
             params["filters[$or][0][Experience][Title][$containsi]"] = name
             params["filters[$or][1][Experience][SubTitle][$containsi]"] = name
@@ -174,7 +180,9 @@ class StrapiClient:
         )
 
     async def get_blog_contents(self) -> StrapiResponse[List[BlogContent]]:
-        params: Params = {"populate[Blog][populate]": "*"}
+        params: Params = {
+            "populate[Blog][populate][Skill][populate][Category]": "true"
+        }
         return await self.get_all(
             "/blog-contents", StrapiResponse[List[BlogContent]], params
         )

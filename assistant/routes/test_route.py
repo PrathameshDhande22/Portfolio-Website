@@ -13,13 +13,13 @@ from models import (
     Experience,
     Page,
     SiteSettings,
-    AIKnowledge
+    AIKnowledge,
 )
 from langchain.messages import AIMessage
+from models.strapi import BlogContent
 from strapi.client import strapi_client
 from llm import get_llm_provider
 from embedding import get_vector_store
-
 
 router = APIRouter(tags=["Test"], prefix="/test")
 
@@ -105,6 +105,11 @@ async def get_skills(
 @router.get("/ai-knowledge", response_model=StrapiResponse[List[AIKnowledge]])
 async def get_aiknowledges() -> StrapiResponse[List[AIKnowledge]]:
     return await strapi_client.get_ai_knowledge()
+
+
+@router.get("/blogs-content", response_model=StrapiResponse[List[BlogContent]])
+async def get_blogs_content() -> StrapiResponse[List[BlogContent]]:
+    return await strapi_client.get_blog_contents()
 
 
 @router.get("/projects", response_model=StrapiResponse[List[Project]])
