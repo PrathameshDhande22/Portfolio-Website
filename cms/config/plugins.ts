@@ -23,6 +23,10 @@ const deniedExecutableTypes = [
 ];
 
 const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin => ({
+  portfolio: {
+    enabled: true,
+    resolve: './src/plugins/portfolio',
+  },
   'users-permissions': {
     config: {
       jwtManagement: 'refresh',
