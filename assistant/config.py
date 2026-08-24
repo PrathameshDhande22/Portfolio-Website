@@ -1,9 +1,14 @@
+from typing import Literal
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Config(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env")
+
+    environment: Literal["development", "production"] = Field(
+        default="development", description="Hides the API docs when set to production"
+    )
 
     # Settings Configuration
     mistral_api_key: str = Field(description="Mistral API Key")
