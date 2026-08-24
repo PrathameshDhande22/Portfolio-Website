@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from db import get_session
 from models import Response, SyncState
+from core import require_signature
 from services import add_new_sync, get_latest_sync, sync_knowledge_data
 
 sync_router = APIRouter(tags=["Sync"])
@@ -16,6 +17,7 @@ logger = logging.getLogger(__name__)
     "/sync",
     response_model=Response[SyncState],
     status_code=status.HTTP_202_ACCEPTED,
+    dependencies=[Depends(require_signature)],
     responses={
         status.HTTP_202_ACCEPTED: {
             "model": Response[SyncState],
@@ -53,6 +55,7 @@ async def sync_knowledge(
     "/sync/status",
     response_model=Response[SyncState],
     status_code=status.HTTP_200_OK,
+    dependencies=[Depends(require_signature)],
 )
 async def sync_status(
     session: Annotated[AsyncSession, Depends(get_session)],

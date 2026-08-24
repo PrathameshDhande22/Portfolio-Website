@@ -10,6 +10,9 @@ class Config(BaseSettings):
     gemini_api_key: str = Field(description="Gemini API Key")
     openai_api_key: str = Field(description="OpenAI API Key")
     azure_openai_api_key: str = Field(description="Azure OpenAI API Key")
+    openai_api_version: str = Field(
+        default="2025-04-01-preview", description="OpenAI API Version"
+    )
     
     # DB Configuration
     postgres_connection_string: str = Field(description="PostgreSQL Connection String")
@@ -28,7 +31,7 @@ class Config(BaseSettings):
     )
     
     # Client Secret Configuration
-    client_secret: str = Field(description="Client Secret for Authentication")
+    client_secret: str = Field(description="Shared secret, signs every request")
 
 
 settings = Config()

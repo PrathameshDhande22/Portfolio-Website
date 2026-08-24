@@ -1,3 +1,4 @@
+import asyncio
 from fastapi import FastAPI, HTTPException, Request, status
 from contextlib import asynccontextmanager
 from fastapi.responses import JSONResponse
@@ -6,7 +7,7 @@ from embedding import get_vector_store
 from models import Response
 from routes import sync_router, router as test, chat_router
 from strapi.client import strapi_client
-from core import setup_logging
+from core import purge_nonces, setup_logging
 from db import close_db, init_db
 
 
@@ -14,7 +15,9 @@ from db import close_db, init_db
 async def lifespan(_: FastAPI):
     await init_db()
     await get_vector_store()
+    purge = asyncio.create_task(purge_nonces())
     yield
+    purge.cancel()
     await strapi_client.close_client()
     await close_db()
 

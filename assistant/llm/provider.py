@@ -44,6 +44,7 @@ def get_llm_provider(
                 max_tokens=max_tokens,
                 max_retries=2,
                 disable_streaming=disable_streaming,
+                api_version=settings.openai_api_version
             )
         case "Mistral":
             return ChatMistralAI(

@@ -16,6 +16,7 @@ from langchain_core.runnables import (
     RunnablePassthrough,
 )
 
+from core import is_daily_cap_reached
 from db import ChatUsage, session_scope
 from embedding import get_vector_store
 from llm import get_chat_model
@@ -52,6 +53,22 @@ async def stream_chat(request: ChatRequest) -> AsyncIterator[ServerSentEvent]:
     yield ServerSentEvent(event="meta", data=MetaEvent(thread_id=thread_id))
 
     try:
+        if await is_daily_cap_reached():
+            logger.warning("Daily cap reached, refusing thread_id=%s", thread_id)
+            yield ServerSentEvent(
+                event="delta",
+                data=DeltaEvent(
+                    content=(
+                        "I have answered as many questions as I can today. "
+                        "Please reach out through the contact page instead."
+                    )
+                ),
+            )
+            yield ServerSentEvent(
+                event="done", data=DoneEvent(thread_id=thread_id, action="respond")
+            )
+            return
+
         settings = (await strapi_client.get_model_settings()).data
         chain = await _build_chain(settings)
 

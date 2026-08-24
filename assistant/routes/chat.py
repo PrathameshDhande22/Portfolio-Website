@@ -1,10 +1,11 @@
 import logging
 from collections.abc import AsyncIterable
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter, Depends, status
 from fastapi.sse import EventSourceResponse, ServerSentEvent
 
 from models import ChatRequest
+from core import require_signature
 from services import stream_chat
 
 chat_router = APIRouter(tags=["Chat"])
@@ -15,6 +16,7 @@ logger = logging.getLogger(__name__)
     "/chat",
     status_code=status.HTTP_200_OK,
     response_class=EventSourceResponse,
+    dependencies=[Depends(require_signature)],
     responses={
         status.HTTP_200_OK: {
             "description": "Events in order: meta, plan, delta (many), usage, done, or error"
