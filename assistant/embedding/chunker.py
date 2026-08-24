@@ -1,6 +1,6 @@
 import hashlib
 import logging
-from typing import List, NamedTuple
+from typing import List, NamedTuple, Optional
 
 from langchain_text_splitters import (
     MarkdownHeaderTextSplitter,
@@ -10,11 +10,6 @@ from langchain_text_splitters import (
 from models import KnowledgeChunk
 
 logger = logging.getLogger(__name__)
-
-
-CHARS_PER_TOKEN = 4
-CHUNK_SIZE = 700 * CHARS_PER_TOKEN
-CHUNK_OVERLAP = CHUNK_SIZE // 10
 
 
 class MarkdownHeader(NamedTuple):
@@ -34,8 +29,8 @@ HEADERS_TO_SPLIT_ON = [
 ]
 
 _text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=CHUNK_SIZE,
-    chunk_overlap=CHUNK_OVERLAP,
+    chunk_size=2800,
+    chunk_overlap=280,
     separators=["\n\n", "\n", ". ", " ", ""],
     keep_separator=True,
 )
@@ -46,7 +41,12 @@ _header_splitter = MarkdownHeaderTextSplitter(
 )
 
 
-def chunk_text(text: str, title: str, markdown: bool = True) -> List[KnowledgeChunk]:
+def chunk_text(
+    text: str,
+    title: str,
+    subtitle: Optional[str] = None,
+    markdown: bool = True,
+) -> List[KnowledgeChunk]:
     cleaned = text.strip()
     if not cleaned:
         logger.warning("No content to chunk for title=%r", title)
@@ -76,6 +76,8 @@ def chunk_text(text: str, title: str, markdown: bool = True) -> List[KnowledgeCh
                 continue
 
             header = f"# {title}"
+            if subtitle:
+                header = f"{header}\n{subtitle}"
             if section.headings:
                 header = f"{header}\n{' > '.join(section.headings)}"
             content = f"{header}\n\n{piece}"

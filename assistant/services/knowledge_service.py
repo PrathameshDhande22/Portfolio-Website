@@ -3,11 +3,12 @@ from typing import Dict, List, Set
 from uuid import NAMESPACE_URL, UUID, uuid5
 
 from langchain_postgres import PGVectorStore
-from sqlalchemy import delete, select
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import load_only
+from sqlmodel import delete, select
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 from db import Knowledge, utcnow
-from models import ExistingChunk, KnowledgeChunk, SourceDocument, SourceKey
+from models import KnowledgeChunk, SourceDocument, SourceKey
 
 logger = logging.getLogger(__name__)
 
@@ -18,48 +19,44 @@ def build_chunk_id(source_type: str, source_id: str, chunk_index: int) -> UUID:
 
 async def get_existing_chunks(
     session: AsyncSession, source_type: str, source_id: str
-) -> Dict[int, ExistingChunk]:
-    statement = select(
-        Knowledge.id,
-        Knowledge.chunk_index,
-        Knowledge.content_hash,
-        Knowledge.embedding_model,
-        Knowledge.created_at,
-    ).where(
-        Knowledge.source_type == source_type,
-        Knowledge.source_id == source_id,
+) -> Dict[int, Knowledge]:
+    statement = (
+        select(Knowledge)
+        .options(
+            load_only(
+                Knowledge.chunk_index,
+                Knowledge.content_hash,
+                Knowledge.embedding_model,
+                Knowledge.created_at,
+            )
+        )
+        .where(
+            Knowledge.source_type == source_type,
+            Knowledge.source_id == source_id,
+        )
     )
 
-    rows = (await session.execute(statement)).all()
+    chunks = (await session.exec(statement)).all()
     logger.info(
         "Found stored chunks=%d for source_type=%s source_id=%s",
-        len(rows),
+        len(chunks),
         source_type,
         source_id,
     )
-    return {
-        row.chunk_index: ExistingChunk(
-            id=row.id,
-            chunk_index=row.chunk_index,
-            content_hash=row.content_hash,
-            embedding_model=row.embedding_model,
-            created_at=row.created_at,
-        )
-        for row in rows
-    }
+    return {chunk.chunk_index: chunk for chunk in chunks}
 
 
 async def get_stored_sources(session: AsyncSession) -> Set[SourceKey]:
     statement = select(Knowledge.source_type, Knowledge.source_id).distinct()
-    rows = (await session.execute(statement)).all()
-    return {SourceKey(row.source_type, row.source_id) for row in rows}
+    rows = (await session.exec(statement)).all()
+    return {SourceKey(source_type, source_id) for source_type, source_id in rows}
 
 
 async def upsert_chunks(
     store: PGVectorStore,
     document: SourceDocument,
     chunks: List[KnowledgeChunk],
-    existing: Dict[int, ExistingChunk],
+    existing: Dict[int, Knowledge],
     embedding_model: str,
 ) -> int:
     if not chunks:
@@ -117,7 +114,7 @@ async def delete_chunks_from(
         Knowledge.source_id == source_id,
         Knowledge.chunk_index >= from_index,
     )
-    result = await session.execute(statement)
+    result = await session.exec(statement)
     await session.commit()
 
     deleted = result.rowcount or 0
@@ -131,14 +128,12 @@ async def delete_chunks_from(
     return deleted
 
 
-async def delete_source(
-    session: AsyncSession, source_type: str, source_id: str
-) -> int:
+async def delete_source(session: AsyncSession, source_type: str, source_id: str) -> int:
     statement = delete(Knowledge).where(
         Knowledge.source_type == source_type,
         Knowledge.source_id == source_id,
     )
-    result = await session.execute(statement)
+    result = await session.exec(statement)
     await session.commit()
 
     deleted = result.rowcount or 0
