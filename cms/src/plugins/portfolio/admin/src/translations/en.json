@@ -1,0 +1,9 @@
+{
+  "plugin.name": "Portfolio",
+  "page.title": "Portfolio assistant",
+  "page.subtitle": "Re-index the resume, articles and custom knowledge so the assistant answers from the latest content, and clear the website cache so visitors see it.",
+  "action.sync": "Sync AI knowledge",
+  "action.revalidate": "Revalidate website cache",
+  "action.refresh": "Refresh status",
+  "status.title": "Last sync"
+}
