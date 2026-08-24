@@ -31,12 +31,14 @@ def get_embedding_provider(
                 model=model_name,
                 azure_deployment=model_name,
                 api_key=settings.azure_openai_api_key,
-                dimensions=1024,
+                dimensions=1536,
                 api_version="2025-01-preview",
             )
         case "Gemini":
             return GoogleGenerativeAIEmbeddings(
-                model=model_name, api_key=settings.gemini_api_key
+                model=model_name,
+                api_key=settings.gemini_api_key,
+                output_dimensionality=1536,
             )
         case "OpenAI":
             return OpenAIEmbeddings(api_key=settings.openai_api_key, model=model_name)

@@ -37,13 +37,24 @@ async def process(knowledge: AIKnowledge) -> List[SourceDocument]:
                 )
                 continue
 
+            body = (blog_content.Content or "").strip()
+            lines = body.splitlines()
+            if lines and lines[0].startswith("#") and blog.Title in lines[0]:
+                body = "\n".join(lines[1:]).lstrip()
+
             markdown = "\n\n".join(
-                part
-                for part in (blog.Description, blog_content.Content)
-                if part and part.strip()
+                part for part in (blog.Description, body) if part and part.strip()
             )
 
-            chunks = chunk_text(markdown, blog.Title)
+            subtitle = None
+            if blog.Skill:
+                subtitle = (
+                    f"{blog.Skill.Category.Name} > {blog.Skill.Name}"
+                    if blog.Skill.Category
+                    else blog.Skill.Name
+                )
+
+            chunks = chunk_text(markdown, blog.Title, subtitle)
             if not chunks:
                 logger.warning("Blog title=%r has no content, skipping it", blog.Title)
                 continue

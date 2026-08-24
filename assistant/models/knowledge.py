@@ -1,7 +1,5 @@
 from datetime import datetime
 from typing import List, Literal, NamedTuple, Optional
-from uuid import UUID
-
 from pydantic import BaseModel, ConfigDict, Field
 
 from .enums import SyncStatus
@@ -27,14 +25,6 @@ class SourceDocument(BaseModel):
     chunks: List[KnowledgeChunk] = Field(default_factory=list, description="Ordered chunks")
 
 
-class ExistingChunk(BaseModel):
-    id: UUID
-    chunk_index: int
-    content_hash: str
-    embedding_model: str
-    created_at: datetime
-
-
 class SourceSyncResult(BaseModel):
     source_type: str
     source_id: str
@@ -42,7 +32,6 @@ class SourceSyncResult(BaseModel):
     embedded: int = Field(default=0, description="Chunks embedded or re-embedded")
     skipped: int = Field(default=0, description="Chunks whose hash and model were unchanged")
     deleted: int = Field(default=0, description="Chunks removed because the document shrank")
-    error: Optional[str] = Field(default=None, description="Failure reason, when the source failed")
 
 
 class SyncSummary(BaseModel):
@@ -51,7 +40,6 @@ class SyncSummary(BaseModel):
     skipped_chunks: int = 0
     deleted_chunks: int = 0
     deleted_sources: int = 0
-    failed_sources: List[str] = Field(default_factory=list)
 
 
 class SyncState(BaseModel):

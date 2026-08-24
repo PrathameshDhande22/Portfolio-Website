@@ -28,21 +28,18 @@ from .knowledge_service import (
 
 logger = logging.getLogger(__name__)
 
-MAX_CONCURRENT_SOURCES = 4
-
-SYNC_STALE_AFTER = datetime.timedelta(minutes=30)
-
-RUNNING_STATUSES = (SyncStatus.STARTED, SyncStatus.PROCESSING)
-
 
 async def add_new_sync(session: AsyncSession) -> Optional[Syncing]:
     try:
         logger.info("Checking the Sync if it is already working")
         statement = select(Syncing).where(
             and_(
-                or_(*(Syncing.status == status for status in RUNNING_STATUSES)),
+                or_(
+                    Syncing.status == SyncStatus.STARTED,
+                    Syncing.status == SyncStatus.PROCESSING,
+                ),
                 Syncing.enddate == None,
-                Syncing.startdate >= utcnow() - SYNC_STALE_AFTER,
+                Syncing.startdate >= utcnow() - datetime.timedelta(minutes=30),
             )
         )
         if await session.scalar(statement) is not None:
@@ -82,37 +79,20 @@ async def sync_knowledge_data(sync_id: int) -> None:
             len(knowledge_response.data),
         )
 
-        semaphore = asyncio.Semaphore(MAX_CONCURRENT_SOURCES)
-        results: List[SourceSyncResult] = []
+        semaphore = asyncio.Semaphore(4)
 
         async def load(entry: AIKnowledge) -> List[SourceDocument]:
             async with semaphore:
-                try:
-                    return await process(entry)
-                except Exception as e:
-                    logger.error(
-                        "Failed to load AIKnowledge title=%r document_id=%s",
-                        entry.Title,
-                        entry.documentId,
-                        exc_info=True,
-                    )
-                    results.append(
-                        SourceSyncResult(
-                            source_type=entry.SourceType,
-                            source_id=entry.documentId,
-                            title=entry.Title,
-                            error=str(e),
-                        )
-                    )
-                    return []
+                return await process(entry)
 
-        loaded = await asyncio.gather(
-            *(load(entry) for entry in knowledge_response.data)
-        )
+        async with asyncio.TaskGroup() as group:
+            loads = [
+                group.create_task(load(entry)) for entry in knowledge_response.data
+            ]
 
         documents: List[SourceDocument] = []
         sources: Set[SourceKey] = set()
-        for document in (document for group in loaded for document in group):
+        for document in (doc for task in loads for doc in task.result()):
             key = SourceKey(document.source_type, document.source_id)
             if key in sources:
                 logger.warning(
@@ -126,25 +106,22 @@ async def sync_knowledge_data(sync_id: int) -> None:
             documents.append(document)
 
         logger.info(
-            "Prepared source documents=%d chunks=%d failed=%d",
+            "Prepared source documents=%d chunks=%d",
             len(documents),
             sum(len(document.chunks) for document in documents),
-            len(results),
         )
 
         async def sync(document: SourceDocument) -> SourceSyncResult:
             async with semaphore:
                 return await _sync_document(document, embedding_model, store)
 
-        results.extend(await asyncio.gather(*(sync(doc) for doc in documents)))
+        async with asyncio.TaskGroup() as group:
+            syncs = [group.create_task(sync(document)) for document in documents]
+        results = [task.result() for task in syncs]
 
-        failed = [result.title for result in results if result.error]
         removed: Set[SourceKey] = set()
         reconciled_chunks = 0
-
-        if failed:
-            logger.warning("Skipping reconciliation, sources failed=%d", len(failed))
-        elif not documents:
+        if not documents:
             logger.warning(
                 "Skipping reconciliation, Strapi returned no source documents"
             )
@@ -164,29 +141,18 @@ async def sync_knowledge_data(sync_id: int) -> None:
             deleted_chunks=sum(result.deleted for result in results)
             + reconciled_chunks,
             deleted_sources=len(removed),
-            failed_sources=failed,
         )
-
-        if failed:
-            await _update_sync_status(
-                sync_id, SyncStatus.FAILED, error=f"Failed sources: {', '.join(failed)}"
-            )
-            logger.warning(
-                "Sync finished with failures sync_id=%d summary=%s",
-                sync_id,
-                summary.model_dump(),
-            )
-            return
 
         await _update_sync_status(sync_id, SyncStatus.COMPLETED)
         logger.info(
             "Sync completed sync_id=%d summary=%s", sync_id, summary.model_dump()
         )
     except Exception as e:
+        error = e.exceptions[0] if isinstance(e, ExceptionGroup) else e
         logger.error(
-            "Error occured when syncing the knowledge error=%s", str(e), exc_info=True
+            "Sync aborted sync_id=%d error=%s", sync_id, str(error), exc_info=True
         )
-        await _update_sync_status(sync_id, SyncStatus.FAILED, error=str(e))
+        await _update_sync_status(sync_id, SyncStatus.FAILED, error=str(error))
 
 
 async def _sync_document(
@@ -200,72 +166,62 @@ async def _sync_document(
         title=document.title,
     )
 
-    try:
-        async with session_scope() as session:
-            existing = await get_existing_chunks(
-                session, document.source_type, document.source_id
-            )
-
-            pending = []
-            for chunk in document.chunks:
-                stored = existing.get(chunk.chunk_index)
-                if stored is None:
-                    logger.info(
-                        "New chunk index=%d for title=%r",
-                        chunk.chunk_index,
-                        document.title,
-                    )
-                elif stored.content_hash != chunk.content_hash:
-                    logger.info(
-                        "Changed chunk index=%d for title=%r",
-                        chunk.chunk_index,
-                        document.title,
-                    )
-                elif stored.embedding_model != embedding_model:
-                    logger.info(
-                        "Chunk index=%d for title=%r was embedded with model=%s, re-embedding with model=%s",
-                        chunk.chunk_index,
-                        document.title,
-                        stored.embedding_model,
-                        embedding_model,
-                    )
-                else:
-                    logger.debug(
-                        "Unchanged chunk index=%d for title=%r, skipping the embedding",
-                        chunk.chunk_index,
-                        document.title,
-                    )
-                    continue
-
-                pending.append(chunk)
-
-            result.skipped = len(document.chunks) - len(pending)
-            result.embedded = await upsert_chunks(
-                store, document, pending, existing, embedding_model
-            )
-            result.deleted = await delete_chunks_from(
-                session,
-                document.source_type,
-                document.source_id,
-                len(document.chunks),
-            )
-
-        logger.info(
-            "Synced title=%r embedded=%d skipped=%d deleted=%d",
-            document.title,
-            result.embedded,
-            result.skipped,
-            result.deleted,
+    async with session_scope() as session:
+        existing = await get_existing_chunks(
+            session, document.source_type, document.source_id
         )
-    except Exception as e:
-        logger.error(
-            "Failed to sync title=%r source_id=%s",
-            document.title,
+
+        pending = []
+        for chunk in document.chunks:
+            stored = existing.get(chunk.chunk_index)
+            if stored is None:
+                logger.info(
+                    "New chunk index=%d for title=%r",
+                    chunk.chunk_index,
+                    document.title,
+                )
+            elif stored.content_hash != chunk.content_hash:
+                logger.info(
+                    "Changed chunk index=%d for title=%r",
+                    chunk.chunk_index,
+                    document.title,
+                )
+            elif stored.embedding_model != embedding_model:
+                logger.info(
+                    "Chunk index=%d for title=%r was embedded with model=%s, re-embedding with model=%s",
+                    chunk.chunk_index,
+                    document.title,
+                    stored.embedding_model,
+                    embedding_model,
+                )
+            else:
+                logger.debug(
+                    "Unchanged chunk index=%d for title=%r, skipping the embedding",
+                    chunk.chunk_index,
+                    document.title,
+                )
+                continue
+
+            pending.append(chunk)
+
+        result.skipped = len(document.chunks) - len(pending)
+        result.embedded = await upsert_chunks(
+            store, document, pending, existing, embedding_model
+        )
+        result.deleted = await delete_chunks_from(
+            session,
+            document.source_type,
             document.source_id,
-            exc_info=True,
+            len(document.chunks),
         )
-        result.error = str(e)
 
+    logger.info(
+        "Synced title=%r embedded=%d skipped=%d deleted=%d",
+        document.title,
+        result.embedded,
+        result.skipped,
+        result.deleted,
+    )
     return result
 
 

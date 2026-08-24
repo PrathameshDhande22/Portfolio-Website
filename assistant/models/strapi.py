@@ -64,6 +64,8 @@ class Skill(StrapiData):
 
 SkillCategory.model_rebuild()
 
+SkillRef = Skill
+
 
 class StrapiLink(BaseModel):
     id: int
@@ -94,7 +96,7 @@ class BadgeTag(BaseModel):
     id: int
     Order: int = 1
     Highlight: bool = False
-    Skill: Optional[Skill] = None
+    Skill: Optional[SkillRef] = None
 
 
 class TimelineComponent(BaseModel):
@@ -213,13 +215,13 @@ class Blog(StrapiData):
     Title: str
     Slug: str
     Description: Optional[str] = None
-    Skill: Optional[Skill] = None
+    Skill: Optional[SkillRef] = None
     Thumbnail: Optional[StrapiMedia] = None
 
 
-BlogArticle = Blog
+BlogRef = Blog
 
 
 class BlogContent(StrapiData):
-    Blog: Optional[BlogArticle] = None
+    Blog: Optional[BlogRef] = None
     Content: Optional[str] = None
