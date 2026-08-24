@@ -5,6 +5,7 @@ from uuid import UUID, uuid4
 
 from fastapi.sse import ServerSentEvent
 from langchain.messages import AIMessage, AIMessageChunk, HumanMessage
+from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables import (
     Runnable,
@@ -21,6 +22,7 @@ from llm import get_chat_model
 from models import (
     ChatRequest,
     ChatStage,
+    ChatState,
     DeltaEvent,
     DoneEvent,
     ErrorEvent,
@@ -28,7 +30,10 @@ from models import (
     MetaEvent,
     ModelConfiguration,
     PlanEvent,
+    PlannedState,
     PlannerDecision,
+    PromptState,
+    RetrievedState,
     SemanticQuery,
     UsageEvent,
 )
@@ -41,7 +46,9 @@ logger = logging.getLogger(__name__)
 
 async def stream_chat(request: ChatRequest) -> AsyncIterator[ServerSentEvent]:
     thread_id = request.thread_id or uuid4()
-    logger.info("Chat started thread_id=%s messages=%d", thread_id, len(request.messages))
+    logger.info(
+        "Chat started thread_id=%s messages=%d", thread_id, len(request.messages)
+    )
     yield ServerSentEvent(event="meta", data=MetaEvent(thread_id=thread_id))
 
     try:
@@ -49,11 +56,13 @@ async def stream_chat(request: ChatRequest) -> AsyncIterator[ServerSentEvent]:
         chain = await _build_chain(settings)
 
         recent = request.messages[-4:]
-        payload = {
+        payload: ChatState = {
             "history": [
-                HumanMessage(content=message.content)
-                if message.role == "human"
-                else AIMessage(content=message.content)
+                (
+                    HumanMessage(content=message.content)
+                    if message.role == "human"
+                    else AIMessage(content=message.content)
+                )
                 for message in recent[:-1]
             ],
             "question": recent[-1].content,
@@ -86,7 +95,11 @@ async def stream_chat(request: ChatRequest) -> AsyncIterator[ServerSentEvent]:
                     ),
                 )
                 usage = await _record_usage(
-                    thread_id, ChatStage.PLANNER, settings.Planner, planner_message, action
+                    thread_id,
+                    ChatStage.PLANNER,
+                    settings.Planner,
+                    planner_message,
+                    action,
                 )
                 if usage:
                     yield usage
@@ -104,7 +117,11 @@ async def stream_chat(request: ChatRequest) -> AsyncIterator[ServerSentEvent]:
 
             elif kind == "on_chat_model_end" and "answer" in tags:
                 usage = await _record_usage(
-                    thread_id, ChatStage.ANSWER, settings.Response, data.get("output"), action
+                    thread_id,
+                    ChatStage.ANSWER,
+                    settings.Response,
+                    data.get("output"),
+                    action,
                 )
                 if usage:
                     yield usage
@@ -118,25 +135,31 @@ async def stream_chat(request: ChatRequest) -> AsyncIterator[ServerSentEvent]:
         logger.info("Chat cancelled by the client thread_id=%s", thread_id)
         raise
     except Exception as e:
-        logger.error("Chat failed thread_id=%s error=%s", thread_id, str(e), exc_info=True)
+        logger.error(
+            "Chat failed thread_id=%s error=%s", thread_id, str(e), exc_info=True
+        )
         yield ServerSentEvent(
             event="error",
             data=ErrorEvent(message="The assistant could not answer that right now."),
         )
 
 
-async def _build_chain(settings: LLMSettings) -> Runnable:
+async def _build_chain(settings: LLMSettings) -> Runnable[ChatState, AIMessageChunk]:
     retriever = (await get_vector_store()).as_retriever(search_kwargs={"k": 6})
 
-    planner_chain = _prompt(settings.Planner.SystemPrompt, "{question}") | get_chat_model(
-        settings.Planner, disable_streaming=True
-    ).with_structured_output(PlannerDecision).with_retry(stop_after_attempt=2)
+    planner_chain = _prompt(
+        settings.Planner.SystemPrompt, "{question}"
+    ) | get_chat_model(settings.Planner, disable_streaming=True).with_structured_output(
+        PlannerDecision
+    ).with_retry(
+        stop_after_attempt=2
+    )
 
     answer_chain = _prompt(
         settings.Response.SystemPrompt, "Context:\n\n{context}\n\nQuestion:\n{question}"
     ) | get_chat_model(settings.Response).with_config(tags=["answer"])
 
-    async def plan(payload: Dict[str, Any], config: RunnableConfig) -> Dict[str, Any]:
+    async def plan(payload: ChatState, config: RunnableConfig) -> PlannedState:
         try:
             decision = await planner_chain.ainvoke(payload, config=config)
         except Exception as e:
@@ -144,7 +167,9 @@ async def _build_chain(settings: LLMSettings) -> Runnable:
             decision = None
 
         if decision is None:
-            logger.warning("Planner gave no usable plan, falling back to semantic search")
+            logger.warning(
+                "Planner gave no usable plan, falling back to semantic search"
+            )
             decision = PlannerDecision(
                 action="retrieve",
                 question=payload["question"],
@@ -160,7 +185,7 @@ async def _build_chain(settings: LLMSettings) -> Runnable:
         )
         return {"history": payload["history"], "plan": decision}
 
-    async def read_sources(state: Dict[str, Any]) -> List[str]:
+    async def read_sources(state: PlannedState) -> List[str]:
         queries = state["plan"].structured
         if not queries:
             return []
@@ -175,7 +200,7 @@ async def _build_chain(settings: LLMSettings) -> Runnable:
                 logger.error("Failed to read source=%s", query.source, exc_info=section)
         return [section for section in rendered if isinstance(section, str) and section]
 
-    async def search_knowledge(state: Dict[str, Any]) -> List[Any]:
+    async def search_knowledge(state: PlannedState) -> List[Document]:
         semantic = state["plan"].semantic
         if not semantic.enabled:
             logger.info("Semantic search is disabled for this question")
@@ -190,7 +215,13 @@ async def _build_chain(settings: LLMSettings) -> Runnable:
         )
         return documents
 
-    def build_context(retrieved: Dict[str, Any]) -> Dict[str, Any]:
+    def refuse(state: PlannedState) -> AIMessageChunk:
+        return AIMessageChunk(content=state["plan"].message)
+
+    def is_refusal(state: PlannedState) -> bool:
+        return state["plan"].action == "respond"
+
+    def build_context(retrieved: RetrievedState) -> PromptState:
         sections = list(retrieved["sources"])
         if retrieved["documents"]:
             passages = "\n\n".join(
@@ -199,20 +230,19 @@ async def _build_chain(settings: LLMSettings) -> Runnable:
             sections.append(f"## Reference material\n\n{passages}")
 
         context = "\n\n".join(sections) or "No portfolio data matched this question."
-        logger.info("Context built sections=%d characters=%d", len(sections), len(context))
+        logger.info(
+            "Context built sections=%d characters=%d", len(sections), len(context)
+        )
         return {
             "history": retrieved["state"]["history"],
             "question": retrieved["state"]["plan"].question,
             "context": context,
         }
 
-    return RunnableLambda(plan).with_config(run_name="plan", tags=["planner"]) | RunnableBranch(
-        (
-            lambda state: state["plan"].action == "respond",
-            RunnableLambda(
-                lambda state: AIMessageChunk(content=state["plan"].message)
-            ).with_config(run_name="refusal"),
-        ),
+    return RunnableLambda(plan).with_config(
+        run_name="plan", tags=["planner"]
+    ) | RunnableBranch(
+        (is_refusal, RunnableLambda(refuse).with_config(run_name="refusal")),
         RunnableParallel(
             state=RunnablePassthrough(),
             sources=RunnableLambda(read_sources),

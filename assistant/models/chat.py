@@ -1,6 +1,8 @@
-from typing import List, Literal, Optional
+from typing import List, Literal, Optional, TypedDict
 from uuid import UUID
 
+from langchain_core.documents import Document
+from langchain_core.messages import BaseMessage
 from pydantic import BaseModel, Field
 
 from .enums import ChatStage
@@ -109,3 +111,25 @@ class DoneEvent(BaseModel):
 
 class ErrorEvent(BaseModel):
     message: str
+
+
+class ChatState(TypedDict):
+    history: List[BaseMessage]
+    question: str
+
+
+class PlannedState(TypedDict):
+    history: List[BaseMessage]
+    plan: "PlannerDecision"
+
+
+class RetrievedState(TypedDict):
+    state: PlannedState
+    sources: List[str]
+    documents: List[Document]
+
+
+class PromptState(TypedDict):
+    history: List[BaseMessage]
+    question: str
+    context: str
