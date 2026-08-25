@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const mediaOrigin = new URL(process.env.MEDIA_URL ?? "http://localhost:9000");
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   cacheComponents: true,
   reactCompiler: true,
   turbopack: { root: __dirname },
