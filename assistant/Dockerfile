@@ -20,6 +20,8 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app \
     PATH="/usr/local/bin:${PATH}"
 
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
+
 RUN groupadd --system --gid 10001 app && useradd --system --uid 10001 --gid app --create-home --home-dir /app --shell /usr/sbin/nologin app
 
 COPY --from=dependencies /usr/local /usr/local
@@ -28,5 +30,7 @@ COPY --chown=app:app . .
 USER app
 
 EXPOSE 8000
+
+HEALTHCHECK --interval=10s --timeout=5s --start-period=60s --retries=30 CMD curl -fsS http://127.0.0.1:8000/health || exit 1
 
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0","--port","8000","--workers","4"]

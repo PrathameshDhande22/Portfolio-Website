@@ -23,6 +23,8 @@ FROM base AS runner
 ENV NODE_ENV=production \
     HOST=0.0.0.0 \
     PORT=1337
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
 RUN groupadd --system --gid 1001 strapi && useradd --system --uid 1001 --gid strapi strapi
 
 COPY --from=prod-deps --chown=strapi:strapi /app/node_modules ./node_modules
@@ -35,4 +37,7 @@ COPY --from=builder --chown=strapi:strapi /app/package.json /app/favicon.png /ap
 
 USER strapi
 EXPOSE 1337
+
+HEALTHCHECK --interval=10s --timeout=5s --start-period=120s --retries=40 CMD curl -fsS http://127.0.0.1:1337/_health || exit 1
+
 CMD ["yarn", "start"]

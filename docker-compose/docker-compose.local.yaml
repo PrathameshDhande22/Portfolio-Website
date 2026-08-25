@@ -1,0 +1,93 @@
+name: portfolio-local
+
+include:
+  - docker-compose.development.yaml
+
+services:
+  cms:
+    container_name: portfolio-cms
+    build:
+      context: ../cms
+    restart: unless-stopped
+    environment:
+      HOST: 0.0.0.0
+      PORT: 1337
+      APP_KEYS: toBeModified1,toBeModified2
+      API_TOKEN_SALT: tobemodified
+      ADMIN_JWT_SECRET: tobemodified
+      TRANSFER_TOKEN_SALT: tobemodified
+      JWT_SECRET: tobemodified
+      ENCRYPTION_KEY: tobemodified
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres-db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: strapi
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: admin1234
+      AWS_ACCESS_KEY_ID: keyid
+      AWS_ACCESS_SECRET: your-aws-secret
+      AWS_BUCKET: strapi-media
+      AWS_REGION: us-east-1
+      AWS_ENDPOINT: http://minio:9000
+      SMTP_HOST: papercut
+      SMTP_PORT: 2525
+      ASSISTANT_URL: http://assistant:8000
+      ASSISTANT_SECRET: dummy-client-secret
+      CLIENT_URL: http://client:3000
+      REVALIDATE_SECRET: adnhfasdfwer2w2dfs
+    ports:
+      - "1337:1337"
+    depends_on:
+      - postgres-db
+
+  assistant:
+    container_name: portfolio-assistant
+    build:
+      context: ../assistant
+    restart: unless-stopped
+    environment:
+      ENVIRONMENT: production
+      MISTRAL_API_KEY: api_key
+      GEMINI_API_KEY: api_key
+      OPENAI_API_KEY: api_key
+      AZURE_OPENAI_API_KEY: api_key
+      OPENAI_API_VERSION: 2025-04-01-preview
+      POSTGRES_CONNECTION_STRING: postgresql+asyncpg://postgres:admin1234@postgres-db:5432/strapi
+      STRAPI_API_URL: http://cms:1337/api
+      STRAPI_AUTH_TOKEN: token
+      LANGSMITH_API_KEY: dummy-api-key
+      LANGSMITH_TRACING: "false"
+      LANGSMITH_PROJECT: Assistant-Dev
+      CLIENT_SECRET: dummy-client-secret
+    ports:
+      - "8000:8000"
+    depends_on:
+      cms:
+        condition: service_healthy
+
+  client:
+    container_name: portfolio-client
+    build:
+      context: ../client
+      args:
+        BASE_URL: http://host.docker.internal:1337/api
+      secrets:
+        - api_token
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    environment:
+      BASE_URL: http://cms:1337/api
+      API_TOKEN: api_token
+      SITE_URL: http://localhost:3000
+      MEDIA_URL: http://localhost:9000
+      GITHUB_TOKEN: token
+      REVALIDATE_SECRET: adnhfasdfwer2w2dfs
+      ASSISTANT_URL: http://assistant:8000
+      ASSISTANT_SECRET: dummy-client-secret
+    ports:
+      - "3000:3000"
+
+secrets:
+  api_token:
+    environment: API_TOKEN
