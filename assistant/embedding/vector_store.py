@@ -1,19 +1,37 @@
+import asyncio
 import logging
+from typing import Optional
+
 from langchain_postgres import PGEngine, PGVectorStore
 from langchain_postgres.v2.indexes import HNSWIndex
-from langchain_core.vectorstores import VectorStore
-from .provider import get_provider
 from db import engine
+from .provider import get_provider
 
 logger = logging.getLogger(__name__)
-engine = PGEngine.from_engine(engine)
+
+pg_engine = PGEngine.from_engine(engine)
+
+_vector_store: Optional[PGVectorStore] = None
+_store_lock = asyncio.Lock()
 
 
-async def get_vector_store() -> VectorStore:
+async def get_vector_store() -> PGVectorStore:
+    global _vector_store
+
+    if _vector_store is not None:
+        return _vector_store
+
+    async with _store_lock:
+        if _vector_store is None:
+            _vector_store = await _create_vector_store()
+    return _vector_store
+
+
+async def _create_vector_store() -> PGVectorStore:
     provider = await get_provider()
-    logger.info("Getting the vector store")
+    logger.info("Creating the vector store on assistant.knowledge")
     store = await PGVectorStore.create(
-        engine=engine,
+        engine=pg_engine,
         embedding_service=provider,
         table_name="knowledge",
         schema_name="assistant",
@@ -34,10 +52,9 @@ async def get_vector_store() -> VectorStore:
     )
 
     try:
-        index = HNSWIndex()
-        await store.aapply_vector_index(index)
-    except Exception as e:
-        logger.error("Already exists HNSWIndex")
-        pass
+        await store.aapply_vector_index(HNSWIndex())
+        logger.info("Applied the HNSW vector index")
+    except Exception:
+        logger.warning("HNSW vector index already exists, keeping the existing one")
 
     return store

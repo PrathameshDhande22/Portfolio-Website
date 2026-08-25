@@ -1,0 +1,27 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "Triggers the assistant sync and revalidates the website cache",
+  "exports": {
+    "./strapi-admin": {
+      "types": "./admin/src/index.ts",
+      "source": "./admin/src/index.ts",
+      "import": "./admin/src/index.ts",
+      "require": "./admin/src/index.ts",
+      "default": "./admin/src/index.ts"
+    },
+    "./strapi-server": {
+      "source": "./server/src/index.js",
+      "import": "./server/src/index.js",
+      "require": "./server/src/index.js",
+      "default": "./server/src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "strapi": {
+    "kind": "plugin",
+    "name": "portfolio",
+    "displayName": "Portfolio",
+    "description": "Triggers the assistant sync and revalidates the website cache"
+  }
+}

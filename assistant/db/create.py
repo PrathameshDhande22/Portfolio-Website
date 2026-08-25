@@ -1,11 +1,12 @@
 import logging
 from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 from config import settings
-from .domainmodel import Knowledge, Syncing
+from .domainmodel import ChatUsage, Knowledge, RequestNonce, Syncing
 from sqlalchemy.schema import CreateSchema
 
 logger = logging.getLogger(__name__)
@@ -27,6 +28,12 @@ async def init_db() -> None:
 
 
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
+    async with async_session() as session:
+        yield session
+
+
+@asynccontextmanager
+async def session_scope() -> AsyncGenerator[AsyncSession, None]:
     async with async_session() as session:
         yield session
 

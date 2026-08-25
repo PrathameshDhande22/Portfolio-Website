@@ -22,4 +22,10 @@ export const env = {
   get revalidateSecret() {
     return required("REVALIDATE_SECRET");
   },
+  get assistantUrl() {
+    return required("ASSISTANT_URL");
+  },
+  get assistantSecret() {
+    return required("ASSISTANT_SECRET");
+  },
 };

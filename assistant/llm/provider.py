@@ -6,6 +6,7 @@ from langchain_mistralai import ChatMistralAI
 from langchain.chat_models import BaseChatModel
 from core import LLMProviderException
 from config import settings
+from models import ModelConfiguration
 
 logger = logging.getLogger(__name__)
 
@@ -16,11 +17,13 @@ def get_llm_provider(
     temperature: float = 0.5,
     max_tokens: int = 1024,
     base_url: str = None,
+    disable_streaming: bool = False,
 ) -> BaseChatModel:
     logger.info(
-        "Selected Model Provider as %r with Model name %r",
+        "Selected Model Provider as %r with Model name %r streaming=%s",
         provider_name,
         model_name,
+        not disable_streaming,
     )
     match provider_name:
         case "OpenAI":
@@ -30,6 +33,7 @@ def get_llm_provider(
                 api_key=settings.openai_api_key,
                 max_tokens=max_tokens,
                 max_retries=2,
+                disable_streaming=disable_streaming,
             )
         case "AzureOpenAI":
             return AzureChatOpenAI(
@@ -39,6 +43,8 @@ def get_llm_provider(
                 temperature=temperature,
                 max_tokens=max_tokens,
                 max_retries=2,
+                disable_streaming=disable_streaming,
+                api_version=settings.openai_api_version
             )
         case "Mistral":
             return ChatMistralAI(
@@ -47,6 +53,7 @@ def get_llm_provider(
                 temperature=temperature,
                 max_tokens=max_tokens,
                 max_retries=2,
+                disable_streaming=disable_streaming,
             )
         case "Gemini":
             return ChatGoogleGenerativeAI(
@@ -55,8 +62,22 @@ def get_llm_provider(
                 api_key=settings.gemini_api_key,
                 max_tokens=max_tokens,
                 max_retries=2,
+                disable_streaming=disable_streaming,
             )
         case _:
             raise LLMProviderException(
                 f"Unsupported LLM Provider: {provider_name}. Supported providers are: OpenAI, AzureOpenAI, MistralAI, GoogleGemini."
             )
+
+
+def get_chat_model(
+    config: ModelConfiguration, disable_streaming: bool = False
+) -> BaseChatModel:
+    return get_llm_provider(
+        provider_name=config.Connector,
+        model_name=config.Model_Name,
+        temperature=config.Temperature,
+        max_tokens=config.MaxTokens or 1024,
+        base_url=config.BaseURL,
+        disable_streaming=disable_streaming,
+    )

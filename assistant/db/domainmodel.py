@@ -5,7 +5,7 @@ from uuid import UUID
 from pgvector.sqlalchemy import VECTOR
 from sqlalchemy import Column, DateTime, Index, Text
 from sqlmodel import Field, SQLModel
-from models.enums import SyncStatus
+from models.enums import ChatStage, SyncStatus
 
 
 def utcnow() -> datetime:
@@ -63,3 +63,36 @@ class Knowledge(SQLModel, table=True):
         ),
         {"schema": "assistant"},
     )
+
+
+class ChatUsage(SQLModel, table=True):
+    __tablename__ = "chat_usage"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    thread_id: UUID = Field(nullable=False, index=True)
+    stage: ChatStage = Field(nullable=False, index=True)
+    connector: str = Field(nullable=False, max_length=50)
+    model: str = Field(nullable=False, max_length=100)
+    input_tokens: int = Field(default=0, nullable=False)
+    output_tokens: int = Field(default=0, nullable=False)
+    total_tokens: int = Field(default=0, nullable=False)
+    action: Optional[str] = Field(default=None, max_length=20)
+    created_at: datetime = Field(
+        default_factory=utcnow,
+        sa_column=Column(DateTime(timezone=True), nullable=False, index=True),
+    )
+
+    __table_args__ = {"schema": "assistant"}
+
+
+class RequestNonce(SQLModel, table=True):
+    __tablename__ = "request_nonce"
+
+    nonce: str = Field(primary_key=True, max_length=64)
+    endpoint: str = Field(nullable=False, max_length=50, index=True)
+    created_at: datetime = Field(
+        default_factory=utcnow,
+        sa_column=Column(DateTime(timezone=True), nullable=False, index=True),
+    )
+
+    __table_args__ = {"schema": "assistant"}
