@@ -26,7 +26,7 @@ export default {
         to,
         replyTo: Email,
         subject: Subject ? `Portfolio contact: ${Subject}` : `Portfolio contact from ${Name}`,
-        text: [`Name: ${Name}`, `Email: ${Email}`, `Source: ${Source ?? "-"}`, "", Message].join("\n"),
+        text: Message,
       });
     } catch (error) {
       strapi.log.error(`contact.afterCreate: failed to send notification — ${error}`);
