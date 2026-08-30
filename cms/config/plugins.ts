@@ -69,15 +69,15 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin =>
       providerOptions: {
         host: env('SMTP_HOST'),
         port: env.int('SMTP_PORT'),
-        secure: false, // Use `true` for port 465
+        secure: env.bool('SMTP_SECURE'),
         auth: {
           user: env('SMTP_USERNAME'),
           pass: env('SMTP_PASSWORD'),
         },
       },
       settings: {
-        defaultFrom: 'no-reply@example.com',
-        defaultReplyTo: 'support@example.com',
+        defaultFrom: env("SMTP_FROM"),
+        defaultReplyTo: env('SMTP_REPLYTO'),
       },
     },
   },
