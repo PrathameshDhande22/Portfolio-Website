@@ -20,6 +20,26 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app \
     PATH="/usr/local/bin:${PATH}"
 
+ARG BUILD_DATE
+ARG GIT_SHA
+ARG VERSION
+
+LABEL org.opencontainers.image.created="${BUILD_DATE}" \
+      org.opencontainers.image.authors="prathamesh Dhande" \
+      org.opencontainers.image.source="https://github.com/PrathameshDhande22/Portfolio-Website" \
+      org.opencontainers.image.version="${VERSION}" \
+      org.opencontainers.image.url="https://github.com/PrathameshDhande22/Portfolio-Website" \
+      org.opencontainers.image.revision="${GIT_SHA}" \
+      org.opencontainers.image.vendor="PrathameshDhande22" \
+      org.opencontainers.image.title="Portfolio Assistant" \
+      org.opencontainers.image.description="Porfolio AI Assistant using the LLM for responses" \
+      com.prathameshdhande.title="Portfolio Assistant" \
+      com.prathameshdhande.description="Porfolio AI Assistant using the LLM for responses" \
+      com.prathameshdhande.project="Porfolio" \
+      com.prathameshdhande.repository="https://github.com/PrathameshDhande22/Portfolio-Website" \
+      com.prathameshdhande.service="Porfolio Assistant" \
+      com.prathameshdhande.version="${VERSION}"
+
 RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --system --gid 10001 app && useradd --system --uid 10001 --gid app --create-home --home-dir /app --shell /usr/sbin/nologin app
