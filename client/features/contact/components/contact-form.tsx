@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useId, useState, useSyncExternalStore } from "react";
+import { useForm, useWatch } from "react-hook-form";
 import { submitContact } from "../service";
 import {
   EMAIL_PATTERN,
@@ -29,29 +29,41 @@ function FieldError({ message }: { message?: string }) {
   );
 }
 
+function subscribe() {
+  return () => {};
+}
+
+function readAlreadySent() {
+  try {
+    const sentAt = Number(window.localStorage.getItem(SENT_STORAGE_KEY));
+    return Boolean(sentAt) && Date.now() - sentAt < SENT_WINDOW_MS;
+  } catch {
+    return false;
+  }
+}
+
+function markSent() {
+  try {
+    window.localStorage.setItem(SENT_STORAGE_KEY, String(Date.now()));
+  } catch {
+    return;
+  }
+}
+
 export function ContactForm({ labels }: { labels: ContactFormLabels }) {
   const [result, setResult] = useState<ContactFormState | null>(null);
-  const [alreadySent, setAlreadySent] = useState(false);
+  const alreadySent = useSyncExternalStore(subscribe, readAlreadySent, () => false);
   const id = useId();
-
-  useEffect(() => {
-    try {
-      const sentAt = Number(window.localStorage.getItem(SENT_STORAGE_KEY));
-      setAlreadySent(Boolean(sentAt) && Date.now() - sentAt < SENT_WINDOW_MS);
-    } catch {
-      setAlreadySent(false);
-    }
-  }, []);
 
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<ContactInput>({ mode: "onBlur" });
 
-  const messageLength = watch("Message")?.length ?? 0;
+  const messageLength = useWatch({ control, name: "Message" })?.length ?? 0;
 
   async function onSubmit(values: ContactInput) {
     const response = await submitContact(values);
@@ -59,11 +71,7 @@ export function ContactForm({ labels }: { labels: ContactFormLabels }) {
 
     if (response.status === "success") {
       reset();
-      try {
-        window.localStorage.setItem(SENT_STORAGE_KEY, String(Date.now()));
-      } catch {
-        setAlreadySent(true);
-      }
+      markSent();
     }
   }
 
