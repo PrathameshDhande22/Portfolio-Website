@@ -34,6 +34,9 @@
     },
     "UserAgent": {
       "type": "string"
+    },
+    "NotifiedAt": {
+      "type": "datetime"
     }
   }
 }
