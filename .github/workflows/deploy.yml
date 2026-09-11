@@ -1,0 +1,41 @@
+name: Deploy Portfolio
+run-name: Deploy Portfolio - ${{github.run_number}}
+on:
+  workflow_dispatch:
+concurrency:
+  group: portfolio-deploy
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  deploy:
+    name: Deploy to Server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Copy the Docker Compose File
+        id: copy-compose-file
+        uses: appleboy/scp-action@v1
+        with: 
+            username: ${{secrets.SERVER_USERNAME}}
+            key: ${{secrets.SERVER_KEY}}
+            host: ${{secrets.SERVER_HOST}}
+            source: docker-compose.yaml
+            target: /home/prathamesh/Production-Configuration/applications/Portfolio
+
+      - name: SSH to Server
+        id: ssh-server
+        uses: appleboy/ssh-action@v1
+        with: 
+            host: ${{secrets.SERVER_HOST}}
+            key: ${{secrets.SERVER_KEY}}
+            username: ${{secrets.SERVER_USERNAME}}
+            script: |
+                set -o pipefail
+                BASE_DIR="/home/prathamesh/Production-Configuration"
+                cd $BASE_DIR
+                $BASE_DIR/scripts/deploy_application.sh $BASE_DIR/applications/Portfolio Portfolio ${{secrets.ECR_REGISTRY}}
+        
+    
