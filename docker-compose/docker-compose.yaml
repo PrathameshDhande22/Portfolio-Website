@@ -1,0 +1,52 @@
+name: Portfolio
+
+services:
+  strapi-cms:
+    container_name: strapi-cms
+    image: ${REGISTRY}/portfolio/strapi-cms:latest
+    restart: unless-stopped
+    pull_policy: always
+    cpus: 0.6
+    mem_limit: 448m
+    mem_reservation: 384m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "2"
+    environment:
+      - APP_KEYS=${APP_KEYS}
+      - API_TOKEN_SALT=${API_TOKEN_SALT}
+      - ADMIN_JWT_SECRET=${ADMIN_JWT_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
+      - TRANSPER_TOKEN_SALT=${TRANSPER_TOKEN_SALT}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=portfolio-cms
+      - DATABASE_USERNAME=prathamesh
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_BUCKET_NAME=${AWS_BUCKET_NAME}
+      - AWS_ENDPOINT=${AWS_ENDPOINT}
+      - ASSISTANT_URL=https://ai-assistant.prathameshdhande.com
+      - ASSISTANT_SECRET=${ASSISTANT_SECRET}
+      - CLIENT_URL=https://prathameshdhande.com
+      - REVALIDATE_SECRET=${REVALIDATE_SECRET}
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.strapi.rule=Host(`cms.prathameshdhande.com`)
+      - traefik.http.routers.strapi.entrypoints=https
+      - traefik.http.routers.strapi.tls=true
+      - traefik.http.routers.strapi.tls.certresolver=spaceship
+    networks:
+      - proxy
+
+networks:
+  proxy: 
+    external: true
+  pg-database:
+    external: true
