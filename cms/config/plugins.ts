@@ -45,9 +45,10 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin =>
             secretAccessKey: env('AWS_ACCESS_SECRET'),
           },
           region: env('AWS_REGION'),
-          endpoint: env('AWS_ENDPOINT'),
-          forcePathStyle: true,
+          // endpoint: env('AWS_ENDPOINT'),
           params: {
+            ACL: 'private',
+            signedUrlExpires: env('AWS_SIGNED_URL_EXPIRES', 15 * 60),
             Bucket: env('AWS_BUCKET'),
           },
         },

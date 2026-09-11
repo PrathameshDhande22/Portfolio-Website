@@ -1,42 +1,43 @@
-import type { Core } from '@strapi/strapi';
-import { env } from '@strapi/utils';
+import type { Core } from "@strapi/strapi";
+import { env } from "@strapi/utils";
 
-const minioendpoint = env('AWS_ENDPOINT') 
+const minioendpoint = env("AWS_ENDPOINT");
 
 const config: Core.Config.Middlewares = [
-  'strapi::logger',
-  'strapi::errors',
+  "strapi::logger",
+  "strapi::errors",
   {
-    name: 'strapi::security',
+    name: "strapi::security",
     config: {
       contentSecurityPolicy: {
+        "connect-src": ["'self'", "https:"],
         useDefaults: true,
         directives: {
-          'img-src': [
+          "img-src": [
             "'self'",
-            'data:',
-            'blob:',
+            "data:",
+            "blob:",
             minioendpoint,
-            'https://market-assets.strapi.io',
+            "https://market-assets.strapi.io",
           ],
-          'media-src': [
+          "media-src": [
             "'self'",
-            'data:',
-            'blob:',
+            "data:",
+            "blob:",
             minioendpoint,
-            'https://market-assets.strapi.io',
+            "https://market-assets.strapi.io",
           ],
         },
       },
     },
   },
-  'strapi::cors',
-  'strapi::poweredBy',
-  'strapi::query',
-  'strapi::body',
-  'strapi::session',
-  'strapi::favicon',
-  'strapi::public',
+  "strapi::cors",
+  "strapi::poweredBy",
+  "strapi::query",
+  "strapi::body",
+  "strapi::session",
+  "strapi::favicon",
+  "strapi::public",
 ];
 
 export default config;
