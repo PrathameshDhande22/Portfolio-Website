@@ -56,7 +56,7 @@ jobs:
           tags: |
             ${{secrets.ECR_REGISTRY}}/portfolio/strapi-cms:${{inputs.version || github.ref_name}}
             ${{secrets.ECR_REGISTRY}}/portfolio/strapi-cms:latest
-          context: .
+          context: ./cms
           build-args: |
             BUILD_DATE=${{needs.build-date.outputs.image-build-date}}
             VERSION=${{inputs.version || github.ref_name}}
