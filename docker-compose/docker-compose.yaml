@@ -37,6 +37,13 @@ services:
       - ASSISTANT_SECRET=${ASSISTANT_SECRET}
       - CLIENT_URL=https://prathameshdhande.com
       - REVALIDATE_SECRET=${REVALIDATE_SECRET}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=22
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - SMTP_SECURE=true
+      - SMTP_FROM=no-reply@portfolio.prathameshdhande.com
+      - SMTP_REPLYTO=prathameshdhande534@gmail.com
     labels:
       - traefik.enable=true
       - traefik.docker.network=proxy
