@@ -41,7 +41,7 @@ services:
       - traefik.enable=true
       - traefik.docker.network=proxy
       - traefik.http.routers.strapi.rule=Host(`cms.prathameshdhande.com`)
-      - traefik.http.routers.strapi.entrypoints=https
+      - traefik.http.routers.strapi.entrypoints=https,http
       - traefik.http.routers.strapi.tls=true
       - traefik.http.routers.strapi.tls.certresolver=spaceship
       - traefik.http.routers.strapi.middlewares=strap-limit
