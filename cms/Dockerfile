@@ -25,7 +25,6 @@ ENV NODE_ENV=production \
     PORT=1337
 RUN apt-get update && apt-get install -y --no-install-recommends curl \
     && rm -rf /var/lib/apt/lists/*
-RUN groupadd --system --gid 1001 strapi && useradd --system --uid 1001 --gid strapi strapi
 
 ARG BUILD_DATE
 ARG GIT_SHA
@@ -47,15 +46,14 @@ LABEL org.opencontainers.image.created="${BUILD_DATE}" \
     com.prathameshdhande.service="Strapi CMS" \
     com.prathameshdhande.version="${VERSION}"
 
-COPY --from=prod-deps --chown=strapi:strapi /app/node_modules ./node_modules
-COPY --from=builder --chown=strapi:strapi /app/dist ./dist
-COPY --from=builder --chown=strapi:strapi /app/config ./config
-COPY --from=builder --chown=strapi:strapi /app/database ./database
-COPY --from=builder --chown=strapi:strapi /app/src ./src
-COPY --from=builder --chown=strapi:strapi /app/public ./public
-COPY --from=builder --chown=strapi:strapi /app/package.json /app/favicon.png /app/tsconfig.json ./
+COPY --from=prod-deps /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/config ./config
+COPY --from=builder /app/database ./database
+COPY --from=builder /app/src ./src
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json /app/favicon.png /app/tsconfig.json ./
 
-USER strapi
 EXPOSE 1337
 
 HEALTHCHECK --interval=10s --timeout=5s --start-period=120s --retries=40 CMD curl -fsS http://127.0.0.1:1337/_health || exit 1
