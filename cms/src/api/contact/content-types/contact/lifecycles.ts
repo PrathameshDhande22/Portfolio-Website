@@ -70,8 +70,8 @@ export default {
     }
 
     if (documentId) {
-      await strapi.documents("api::contact.contact").update({
-        documentId,
+      await strapi.db.query("api::contact.contact").update({
+        where: { documentId },
         data: { NotifiedAt: new Date() },
       });
     }
