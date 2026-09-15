@@ -9,9 +9,9 @@ on:
         type: string
   push:
     tags: "*"
-concurrency: 
-    group: portfolio-cms
-    cancel-in-progress: true
+concurrency:
+  group: portfolio-cms
+  cancel-in-progress: true
 jobs:
   build-date:
     name: Generate Build Date for Image
@@ -61,3 +61,9 @@ jobs:
             BUILD_DATE=${{needs.build-date.outputs.image-build-date}}
             VERSION=${{inputs.version || github.ref_name}}
             GIT_SHA=${{github.sha}}
+
+      - name: Success Build
+        id: success
+        run: |
+          echo "## Success :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo "Build and Pushed Strapi CMS Docker Image to ECR : ${{inputs.version || github.ref_name}} " >> $GITHUB_STEP_SUMMARY
