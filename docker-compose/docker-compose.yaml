@@ -44,7 +44,7 @@ services:
       - traefik.http.routers.strapi.entrypoints=https,http
       - traefik.http.routers.strapi.tls=true
       - traefik.http.routers.strapi.tls.certresolver=spaceship
-      - traefik.http.routers.strapi.middlewares=strap-limit
+      - traefik.http.routers.strapi.middlewares=strapi-limit
       - traefik.http.middlewares.strapi-limit.buffering.maxRequestBodyBytes=104857600
       - traefik.http.services.strapi-cms-service.loadbalancer.server.port=1337
       - traefik.http.routers.strapi.service=strapi-cms-service
