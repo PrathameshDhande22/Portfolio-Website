@@ -53,7 +53,7 @@ COPY --from=builder --chown=strapi:strapi /app/config ./config
 COPY --from=builder --chown=strapi:strapi /app/database ./database
 COPY --from=builder --chown=strapi:strapi /app/src ./src
 COPY --from=builder --chown=strapi:strapi /app/public ./public
-COPY --from=builder --chown=st                                                                                                                                                                                                                                                                                  rapi:strapi /app/package.json /app/favicon.png /app/tsconfig.json ./
+COPY --from=builder --chown=strapi:strapi /app/package.json /app/favicon.png /app/tsconfig.json ./
 
 USER strapi
 EXPOSE 1337
