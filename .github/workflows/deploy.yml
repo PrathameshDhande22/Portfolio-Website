@@ -37,7 +37,7 @@ jobs:
             username: ${{secrets.SERVER_USERNAME}}
             script: |
                 set -o pipefail
-                BASE_DIR="$HOME/Production-Configuration"
+                BASE_DIR="/home/prathamesh/Production-Configuration"
                 cd $BASE_DIR
                 $BASE_DIR/scripts/deploy_application.sh $BASE_DIR/applications/Portfolio Portfolio ${{secrets.ECR_REGISTRY}}
         
