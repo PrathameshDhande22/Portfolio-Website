@@ -25,7 +25,7 @@ jobs:
             username: ${{secrets.SERVER_USERNAME}}
             key: ${{secrets.SERVER_KEY}}
             host: ${{secrets.SERVER_HOST}}
-            source: docker-compose/docker-compose.yaml
+            source: ./docker-compose/docker-compose.yaml
             target: /home/prathamesh/Production-Configuration/applications/Portfolio
             overwrite: true
 
