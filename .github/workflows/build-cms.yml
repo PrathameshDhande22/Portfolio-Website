@@ -12,6 +12,8 @@ on:
 concurrency:
   group: portfolio-cms
   cancel-in-progress: true
+env:
+  APPLICATION_VERSION: ${{inputs.version || github.ref_name}}
 jobs:
   build-date:
     name: Generate Build Date for Image
@@ -51,10 +53,13 @@ jobs:
       - name: Build and Push the Image to ECR
         id: build-push-image
         uses: docker/build-push-action@v7
+        env:
+          DOCKER_BUILD_RECORD_UPLOAD: false
+          DOCKER_BUILD_SUMMARY: false
         with:
           push: true
           tags: |
-            ${{secrets.ECR_REGISTRY}}/portfolio/strapi-cms:${{inputs.version || github.ref_name}}
+            ${{secrets.ECR_REGISTRY}}/portfolio/strapi-cms:${{env.APPLICATION_VERSION}}
             ${{secrets.ECR_REGISTRY}}/portfolio/strapi-cms:latest
           context: ./cms
           build-args: |
@@ -65,5 +70,11 @@ jobs:
       - name: Success Build
         id: success
         run: |
-          echo "## Success :rocket:" >> $GITHUB_STEP_SUMMARY
-          echo "Build and Pushed Strapi CMS Docker Image to ECR : ${{inputs.version || github.ref_name}} " >> $GITHUB_STEP_SUMMARY
+          echo "## Strapi CMS Docker Image" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Strapi CMS Docker image built and pushed successfully using GitHub Actions." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Build Details" >> $GITHUB_STEP_SUMMARY
+          echo "- **Image:** Strapi CMS" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ✅ Successful" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** ${{ env.APPLICATION_VERSION }}" >> $GITHUB_STEP_SUMMARY
