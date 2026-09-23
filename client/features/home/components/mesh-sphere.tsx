@@ -15,7 +15,7 @@ export function MeshSphere() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-y-0 right-0 left-auto z-0 h-full w-[44%] mask-[linear-gradient(90deg,#000_66%,#0000_100%)]"
+      className="pointer-events-none absolute inset-y-0 right-0 left-auto z-0 hidden h-full w-[44%] mask-[linear-gradient(90deg,#000_66%,#0000_100%)] wide:block"
     >
       <MeshScene key={pathname} still={still} />
     </div>
