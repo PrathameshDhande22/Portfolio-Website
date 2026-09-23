@@ -2,6 +2,7 @@
 
 import { useEffect, useEffectEvent, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { LuMenu, LuX } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { Icon } from "@/features/shared/components/icon";
 import { ThemeToggle } from "@/features/shared/components/theme-toggle";
 import { AskAiLauncher } from "@/features/ai/components/ask-ai-launcher";
 import type { AiSettings } from "@/types/content";
+import type { ResolvedImage } from "@/lib/media";
 
 const MENU_ID = "rail-navigation";
 
@@ -24,6 +26,7 @@ export interface RailSocialItem {
 }
 
 interface RailNavProps {
+  logo: ResolvedImage | null;
   siteName: string;
   designation: string;
   availability: string | null;
@@ -34,6 +37,7 @@ interface RailNavProps {
 }
 
 export function RailNav({
+  logo,
   siteName,
   designation,
   availability,
@@ -56,11 +60,23 @@ export function RailNav({
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 flex h-bar w-full items-center gap-4 overflow-visible border-b border-line bg-surface px-pad nav:inset-y-0 nav:right-auto nav:h-auto nav:w-rail nav:flex-col nav:items-stretch nav:gap-7 nav:overflow-y-auto nav:border-r nav:border-b-0 nav:px-6 nav:py-8 nav:scrollbar-none nav:[&::-webkit-scrollbar]:hidden">
-      <Link href="/" className="mr-auto block min-w-0 no-underline nav:mr-0">
-        <span className="block font-display text-[0.82rem] leading-[1.1] font-semibold tracking-[-0.02em] max-ask:text-[0.76rem] nav:text-[1.15rem] nav:leading-[1.15]">
-          {siteName}
+      <Link href="/" className="mr-auto flex min-w-0 items-center gap-2.5 no-underline nav:mr-0">
+        {logo ? (
+          <Image
+            src={logo.url}
+            alt={logo.alt}
+            width={logo.width}
+            height={logo.height}
+            priority
+            className="size-7 flex-none rounded-md object-contain nav:size-9"
+          />
+        ) : null}
+        <span className="min-w-0">
+          <span className="block font-display text-[0.82rem] leading-[1.1] font-semibold tracking-[-0.02em] max-ask:text-[0.76rem] nav:text-[1.15rem] nav:leading-[1.15]">
+            {siteName}
+          </span>
+          <span className="mt-[0.3rem] hidden text-[0.8rem] text-ink-2 nav:block">{designation}</span>
         </span>
-        <span className="mt-[0.3rem] hidden text-[0.8rem] text-ink-2 nav:block">{designation}</span>
       </Link>
 
       <nav

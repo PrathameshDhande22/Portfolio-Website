@@ -13,6 +13,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       populate: {
         ProfileImage: true,
         Favicon: true,
+        Logo: true,
         AskAI: true,
         SocialLinks: true,
         Footer: true,

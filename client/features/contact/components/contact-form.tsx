@@ -2,6 +2,7 @@
 
 import { useId, useState, useSyncExternalStore } from "react";
 import { useForm, useWatch } from "react-hook-form";
+import { sendGAEvent } from "@next/third-parties/google";
 import { submitContact } from "../service";
 import {
   EMAIL_PATTERN,
@@ -68,6 +69,7 @@ export function ContactForm({ labels }: { labels: ContactFormLabels }) {
   async function onSubmit(values: ContactInput) {
     const response = await submitContact(values);
     setResult(response);
+    sendGAEvent("event", "contact_submit", { status: response.status });
 
     if (response.status === "success") {
       reset();

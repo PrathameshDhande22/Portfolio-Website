@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
+import { sendGAEvent } from "@next/third-parties/google";
 import { LuArrowUp } from "react-icons/lu";
 import { AiAvatar } from "./ai-avatar";
 import { ChatMarkdown } from "./chat-markdown";
@@ -51,6 +52,7 @@ export function AskAiPanel({ settings, open, onOpenChange }: AskAiPanelProps) {
 
   function send(question: string) {
     if (!question.trim() || busy) return;
+    sendGAEvent("event", "assistant_question", { turn: messages.length });
     pinned.current = true;
     void ask(question);
     setDraft("");

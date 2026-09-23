@@ -2,6 +2,7 @@
 
 import { useEffect, useEffectEvent, useState } from "react";
 import dynamic from "next/dynamic";
+import { sendGAEvent } from "@next/third-parties/google";
 import { LuSparkles } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
 import type { AiSettings } from "@/types/content";
@@ -22,6 +23,7 @@ export function AskAiLauncher({ label, settings }: AskAiLauncherProps) {
   const onShortcut = useEffectEvent((event: KeyboardEvent) => {
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
       event.preventDefault();
+      sendGAEvent("event", "assistant_open", { method: "shortcut" });
       setMounted(true);
       setOpen(true);
     }
@@ -39,6 +41,7 @@ export function AskAiLauncher({ label, settings }: AskAiLauncherProps) {
         aria-label={label}
         aria-keyshortcuts="Meta+K Control+K"
         onClick={() => {
+          sendGAEvent("event", "assistant_open", { method: "button" });
           setMounted(true);
           setOpen(true);
         }}

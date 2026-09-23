@@ -3,7 +3,6 @@ import { IntroTile } from "./intro-tile";
 import { NowTile } from "./now-tile";
 import { OpenRolesTile } from "./open-roles-tile";
 import { ContributionTile } from "./contribution-tile";
-import { StackTile } from "@/features/skills/components/stack-tile";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StructuredData } from "@/features/shared/components/structured-data";
 import { getSiteSettings } from "@/features/site/service";

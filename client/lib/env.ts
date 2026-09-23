@@ -7,6 +7,9 @@ function required(name: string): string {
 }
 
 export const env = {
+  get googleVerification() {
+    return process.env.GOOGLE_VERIFICATION!
+  },
   get strapiUrl() {
     return required("BASE_URL");
   },
@@ -18,6 +21,9 @@ export const env = {
   },
   get githubToken() {
     return process.env.GITHUB_TOKEN;
+  },
+  get googleAnalyticsId() {
+    return process.env.GA_MEASUREMENT_ID;
   },
   get revalidateSecret() {
     return required("REVALIDATE_SECRET");
