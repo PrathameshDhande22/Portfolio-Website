@@ -2,6 +2,7 @@
 
 import { useEffect, useEffectEvent, useState } from "react";
 import dynamic from "next/dynamic";
+import { usePathname, useRouter } from "next/navigation";
 import { sendGAEvent } from "@next/third-parties/google";
 import { LuSparkles } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,10 @@ interface AskAiLauncherProps {
 export function AskAiLauncher({ label, settings }: AskAiLauncherProps) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const fromRoute = pathname === "/assistant";
 
   const onShortcut = useEffectEvent((event: KeyboardEvent) => {
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
@@ -34,6 +39,15 @@ export function AskAiLauncher({ label, settings }: AskAiLauncherProps) {
     return () => window.removeEventListener("keydown", onShortcut);
   }, []);
 
+  function changeOpen(next: boolean) {
+    setOpen(next);
+
+    if (!next && fromRoute) {
+      if (window.history.length > 1) router.back();
+      else router.push("/");
+    }
+  }
+
   return (
     <>
       <Button
@@ -48,15 +62,14 @@ export function AskAiLauncher({ label, settings }: AskAiLauncherProps) {
         className="h-9.5 flex-none px-[0.9rem] text-[0.78rem] max-ask:w-9.5 max-ask:px-0 nav:h-10.5 nav:flex-1 nav:text-[0.84rem]"
       >
         <LuSparkles className="size-3.75 flex-none" aria-hidden />
-        <span className="max-ask:hidden" aria-hidden>
+        <span className="leading-none max-ask:hidden" aria-hidden>
           {label}
         </span>
-        <kbd className="hidden rounded border px-1 text-[0.68rem] font-semibold opacity-60 nav:inline" aria-hidden>
-          ⌘K
-        </kbd>
       </Button>
 
-      {mounted ? <AskAiPanel settings={settings} open={open} onOpenChange={setOpen} /> : null}
+      {mounted || fromRoute ? (
+        <AskAiPanel settings={settings} open={open || fromRoute} onOpenChange={changeOpen} />
+      ) : null}
     </>
   );
 }
