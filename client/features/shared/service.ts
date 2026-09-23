@@ -8,6 +8,24 @@ export function strapiClient() {
   return instance;
 }
 
+export async function findAll<T>(endpoint: string, params: Record<string, unknown> = {}): Promise<T[]> {
+  const items: T[] = [];
+  let page = 1;
+  let pageCount = 1;
+
+  do {
+    const response = await strapiClient()
+      .collection(endpoint)
+      .find({ ...params, pagination: { page, pageSize: 100, withCount: true } });
+
+    items.push(...(response.data as T[]));
+    pageCount = response.meta.pagination?.pageCount ?? 1;
+    page += 1;
+  } while (page <= pageCount);
+
+  return items;
+}
+
 export const ENDPOINT = {
   pages: "page",
   blogs: "blogs",

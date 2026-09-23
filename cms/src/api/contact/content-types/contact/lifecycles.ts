@@ -2,7 +2,6 @@ import { errors } from "@strapi/utils";
 import type { Core } from "@strapi/strapi";
 
 const WINDOW_MS = 24 * 60 * 60 * 1000;
-const MAX_PER_IP = 5;
 
 interface ContactResult {
   documentId?: string;
@@ -29,7 +28,7 @@ export default {
       filters: { IPAddress, createdAt: { $gte: since } },
     });
 
-    if (recent >= MAX_PER_IP) {
+    if (recent >= 5) {
       strapi.log.warn(`contact.beforeCreate: rejected ${IPAddress}, ${recent} submissions in the last 24 hours`);
       throw new errors.ApplicationError("Too many messages from this network today. Please try again tomorrow.");
     }

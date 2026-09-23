@@ -1,9 +1,14 @@
 import { cacheLife, cacheTag } from "next/cache";
-import { CACHE_TAG, ENDPOINT, strapiClient } from "@/features/shared/service";
+import { CACHE_TAG, ENDPOINT, findAll, strapiClient } from "@/features/shared/service";
 import type { Paginated } from "@/types/strapi";
 import type { Blog, BlogContent } from "@/types/content";
 
 export const BLOG_PAGE_SIZE = 9;
+
+export interface BlogIndexEntry {
+  slug: string;
+  updatedAt: string;
+}
 
 const LIST_POPULATE = { Thumbnail: true, Skill: true };
 
@@ -28,16 +33,17 @@ export async function getBlogs(page = 1, pageSize = BLOG_PAGE_SIZE): Promise<Pag
   };
 }
 
-export async function getBlogSlugs(): Promise<string[]> {
+export async function getBlogIndex(): Promise<BlogIndexEntry[]> {
   "use cache";
   cacheLife("hours");
   cacheTag(CACHE_TAG.blogs);
 
-  const response = await strapiClient()
-    .collection(ENDPOINT.blogs)
-    .find({ fields: ["Slug"], pagination: { pageSize: 100 } });
+  const blogs = await findAll<Blog>(ENDPOINT.blogs, {
+    fields: ["Slug", "updatedAt"],
+    sort: ["createdAt:desc"],
+  });
 
-  return (response.data as Blog[]).map((blog) => blog.Slug);
+  return blogs.map((blog) => ({ slug: blog.Slug, updatedAt: blog.updatedAt }));
 }
 
 export async function getBlogBySlug(slug: string): Promise<Blog | null> {

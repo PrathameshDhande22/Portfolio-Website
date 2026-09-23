@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
 import { getPageSlugs } from "@/features/page/service";
-import { getBlogs } from "@/features/blog/service";
+import { getBlogIndex } from "@/features/blog/service";
 import { env } from "@/lib/env";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [slugs, blogs] = await Promise.all([getPageSlugs(), getBlogs(1, 100)]);
+  const [slugs, blogs] = await Promise.all([getPageSlugs(), getBlogIndex()]);
 
   const pages = slugs
     .filter((slug) => slug !== "changelog")
@@ -14,8 +14,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: slug === "home" ? 1 : 0.8,
     }));
 
-  const posts = blogs.items.map((blog) => ({
-    url: `${env.siteUrl}/blog/${blog.Slug}`,
+  const posts = blogs.map((blog) => ({
+    url: `${env.siteUrl}/blog/${blog.slug}`,
     lastModified: new Date(blog.updatedAt),
     changeFrequency: "yearly" as const,
     priority: 0.6,

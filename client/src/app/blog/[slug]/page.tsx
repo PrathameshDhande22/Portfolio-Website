@@ -5,7 +5,7 @@ import { LuArrowLeft } from "react-icons/lu";
 import {
   getBlogBySlug,
   getBlogContent,
-  getBlogSlugs,
+  getBlogIndex,
 } from "@/features/blog/service";
 import { ArticleToc } from "@/features/blog/components/article-toc";
 import { tocFromMarkdown } from "@/features/blog/lib/toc";
@@ -19,9 +19,9 @@ import { getPageBySlug } from "@/features/page/service";
 import { JsonLd } from "@/features/shared/components/structured-data";
 
 export async function generateStaticParams() {
-  const slugs = await getBlogSlugs();
+  const blogs = await getBlogIndex();
 
-  return slugs.map((slug) => ({ slug }));
+  return blogs.map((blog) => ({ slug: blog.slug }));
 }
 
 async function articleContext() {
