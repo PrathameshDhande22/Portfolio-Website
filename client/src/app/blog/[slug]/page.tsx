@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -5,7 +6,6 @@ import { LuArrowLeft } from "react-icons/lu";
 import {
   getBlogBySlug,
   getBlogContent,
-  getBlogIndex,
 } from "@/features/blog/service";
 import { ArticleToc } from "@/features/blog/components/article-toc";
 import { tocFromMarkdown } from "@/features/blog/lib/toc";
@@ -17,12 +17,7 @@ import { articleJsonLd, articleMetadata } from "@/lib/seo";
 import { getSiteSettings } from "@/features/site/service";
 import { getPageBySlug } from "@/features/page/service";
 import { JsonLd } from "@/features/shared/components/structured-data";
-
-export async function generateStaticParams() {
-  const blogs = await getBlogIndex();
-
-  return blogs.map((blog) => ({ slug: blog.slug }));
-}
+import ArticleLoading from "./loading";
 
 async function articleContext() {
   const [settings, listing] = await Promise.all([
@@ -49,9 +44,15 @@ export async function generateMetadata({
   return articleMetadata(blog, await articleContext());
 }
 
-export default async function BlogArticlePage({
-  params,
-}: PageProps<"/blog/[slug]">) {
+export default function BlogArticlePage({ params }: PageProps<"/blog/[slug]">) {
+  return (
+    <Suspense fallback={<ArticleLoading />}>
+      <Article params={params} />
+    </Suspense>
+  );
+}
+
+async function Article({ params }: { params: PageProps<"/blog/[slug]">["params"] }) {
   const { slug } = await params;
   const blog = await getBlogBySlug(slug);
 
