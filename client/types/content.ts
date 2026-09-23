@@ -110,6 +110,7 @@ export interface SiteSettings extends StrapiEntity {
   Email: string;
   AvailabilityStatus: string | null;
   Favicon: StrapiMedia | null;
+  Logo: StrapiMedia | null;
   AskAI: AskAi;
   Navigation: NavigationItem[];
   SocialLinks: SocialLink[];

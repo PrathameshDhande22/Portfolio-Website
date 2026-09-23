@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { archivo, interTight } from "@/lib/fonts";
 import { env } from "@/lib/env";
 import { resolveImage } from "@/lib/media";
@@ -59,6 +60,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           <ScrollProgress />
 
           <RailNav
+            logo={resolveImage(settings.Logo, 72)}
             siteName={settings.SiteName}
             designation={settings.Designation}
             availability={settings.AvailabilityStatus}
@@ -78,6 +80,8 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             />
           </div>
         </AppProviders>
+
+        {env.googleAnalyticsId ? <GoogleAnalytics gaId={env.googleAnalyticsId} /> : null}
       </body>
     </html>
   );

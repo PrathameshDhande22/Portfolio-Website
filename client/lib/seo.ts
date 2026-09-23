@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { resolveImage } from "@/lib/media";
 import type { Seo } from "@/types/components";
 import type { Blog } from "@/types/content";
+import { env } from "./env";
 
 interface ArticleContext {
   siteUrl: string;
@@ -13,19 +14,36 @@ interface ArticleContext {
 export function articleMetadata(blog: Blog, context: ArticleContext): Metadata {
   const url = `${context.siteUrl}/blog/${blog.Slug}`;
   const cover = resolveImage(blog.Thumbnail, 1200);
-  const description = blog.Description ?? `${blog.Title} — an article by ${context.author}.`;
-  const images = cover ? [{ url: cover.url, width: cover.width, height: cover.height, alt: blog.Title }] : undefined;
+  const description =
+    blog.Description ?? `${blog.Title} — an article by ${context.author}.`;
+  const images = cover
+    ? [
+        {
+          url: cover.url,
+          width: cover.width,
+          height: cover.height,
+          alt: blog.Title,
+        },
+      ]
+    : undefined;
 
   return {
     title: blog.Title,
     description,
-    keywords: [blog.Skill?.Name, context.siteName, "article"].filter(Boolean) as string[],
+    keywords: [blog.Skill?.Name, context.siteName, "article"].filter(
+      Boolean,
+    ) as string[],
     authors: [{ name: context.author }],
     alternates: { canonical: `/blog/${blog.Slug}` },
     robots: {
       index: true,
       follow: true,
-      googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
     openGraph: {
       type: "article",
@@ -39,6 +57,9 @@ export function articleMetadata(blog: Blog, context: ArticleContext): Metadata {
       tags: blog.Skill ? [blog.Skill.Name] : undefined,
       images,
     },
+    verification: {
+      google: env.googleVerification,
+    },
     twitter: {
       card: "summary_large_image",
       title: blog.Title,
@@ -50,7 +71,10 @@ export function articleMetadata(blog: Blog, context: ArticleContext): Metadata {
   };
 }
 
-export function articleJsonLd(blog: Blog, context: ArticleContext): Record<string, unknown> {
+export function articleJsonLd(
+  blog: Blog,
+  context: ArticleContext,
+): Record<string, unknown> {
   const cover = resolveImage(blog.Thumbnail, 1200);
 
   return {
@@ -62,16 +86,28 @@ export function articleJsonLd(blog: Blog, context: ArticleContext): Record<strin
     datePublished: blog.publishedAt ?? blog.createdAt,
     dateModified: blog.updatedAt,
     author: { "@type": "Person", name: context.author, url: context.siteUrl },
-    publisher: { "@type": "Person", name: context.siteName, url: context.siteUrl },
-    mainEntityOfPage: { "@type": "WebPage", "@id": `${context.siteUrl}/blog/${blog.Slug}` },
+    publisher: {
+      "@type": "Person",
+      name: context.siteName,
+      url: context.siteUrl,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${context.siteUrl}/blog/${blog.Slug}`,
+    },
     keywords: blog.Skill?.Name,
   };
 }
 
-export function pageMetadata(seo: Seo | null | undefined, canonical: string): Metadata {
+export function pageMetadata(
+  seo: Seo | null | undefined,
+  canonical: string,
+): Metadata {
   if (!seo) return {};
 
-  const [index, follow] = (seo.Robots ?? "index, follow").split(",").map((part) => part.trim());
+  const [index, follow] = (seo.Robots ?? "index, follow")
+    .split(",")
+    .map((part) => part.trim());
   const url = seo.CanonicalURL ?? canonical;
   const ogImage = resolveImage(seo.OpenGraph?.Image ?? null);
   const twitterImage = resolveImage(seo.TwitterCard?.Image ?? null);
@@ -88,9 +124,20 @@ export function pageMetadata(seo: Seo | null | undefined, canonical: string): Me
           description: seo.OpenGraph.Description ?? seo.MetaDescription,
           url: seo.OpenGraph.Url ?? url,
           type: seo.OpenGraph.Type ?? "website",
-          images: ogImage ? [{ url: ogImage.url, width: ogImage.width, height: ogImage.height }] : undefined,
+          images: ogImage
+            ? [
+                {
+                  url: ogImage.url,
+                  width: ogImage.width,
+                  height: ogImage.height,
+                },
+              ]
+            : undefined,
         }
       : undefined,
+    verification: {
+      google: env.googleVerification,
+    },
     twitter: seo.TwitterCard
       ? {
           card: seo.TwitterCard.CardType ?? "summary_large_image",
@@ -100,6 +147,5 @@ export function pageMetadata(seo: Seo | null | undefined, canonical: string): Me
           images: twitterImage ? [twitterImage.url] : undefined,
         }
       : undefined,
-      
   };
 }
