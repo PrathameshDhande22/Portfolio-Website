@@ -78,7 +78,7 @@ export function NotFoundView() {
         <Link href="/" className={buttonVariants({ variant: "primary" })}>
           Back home
         </Link>
-        <Link href="/blog" className={buttonVariants({ variant: "secondary" })}>
+        <Link href="/blogs" className={buttonVariants({ variant: "secondary" })}>
           Read the blog
         </Link>
       </motion.div>
