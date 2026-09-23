@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { archivo, interTight } from "@/lib/fonts";
@@ -59,16 +60,18 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <AppProviders>
           <ScrollProgress />
 
-          <RailNav
-            logo={resolveImage(settings.Logo, 72)}
-            siteName={settings.SiteName}
-            designation={settings.Designation}
-            availability={settings.AvailabilityStatus}
-            navigation={navigation}
-            social={social}
-            askAiLabel={settings.AskAI?.Enabled ? settings.AskAI.Text : null}
-            aiSettings={aiSettings}
-          />
+          <Suspense fallback={<div className="h-bar nav:fixed nav:inset-y-0 nav:h-auto nav:w-rail" />}>
+            <RailNav
+              logo={resolveImage(settings.Logo, 72)}
+              siteName={settings.SiteName}
+              designation={settings.Designation}
+              availability={settings.AvailabilityStatus}
+              navigation={navigation}
+              social={social}
+              askAiLabel={settings.AskAI?.Enabled ? settings.AskAI.Text : null}
+              aiSettings={aiSettings}
+            />
+          </Suspense>
 
           <div className="flex min-h-dvh flex-col pt-bar nav:ml-rail nav:pt-0">
             <main id="main" className="flex-1">
