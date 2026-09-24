@@ -3,6 +3,7 @@ import { IntroTile } from "./intro-tile";
 import { NowTile } from "./now-tile";
 import { OpenRolesTile } from "./open-roles-tile";
 import { ContributionTile } from "./contribution-tile";
+import { BlockRenderer } from "@/features/page/components/block-renderer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StructuredData } from "@/features/shared/components/structured-data";
 import { getSiteSettings } from "@/features/site/service";
@@ -10,6 +11,7 @@ import type { Page } from "@/types/content";
 
 export async function HomeRenderer({ page }: { page: Page }) {
   const hero = page.Content.find((block) => block.__component === "home.home-hero");
+  const blocks = page.Content.filter((block) => block.__component !== "home.home-hero");
   const settings = await getSiteSettings();
 
   return (
@@ -33,6 +35,12 @@ export async function HomeRenderer({ page }: { page: Page }) {
           </>
         ) : null}
       </div>
+
+      {blocks.length > 0 ? (
+        <div className="pb-[clamp(4rem,9vw,7rem)]">
+          <BlockRenderer content={blocks} />
+        </div>
+      ) : null}
     </div>
   );
 }
