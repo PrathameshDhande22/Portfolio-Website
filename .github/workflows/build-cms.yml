@@ -1,5 +1,5 @@
-name: Portfolio CMS Docker Image
-run-name: Build and Push Image to AWS ECR - ${{github.run_number}}
+name: Build CMS Image
+run-name: CMS ${{ inputs.version || github.ref_name }} → ECR (#${{ github.run_number }})
 on:
   workflow_dispatch:
     inputs:
