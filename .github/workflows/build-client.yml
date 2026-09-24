@@ -8,7 +8,7 @@ on:
         required: true
         type: string
   push:
-    tags: "*"
+    tags: "client-*"
 concurrency:
   group: portfolio-client
   cancel-in-progress: true

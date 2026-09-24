@@ -8,7 +8,7 @@ on:
         required: true
         type: string
   push:
-    tags: "*"
+    tags: "cms-*"
 concurrency:
   group: portfolio-cms
   cancel-in-progress: true
