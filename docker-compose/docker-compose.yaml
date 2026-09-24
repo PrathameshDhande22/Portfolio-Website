@@ -59,6 +59,47 @@ services:
       - proxy
       - pg-database
 
+  ai-assistant:
+    image: ${REGISTRY}/portfolio/ai-assistant:latest
+    container_name: ai-assistant
+    restart: unless-stopped
+    pull_policy: always
+    cpus: 0.4
+    mem_limit: 384m
+    mem_reservation: 256m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "2"
+    environment:
+      - ENVIRONMENT=production
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+      - OPENAI_API_VERSION=${OPENAI_API_VERSION}
+      - POSTGRES_CONNECTION_STRING=${POSTGRES_CONNECTION_STRING}
+      - STRAPI_API_URL=https://cms.prathameshdhande.com/api
+      - STRAPI_AUTH_TOKEN=${STRAPI_API_TOKEN}
+      - LANGSMITH_API_KEY=${LANGSMITH_API_KEY}
+      - LANGSMITH_TRACING=true
+      - LANGSMITH_PROJECT=Portfolio-AI-Assistant
+      - CLIENT_SECRET=${ASSISTANT_SECRET}
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.assistant.rule=Host(`assistant.prathameshdhande.com`)
+      - traefik.http.routers.assistant.entrypoints=https,http
+      - traefik.http.routers.assistant.tls=true
+      - traefik.http.routers.assistant.tls.certresolver=spaceship
+      - traefik.http.routers.assistant.middlewares=assistant-limit
+      - traefik.http.services.assistant-service.loadbalancer.server.port=8000
+      - traefik.http.routers.assistant.service=assistant-service
+    networks:
+      - proxy
+      - pg-database
+
 networks:
   proxy: 
     external: true
