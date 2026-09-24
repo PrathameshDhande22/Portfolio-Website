@@ -30,7 +30,7 @@ function Anchored({ children, className }: { children: ReactNode; className: str
 
 export const PROSE_COMPONENTS: Components = {
   p: ({ children }) => <p className="mb-4 last:mb-0">{children}</p>,
-  strong: ({ children }) => <strong className="font-semibold text-ink">{children}</strong>,
+  strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
   mark: ({ children }) => <mark className="rounded bg-accent-soft px-1 text-ink">{children}</mark>,
   a: ({ href, children }) => (
     <a href={href} className="text-accent underline underline-offset-2 hover:no-underline">
