@@ -34,7 +34,7 @@ export async function Markdown({ content, variant = "prose", className }: Markdo
     : [rehypeKatex];
 
   return (
-    <div className={`max-w-[68ch] text-[1rem] leading-[1.75] text-ink-2 ${className ?? ""}`}>
+    <div className={`pr-[clamp(0rem,5vw,5rem)] text-[1rem] leading-[1.75] text-ink-2 ${className ?? ""}`}>
       <ReactMarkdown
         remarkPlugins={REMARK}
         rehypePlugins={rehype}

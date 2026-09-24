@@ -2,7 +2,6 @@
 
 import { useEffect, useEffectEvent, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { LuMenu, LuX } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
@@ -10,7 +9,6 @@ import { Icon } from "@/features/shared/components/icon";
 import { ThemeToggle } from "@/features/shared/components/theme-toggle";
 import { AskAiLauncher } from "@/features/ai/components/ask-ai-launcher";
 import type { AiSettings } from "@/types/content";
-import type { ResolvedImage } from "@/lib/media";
 
 const MENU_ID = "rail-navigation";
 

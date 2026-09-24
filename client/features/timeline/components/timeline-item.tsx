@@ -23,7 +23,7 @@ export function TimelineItem({ entry }: { entry: TimeLineEntry }) {
       {entry.SubTitle ? (
         <div className="mb-[0.7rem] text-[0.8rem] font-medium text-ink-3">{entry.SubTitle}</div>
       ) : null}
-      <Markdown content={entry.Description} className="max-w-[62ch]" />
+      <Markdown content={entry.Description} />
       <TagList tags={tags} className="mt-3" />
     </Reveal>
   );
