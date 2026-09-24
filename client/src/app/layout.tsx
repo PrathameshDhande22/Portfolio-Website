@@ -62,7 +62,6 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
 
           <Suspense fallback={<div className="h-bar nav:fixed nav:inset-y-0 nav:h-auto nav:w-rail" />}>
             <RailNav
-              logo={resolveImage(settings.Logo, 72)}
               siteName={settings.SiteName}
               designation={settings.Designation}
               availability={settings.AvailabilityStatus}
