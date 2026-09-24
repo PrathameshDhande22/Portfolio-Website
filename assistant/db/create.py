@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 engine = create_async_engine(
     settings.postgres_connection_string,
-    echo=True,
+    echo=settings.environment == "development",
     pool_pre_ping=True,
 )
 

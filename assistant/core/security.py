@@ -91,7 +91,7 @@ async def is_daily_cap_reached() -> bool:
         used = (await session.exec(statement)).one()
 
     logger.info("Daily chat usage used=%d allowed=%d", used, allowed)
-    return used > allowed
+    return used >= allowed
 
 
 async def purge_nonces() -> None:
