@@ -96,6 +96,8 @@ services:
       - traefik.http.routers.assistant.middlewares=assistant-limit
       - traefik.http.services.assistant-service.loadbalancer.server.port=8000
       - traefik.http.routers.assistant.service=assistant-service
+    volumes:
+      - ./app.log:/app/app.log:rw
     networks:
       - proxy
       - pg-database

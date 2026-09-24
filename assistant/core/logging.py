@@ -1,4 +1,5 @@
 import logging
+from logging.handlers import RotatingFileHandler
 import sys
 
 
@@ -9,9 +10,11 @@ def setup_logging():
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setFormatter(formatter)
 
-    file_handler = logging.FileHandler(
+    file_handler = RotatingFileHandler(
         "app.log",
-        encoding="utf-8",
+        maxBytes=1024*1024*5,  # 5MB
+        backupCount=0,
+        encoding="utf-8"
     )
     file_handler.setFormatter(formatter)
 
