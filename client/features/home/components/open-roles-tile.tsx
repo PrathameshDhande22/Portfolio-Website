@@ -10,7 +10,7 @@ export function OpenRolesTile({ hero, email }: OpenRolesTileProps) {
   if (!hero.OpentonewRolesText) return null;
 
   return (
-    <Tile className="self-start border-transparent bg-ink text-paper hover:border-transparent wide:col-span-2">
+    <Tile className="self-start border-transparent bg-slab-accent text-slab-accent-ink hover:border-transparent wide:col-span-2">
       <h2 className="mb-[0.35rem] font-display text-[1.15rem] leading-[1.15] font-semibold tracking-[-0.02em] text-inherit">
         {hero.OpentonewRolesText}
       </h2>
