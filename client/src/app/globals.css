@@ -56,13 +56,13 @@
 }
 
 :root {
-    --paper: #f7f6f2;
-    --surface: #ffffff;
-    --surface-2: #f0eee8;
-    --ink: #33322e;
-    --ink-2: #6f6d66;
-    --ink-3: #9c998f;
-    --line: #e4e1d9;
+    --paper: #edeae1;
+    --surface: #f5f2ea;
+    --surface-2: #e4e0d6;
+    --ink: #3b3a34;
+    --ink-2: #5c5b55;
+    --ink-3: #81807a;
+    --line: #dad5c9;
     --accent: #485824;
     --accent-ink: #ffffff;
     --accent-soft: #ecefe1;
