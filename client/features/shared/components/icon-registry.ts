@@ -46,7 +46,6 @@ import {
   SiRedis,
   SiRedux,
   SiScikitlearn,
-  SiSharp,
   SiSpring,
   SiSqlite,
   SiStrapi,
@@ -57,6 +56,29 @@ import {
   SiVite,
   SiVuedotjs,
   SiHackerrank,
+  SiGnubash,
+  SiRecoil,
+  SiAxios,
+  SiLangchaincorporate,
+  SiNginx,
+  SiLanggraph,
+  SiPodman,
+  SiUbuntu,
+  SiTraefikproxy,
+  SiIntellijidea,
+  SiEclipseide,
+  SiRstudioide,
+  SiNuget,
+  SiPoetry,
+  SiYarn,
+  SiNpm,
+  SiUv,
+  SiZod,
+  SiAntdesign,
+  SiGooglegemini,
+  SiIonic,
+  SiPydantic,
+  SiSqlalchemy
 } from "react-icons/si";
 import {
   FaBehance,
@@ -73,7 +95,9 @@ import {
   FaXTwitter,
   FaYoutube,
 } from "react-icons/fa6";
-import { FaLinkedinIn } from "react-icons/fa";
+import { BsWindows } from "react-icons/bs";
+import { FaAws, FaLinkedinIn } from "react-icons/fa";
+import { VscMcp, VscVscode } from "react-icons/vsc";
 import {
   LuArrowLeft,
   LuArrowRight,
@@ -93,8 +117,11 @@ import {
   LuSun,
   LuX,
 } from "react-icons/lu";
+import { TbBrandAdobePhotoshop, TbBrandAdobePremiere, TbBrandCSharp } from "react-icons/tb";
+import { DiDotnet, DiVim, DiVisualstudio } from "react-icons/di";
 
 export const ICON_REGISTRY: Record<string, IconType> = {
+  SiGnubash,
   SiAngular,
   SiApachemaven,
   SiBootstrap,
@@ -142,7 +169,8 @@ export const ICON_REGISTRY: Record<string, IconType> = {
   SiRedis,
   SiRedux,
   SiScikitlearn,
-  SiSharp,
+  TbBrandCSharp,
+  SiRecoil,
   SiSpring,
   SiSqlite,
   SiStrapi,
@@ -152,6 +180,36 @@ export const ICON_REGISTRY: Record<string, IconType> = {
   SiTypescript,
   SiVite,
   SiVuedotjs,
+  SiAxios,
+  FaAws,
+  SiLangchaincorporate,
+  SiNginx,
+  SiLanggraph,
+  SiPodman,
+  SiUbuntu,
+  SiTraefikproxy,
+  BsWindows,
+  SiIntellijidea,
+  SiEclipseide,
+  TbBrandAdobePhotoshop,
+  TbBrandAdobePremiere,
+  SiRstudioide,
+  SiNuget,
+  SiPoetry,
+  SiYarn,
+  SiNpm,
+  SiUv,
+  DiVim,
+  DiVisualstudio,
+  SiZod,
+  SiAntdesign,
+  VscMcp,
+  SiGooglegemini,
+  SiIonic,
+  SiPydantic,
+  DiDotnet,
+  SiSqlalchemy,
+  VscVscode,
 
   FaBehance,
   FaCodepen,
