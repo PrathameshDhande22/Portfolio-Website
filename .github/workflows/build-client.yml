@@ -75,6 +75,7 @@ jobs:
             VERSION=${{inputs.version || github.ref_name}}
             GIT_SHA=${{github.sha}}
             BASE_URL=${{vars.BASE_URL}}
+            MEDIA_URL=${{vars.MEDIA_URL}}
 
       - name: Success Build
         id: success

@@ -76,7 +76,6 @@ services:
       - BASE_URL=https://cms.prathameshdhande.com/api
       - API_TOKEN=${STRAPI_API_TOKEN}
       - SITE_URL=https://prathameshdhande.com
-      - MEDIA_URL=${AWS_ENDPOINT}
       - GITHUB_TOKEN=${GITHUB_TOKEN}
       - REVALIDATE_SECRET=${REVALIDATE_SECRET}
       - ASSISTANT_URL=https://assistant.prathameshdhande.com
