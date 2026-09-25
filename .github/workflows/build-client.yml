@@ -65,6 +65,8 @@ jobs:
           context: ./client
           secret-envs: |
             api_token=API_TOKEN
+          cache-from: type=gha,scope=portfolio-client
+          cache-to: type=gha,mode=max,scope=portfolio-client
           build-args: |
             BUILD_DATE=${{needs.build-date.outputs.image-build-date}}
             VERSION=${{inputs.version || github.ref_name}}
