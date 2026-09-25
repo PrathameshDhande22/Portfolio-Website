@@ -33,7 +33,7 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_BUCKET=${AWS_BUCKET_NAME}
       - AWS_ENDPOINT=${AWS_ENDPOINT}
-      - ASSISTANT_URL=https://ai-assistant.prathameshdhande.com
+      - ASSISTANT_URL=https://assistant.prathameshdhande.com
       - ASSISTANT_SECRET=${ASSISTANT_SECRET}
       - CLIENT_URL=https://prathameshdhande.com
       - REVALIDATE_SECRET=${REVALIDATE_SECRET}
@@ -48,7 +48,7 @@ services:
       - traefik.enable=true
       - traefik.docker.network=proxy
       - traefik.http.routers.strapi.rule=Host(`cms.prathameshdhande.com`)
-      - traefik.http.routers.strapi.entrypoints=https,http
+      - traefik.http.routers.strapi.entrypoints=https
       - traefik.http.routers.strapi.tls=true
       - traefik.http.routers.strapi.tls.certresolver=spaceship
       - traefik.http.routers.strapi.middlewares=strapi-limit
@@ -59,8 +59,46 @@ services:
       - proxy
       - pg-database
 
+  client:
+    container_name: portfolio-client
+    image: ${REGISTRY}/portfolio/portfolio-client:latest
+    restart: unless-stopped
+    pull_policy: always
+    cpus: 0.5
+    mem_limit: 384m
+    mem_reservation: 320m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "2"
+    environment:
+      - BASE_URL=https://cms.prathameshdhande.com/api
+      - API_TOKEN=${STRAPI_API_TOKEN}
+      - SITE_URL=https://prathameshdhande.com
+      - MEDIA_URL=${AWS_ENDPOINT}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - REVALIDATE_SECRET=${REVALIDATE_SECRET}
+      - ASSISTANT_URL=https://assistant.prathameshdhande.com
+      - ASSISTANT_SECRET=${ASSISTANT_SECRET}
+      - GOOGLE_VERIFICATION=${GOOGLE_SITE_VERIFICATION}
+      - GA_MEASUREMENT_ID=${GA_MEASUREMENT_ID}
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.client.rule=Host(`prathameshdhande.com`) || Host(`www.prathameshdhande.com`)
+      - traefik.http.routers.client.entrypoints=https
+      - traefik.http.routers.client.tls=true
+      - traefik.http.routers.client.tls.certresolver=spaceship
+      - traefik.http.routers.client.tls.domains[0].main=prathameshdhande.com
+      - traefik.http.routers.client.tls.domains[0].sans=www.prathameshdhande.com
+      - traefik.http.services.portfolio-client-service.loadbalancer.server.port=3000
+      - traefik.http.routers.client.service=portfolio-client-service
+    networks:
+      - proxy
+
 networks:
-  proxy: 
+  proxy:
     external: true
   pg-database:
     external: true
