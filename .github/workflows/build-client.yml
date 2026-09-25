@@ -64,7 +64,7 @@ jobs:
             ${{secrets.ECR_REGISTRY}}/portfolio/portfolio-client:latest
           context: ./client
           secret-envs: |
-            API_TOKEN=API_TOKEN
+            api_token=API_TOKEN
           build-args: |
             BUILD_DATE=${{needs.build-date.outputs.image-build-date}}
             VERSION=${{inputs.version || github.ref_name}}
