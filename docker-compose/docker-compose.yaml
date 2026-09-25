@@ -134,7 +134,7 @@ services:
       - traefik.http.services.assistant-service.loadbalancer.server.port=8000
       - traefik.http.routers.assistant.service=assistant-service
     volumes:
-      - ./app.log:/app/app.log:rw
+      - ./logs:/app/logs:rw
     networks:
       - proxy
       - pg-database

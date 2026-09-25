@@ -11,9 +11,9 @@ def setup_logging():
     console_handler.setFormatter(formatter)
 
     file_handler = RotatingFileHandler(
-        "app.log",
+        "logs/app.log",
         maxBytes=1024*1024*5,  # 5MB
-        backupCount=0,
+        backupCount=1,
         encoding="utf-8"
     )
     file_handler.setFormatter(formatter)
