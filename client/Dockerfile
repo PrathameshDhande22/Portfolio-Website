@@ -8,6 +8,8 @@ FROM node:24.20.0-alpine AS builder
 WORKDIR /app
 
 ARG BASE_URL
+ARG MEDIA_URL
+ENV MEDIA_URL=${MEDIA_URL}
 
 ENV NEXT_TELEMETRY_DISABLED=1 \
     NODE_ENV=production \
@@ -25,8 +27,6 @@ WORKDIR /app
 ARG BUILD_DATE
 ARG GIT_SHA
 ARG VERSION
-ARG MEDIA_URL
-ENV MEDIA_URL=${MEDIA_URL}
 
 LABEL org.opencontainers.image.created="${BUILD_DATE}" \
     org.opencontainers.image.authors="prathamesh Dhande" \
