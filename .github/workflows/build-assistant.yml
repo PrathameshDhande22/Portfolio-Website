@@ -1,0 +1,88 @@
+name: Build Assistant Image
+run-name: Assistant ${{ inputs.version || github.ref_name }} → ECR (#${{ github.run_number }})
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version of the Portfolio Assistant to deploy
+        required: true
+        type: string
+  push:
+    tags: "assistant-*"
+concurrency:
+  group: portfolio-assistant
+  cancel-in-progress: true
+env:
+  APPLICATION_VERSION: ${{inputs.version || github.ref_name}}
+jobs:
+  build-date:
+    name: Generate Build Date for Image
+    runs-on: ubuntu-latest
+    outputs:
+      image-build-date: ${{steps.build-date.outputs.BUILD_DATE}}
+    steps:
+      - name: Generate build date
+        id: build-date
+        run: |
+          BUILD_DATE=$(date -u +"%Y-%m-%d")
+          echo "BUILD_DATE=$BUILD_DATE"
+          echo "BUILD_DATE=$BUILD_DATE" >> "$GITHUB_OUTPUT"
+  build-image:
+    name: Build and Push Image to AWS ECR
+    needs: [build-date]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Login to AWS
+        id: login-aws
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-region: ap-south-1
+          aws-access-key-id: ${{secrets.AWS_KEY}}
+          aws-secret-access-key: ${{secrets.AWS_KEY_SECRET}}
+
+      - name: Login in to AWS ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          mask-password: true
+          registry-type: private
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build and Push the Image to ECR
+        id: build-push-image
+        uses: docker/build-push-action@v7
+        env:
+          DOCKER_BUILD_RECORD_UPLOAD: false
+          DOCKER_BUILD_SUMMARY: false
+          API_TOKEN: ${{secrets.STRAPI_API_TOKEN}}
+        with:
+          push: true
+          tags: |
+            ${{secrets.ECR_REGISTRY}}/portfolio/ai-assistant:${{env.APPLICATION_VERSION}}
+            ${{secrets.ECR_REGISTRY}}/portfolio/ai-assistant:latest
+          context: ./assistant
+          cache-from: type=gha,scope=portfolio-assistant
+          cache-to: type=gha,mode=max,scope=portfolio-assistant
+          provenance: false
+          sbom: false
+          build-args: |
+            BUILD_DATE=${{needs.build-date.outputs.image-build-date}}
+            VERSION=${{inputs.version || github.ref_name}}
+            GIT_SHA=${{github.sha}}
+
+      - name: Success Build
+        id: success
+        run: |
+          echo "## Portfolio Assistant Docker Image" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Portfolio Assistant Docker image built and pushed successfully using GitHub Actions." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Build Details" >> $GITHUB_STEP_SUMMARY
+          echo "- **Image:** Portfolio Assistant" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ✅ Successful" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** ${{ env.APPLICATION_VERSION }}" >> $GITHUB_STEP_SUMMARY

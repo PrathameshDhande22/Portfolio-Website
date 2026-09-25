@@ -25,7 +25,7 @@ PlannerAction = Literal["respond", "retrieve"]
 
 class ChatMessage(BaseModel):
     role: ChatRole = Field(description="Who wrote the message, only human or assistant")
-    content: str = Field(min_length=1, description="Message text")
+    content: str = Field(min_length=1, max_length=4000, description="Message text")
 
 
 class ChatRequest(BaseModel):
@@ -33,7 +33,9 @@ class ChatRequest(BaseModel):
         default=None, description="Conversation id, generated when the client has none"
     )
     messages: List[ChatMessage] = Field(
-        min_length=1, description="Full conversation, oldest first, ending with a human turn"
+        min_length=1,
+        max_length=40,
+        description="Full conversation, oldest first, ending with a human turn",
     )
 
 

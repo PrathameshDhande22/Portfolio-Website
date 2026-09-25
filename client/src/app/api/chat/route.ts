@@ -37,6 +37,13 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  if (
+    ask.messages.length > 40 ||
+    ask.messages.some((turn) => typeof turn.content !== "string" || turn.content.length > 4000)
+  ) {
+    return NextResponse.json({ error: "That conversation is too long" }, { status: 413 });
+  }
+
   if (isDuplicate(ask.requestId)) {
     return NextResponse.json(
       { error: "Request already sent" },
