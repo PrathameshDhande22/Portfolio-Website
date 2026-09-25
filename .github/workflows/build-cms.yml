@@ -50,6 +50,9 @@ jobs:
           mask-password: true
           registry-type: private
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
       - name: Build and Push the Image to ECR
         id: build-push-image
         uses: docker/build-push-action@v7
@@ -62,6 +65,10 @@ jobs:
             ${{secrets.ECR_REGISTRY}}/portfolio/strapi-cms:${{env.APPLICATION_VERSION}}
             ${{secrets.ECR_REGISTRY}}/portfolio/strapi-cms:latest
           context: ./cms
+          cache-from: type=gha,scope=portfolio-cms
+          cache-to: type=gha,mode=max,scope=portfolio-cms
+          provenance: false
+          sbom: false
           build-args: |
             BUILD_DATE=${{needs.build-date.outputs.image-build-date}}
             VERSION=${{inputs.version || github.ref_name}}
