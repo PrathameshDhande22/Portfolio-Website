@@ -17,7 +17,7 @@ from langchain_core.runnables import (
 )
 
 from core import is_daily_cap_reached
-from db import ChatUsage, session_scope
+from db import ChatUsage, session_scope, utcnow
 from embedding import get_vector_store
 from llm import get_chat_model
 from models import (
@@ -247,6 +247,7 @@ async def _build_chain(settings: LLMSettings) -> Runnable[ChatState, AIMessageCh
             sections.append(f"## Reference material\n\n{passages}")
 
         context = "\n\n".join(sections) or "No portfolio data matched this question."
+        context = f"Today is {utcnow():%d %B %Y}.\n\n{context}"
         logger.info(
             "Context built sections=%d characters=%d", len(sections), len(context)
         )
