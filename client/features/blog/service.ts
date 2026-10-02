@@ -10,7 +10,7 @@ export interface BlogIndexEntry {
   updatedAt: string;
 }
 
-const LIST_POPULATE = { Thumbnail: true, Skill: true };
+const LIST_POPULATE = { Thumbnail: true, Skill: true, BlogContent: { fields: ["id"] } };
 
 export async function getBlogs(page = 1, pageSize = BLOG_PAGE_SIZE): Promise<Paginated<Blog>> {
   "use cache";
@@ -41,9 +41,10 @@ export async function getBlogIndex(): Promise<BlogIndexEntry[]> {
   const blogs = await findAll<Blog>(ENDPOINT.blogs, {
     fields: ["Slug", "updatedAt"],
     sort: ["createdAt:desc"],
+    populate: { BlogContent: { fields: ["id"] } },
   });
 
-  return blogs.map((blog) => ({ slug: blog.Slug, updatedAt: blog.updatedAt }));
+  return blogs.filter((blog) => blog.BlogContent != null).map((blog) => ({ slug: blog.Slug, updatedAt: blog.updatedAt }));
 }
 
 export async function getBlogBySlug(slug: string): Promise<Blog | null> {
