@@ -1,6 +1,6 @@
 import "./globals.css";
 import { Suspense } from "react";
-import type { Metadata } from "next";
+import type { Metadata, Instant } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { archivo, interTight } from "@/lib/fonts";
 import { env } from "@/lib/env";
@@ -12,6 +12,8 @@ import { RailNav } from "@/features/site/components/rail-nav";
 import { SiteFooter } from "@/features/site/components/site-footer";
 import { ScrollProgress } from "@/features/site/components/scroll-progress";
 import { cn } from "@/lib/utils";
+
+export const instant: Instant = true;
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
@@ -60,7 +62,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <AppProviders>
           <ScrollProgress />
 
-          <Suspense fallback={<div className="h-bar nav:fixed nav:inset-y-0 nav:h-auto nav:w-rail" />}>
+          <Suspense
+            fallback={
+              <div className="h-bar nav:fixed nav:inset-y-0 nav:h-auto nav:w-rail" />
+            }
+          >
             <RailNav
               siteName={settings.SiteName}
               designation={settings.Designation}
@@ -83,7 +89,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           </div>
         </AppProviders>
 
-        {env.googleAnalyticsId ? <GoogleAnalytics gaId={env.googleAnalyticsId} /> : null}
+        {env.googleAnalyticsId ? (
+          <GoogleAnalytics gaId={env.googleAnalyticsId} />
+        ) : null}
       </body>
     </html>
   );

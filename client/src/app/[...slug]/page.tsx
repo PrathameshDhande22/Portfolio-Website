@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Instant } from "next";
 import { notFound } from "next/navigation";
 import { getPageBySlug, getPageSlugs } from "@/features/page/service";
 import { PageRenderer } from "@/features/page/components/page-renderer";
 import { pageMetadata } from "@/lib/seo";
+
+export const instant: Instant = true;
 
 function toSlug(segments: string[]): string | null {
   return segments.length === 1 && segments[0] !== "home" ? segments[0] : null;

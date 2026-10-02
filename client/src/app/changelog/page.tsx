@@ -1,9 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Instant } from "next";
 import { getVersions } from "@/features/version/service";
 import { SectionLabel } from "@/features/shared/components/section-label";
 import { Markdown } from "@/features/shared/components/markdown";
 import { Reveal } from "@/features/shared/components/reveal";
 import { formatDate } from "@/lib/format";
+
+export const instant: Instant = true;
 
 export const metadata: Metadata = {
   title: "Changelog",

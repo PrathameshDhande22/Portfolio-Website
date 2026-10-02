@@ -1,12 +1,9 @@
 import { Suspense } from "react";
-import type { Metadata } from "next";
+import type { Metadata, Instant } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LuArrowLeft } from "react-icons/lu";
-import {
-  getBlogBySlug,
-  getBlogContent,
-} from "@/features/blog/service";
+import { getBlogBySlug, getBlogContent } from "@/features/blog/service";
 import { ArticleToc } from "@/features/blog/components/article-toc";
 import { tocFromMarkdown } from "@/features/blog/lib/toc";
 import { Markdown } from "@/features/shared/components/markdown";
@@ -18,6 +15,8 @@ import { getSiteSettings } from "@/features/site/service";
 import { getPageBySlug } from "@/features/page/service";
 import { JsonLd } from "@/features/shared/components/structured-data";
 import ArticleLoading from "./loading";
+
+export const instant: Instant = true;
 
 async function articleContext() {
   const [settings, listing] = await Promise.all([
@@ -52,7 +51,11 @@ export default function BlogArticlePage({ params }: PageProps<"/blog/[slug]">) {
   );
 }
 
-async function Article({ params }: { params: PageProps<"/blog/[slug]">["params"] }) {
+async function Article({
+  params,
+}: {
+  params: PageProps<"/blog/[slug]">["params"];
+}) {
   const { slug } = await params;
   const blog = await getBlogBySlug(slug);
 
