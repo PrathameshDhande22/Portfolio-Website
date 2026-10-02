@@ -3,10 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LuArrowLeft } from "react-icons/lu";
-import {
-  getBlogBySlug,
-  getBlogContent,
-} from "@/features/blog/service";
+import { getBlogBySlug, getBlogContent } from "@/features/blog/service";
 import { ArticleToc } from "@/features/blog/components/article-toc";
 import { tocFromMarkdown } from "@/features/blog/lib/toc";
 import { Markdown } from "@/features/shared/components/markdown";
@@ -52,11 +49,15 @@ export default function BlogArticlePage({ params }: PageProps<"/blog/[slug]">) {
   );
 }
 
-async function Article({ params }: { params: PageProps<"/blog/[slug]">["params"] }) {
+async function Article({
+  params,
+}: {
+  params: PageProps<"/blog/[slug]">["params"];
+}) {
   const { slug } = await params;
   const blog = await getBlogBySlug(slug);
 
-  if (!blog) notFound();
+  if (!blog || !blog.BlogContent) notFound();
 
   const [content, context] = await Promise.all([
     getBlogContent(slug),
@@ -72,7 +73,8 @@ async function Article({ params }: { params: PageProps<"/blog/[slug]">["params"]
         <header className="mb-10">
           <p className="mb-6">
             <Link
-              href="/blog"
+              href="/blogs"
+              prefetch={true}
               className="inline-flex items-center gap-2 text-[0.82rem] font-semibold text-ink-2 no-underline transition-colors hover:text-accent"
             >
               <LuArrowLeft className="size-3.5" aria-hidden />

@@ -10,7 +10,7 @@ export interface BlogIndexEntry {
   updatedAt: string;
 }
 
-const LIST_POPULATE = { Thumbnail: true, Skill: true };
+const LIST_POPULATE = { Thumbnail: true, Skill: true, BlogContent: { fields: ["id"] } };
 
 export async function getBlogs(page = 1, pageSize = BLOG_PAGE_SIZE): Promise<Paginated<Blog>> {
   "use cache";
