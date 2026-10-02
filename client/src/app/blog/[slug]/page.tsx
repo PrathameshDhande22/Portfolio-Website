@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import type { Metadata } from "next";
+import type { Metadata, Instant } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LuArrowLeft } from "react-icons/lu";
@@ -15,6 +15,8 @@ import { getSiteSettings } from "@/features/site/service";
 import { getPageBySlug } from "@/features/page/service";
 import { JsonLd } from "@/features/shared/components/structured-data";
 import ArticleLoading from "./loading";
+
+export const instant: Instant = true;
 
 async function articleContext() {
   const [settings, listing] = await Promise.all([

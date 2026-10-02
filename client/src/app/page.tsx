@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Instant } from "next";
 import { notFound } from "next/navigation";
 import { getPageBySlug } from "@/features/page/service";
 import { HomeRenderer } from "@/features/home/components/home-renderer";
 import { pageMetadata } from "@/lib/seo";
+
+export const instant: Instant = true;
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPageBySlug("home");

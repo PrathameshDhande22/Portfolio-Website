@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   output: "standalone",
   cacheComponents: true,
   reactCompiler: true,
+  partialPrefetching: true,
   turbopack: { root: __dirname },
   images: {
     dangerouslyAllowLocalIP: process.env.NODE_ENV !== "production",

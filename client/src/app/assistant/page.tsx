@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Instant } from "next";
 import { getAiSettings } from "@/features/ai/service";
 import { getSiteSettings } from "@/features/site/service";
 import { SectionLabel } from "@/features/shared/components/section-label";
+
+export const instant: Instant = true;
 
 export async function generateMetadata(): Promise<Metadata> {
   const ai = await getAiSettings();
@@ -14,7 +16,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AssistantPage() {
-  const [ai, settings] = await Promise.all([getAiSettings(), getSiteSettings()]);
+  const [ai, settings] = await Promise.all([
+    getAiSettings(),
+    getSiteSettings(),
+  ]);
 
   return (
     <div className="mx-auto max-w-wrap px-pad pb-[clamp(4rem,9vw,7rem)]">

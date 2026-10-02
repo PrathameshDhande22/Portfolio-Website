@@ -118,7 +118,7 @@ import {
   LuX,
 } from "react-icons/lu";
 import { TbBrandAdobePhotoshop, TbBrandAdobePremiere, TbBrandCSharp } from "react-icons/tb";
-import { DiDotnet, DiVim, DiVisualstudio } from "react-icons/di";
+import { DiDotnet, DiMsqlServer, DiVim, DiVisualstudio } from "react-icons/di";
 
 export const ICON_REGISTRY: Record<string, IconType> = {
   SiGnubash,
@@ -201,6 +201,7 @@ export const ICON_REGISTRY: Record<string, IconType> = {
   SiUv,
   DiVim,
   DiVisualstudio,
+  DiMsqlServer,
   SiZod,
   SiAntdesign,
   VscMcp,
