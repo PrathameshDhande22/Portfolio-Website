@@ -41,9 +41,10 @@ export async function getBlogIndex(): Promise<BlogIndexEntry[]> {
   const blogs = await findAll<Blog>(ENDPOINT.blogs, {
     fields: ["Slug", "updatedAt"],
     sort: ["createdAt:desc"],
+    populate: { BlogContent: { fields: ["id"] } },
   });
 
-  return blogs.map((blog) => ({ slug: blog.Slug, updatedAt: blog.updatedAt }));
+  return blogs.filter((blog) => blog.BlogContent != null).map((blog) => ({ slug: blog.Slug, updatedAt: blog.updatedAt }));
 }
 
 export async function getBlogBySlug(slug: string): Promise<Blog | null> {

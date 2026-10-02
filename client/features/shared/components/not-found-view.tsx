@@ -16,7 +16,13 @@ export function NotFoundView() {
   const still = useReducedMotion() ?? false;
 
   const step = (index: number) =>
-    still ? {} : { initial: { opacity: 0, y: 8 }, animate: { opacity: 1, y: 0 }, transition: { delay: index * 0.09 } };
+    still
+      ? {}
+      : {
+          initial: { opacity: 0, y: 8 },
+          animate: { opacity: 1, y: 0 },
+          transition: { delay: index * 0.09 },
+        };
 
   return (
     <div className="mx-auto flex max-w-wrap flex-col items-start px-pad py-[clamp(3rem,8vw,6rem)]">
@@ -32,11 +38,16 @@ export function NotFoundView() {
         {...step(1)}
         className="mb-2 font-display text-[clamp(4rem,16vw,9rem)] leading-[0.9] font-bold tracking-[-0.06em] text-ink"
       >
-        <span className="text-accent">4</span>0<span className="text-accent">4</span>
+        <span className="text-accent">4</span>0
+        <span className="text-accent">4</span>
       </motion.h1>
 
-      <motion.p {...step(2)} className="mb-8 max-w-[46ch] text-[1.05rem] leading-[1.65] text-ink-2">
-        That route never resolved. It may have been renamed, unpublished, or never existed.
+      <motion.p
+        {...step(2)}
+        className="mb-8 max-w-[46ch] text-[1.05rem] leading-[1.65] text-ink-2"
+      >
+        That route never resolved. It may have been renamed, unpublished, or
+        never existed.
       </motion.p>
 
       <motion.div
@@ -44,7 +55,9 @@ export function NotFoundView() {
         className="mb-8 w-full max-w-[64ch] overflow-hidden rounded-tile border border-line bg-surface font-mono text-[0.82rem] leading-[1.9]"
       >
         <div className="flex items-center gap-2 border-b border-line bg-surface-2 px-4 py-2">
-          <span className="text-[0.72rem] tracking-[0.06em] text-ink-3 uppercase">stack trace</span>
+          <span className="text-[0.72rem] tracking-[0.06em] text-ink-3 uppercase">
+            stack trace
+          </span>
         </div>
 
         <div className="overflow-x-auto px-4 py-3 whitespace-nowrap">
@@ -63,23 +76,29 @@ export function NotFoundView() {
           {TRACE.map((line, index) => (
             <motion.div
               key={line.where}
-              {...(still ? {} : { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { delay: 0.5 + index * 0.12 } })}
+              {...(still
+                ? {}
+                : {
+                    initial: { opacity: 0 },
+                    animate: { opacity: 1 },
+                    transition: { delay: 0.5 + index * 0.12 },
+                  })}
               className="pl-4 text-ink-3"
             >
               {line.at} <span className="text-ink-2">({line.where})</span>
             </motion.div>
           ))}
 
-          <span className="inline-block h-4 w-2 translate-y-0.5 animate-blink bg-accent" aria-hidden />
+          <span
+            className="inline-block h-4 w-2 translate-y-0.5 animate-blink bg-accent"
+            aria-hidden
+          />
         </div>
       </motion.div>
 
       <motion.div {...step(4)} className="flex flex-wrap gap-[0.6rem]">
         <Link href="/" className={buttonVariants({ variant: "primary" })}>
           Back home
-        </Link>
-        <Link href="/blogs" className={buttonVariants({ variant: "secondary" })}>
-          Read the blog
         </Link>
       </motion.div>
     </div>
