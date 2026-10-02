@@ -68,8 +68,8 @@ jobs:
           context: ./client
           secret-envs: |
             api_token=API_TOKEN
-          cache-from: type=gha,scope=portfolio-client
-          cache-to: type=gha,mode=max,scope=portfolio-client
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           provenance: false
           sbom: false
           build-args: |

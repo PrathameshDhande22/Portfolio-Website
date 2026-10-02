@@ -66,8 +66,8 @@ jobs:
             ${{secrets.ECR_REGISTRY}}/portfolio/ai-assistant:${{env.APPLICATION_VERSION}}
             ${{secrets.ECR_REGISTRY}}/portfolio/ai-assistant:latest
           context: ./assistant
-          cache-from: type=gha,scope=portfolio-assistant
-          cache-to: type=gha,mode=max,scope=portfolio-assistant
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           provenance: false
           sbom: false
           build-args: |

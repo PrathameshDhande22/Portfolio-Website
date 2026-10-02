@@ -65,8 +65,8 @@ jobs:
             ${{secrets.ECR_REGISTRY}}/portfolio/strapi-cms:${{env.APPLICATION_VERSION}}
             ${{secrets.ECR_REGISTRY}}/portfolio/strapi-cms:latest
           context: ./cms
-          cache-from: type=gha,scope=portfolio-cms
-          cache-to: type=gha,mode=max,scope=portfolio-cms
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           provenance: false
           sbom: false
           build-args: |
