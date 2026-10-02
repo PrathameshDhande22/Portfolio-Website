@@ -9,11 +9,13 @@ WORKDIR /app
 
 ARG BASE_URL
 ARG MEDIA_URL
-ENV MEDIA_URL=${MEDIA_URL}
+ARG SITE_URL
 
 ENV NEXT_TELEMETRY_DISABLED=1 \
     NODE_ENV=production \
-    BASE_URL=$BASE_URL
+    BASE_URL=$BASE_URL \
+    SITE_URL=${SITE_URL} \
+    MEDIA_URL=${MEDIA_URL}
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
