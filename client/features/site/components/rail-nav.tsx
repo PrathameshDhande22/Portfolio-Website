@@ -56,12 +56,17 @@ export function RailNav({
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 flex h-bar w-full items-center gap-4 overflow-visible border-b border-line bg-surface px-pad nav:inset-y-0 nav:right-auto nav:h-auto nav:w-rail nav:flex-col nav:items-stretch nav:gap-7 nav:overflow-y-auto nav:border-r nav:border-b-0 nav:px-6 nav:py-8 nav:scrollbar-none nav:[&::-webkit-scrollbar]:hidden">
-      <Link href="/" className="mr-auto flex min-w-0 items-center gap-2.5 no-underline nav:mr-0">
+      <Link
+        href="/"
+        className="mr-auto flex min-w-0 items-center gap-2.5 no-underline nav:mr-0"
+      >
         <span className="min-w-0">
           <span className="block font-display text-[0.82rem] leading-[1.1] font-semibold tracking-[-0.02em] max-ask:text-[0.76rem] nav:text-[1.15rem] nav:leading-[1.15]">
             {siteName}
           </span>
-          <span className="mt-[0.3rem] hidden text-[0.8rem] text-ink-2 nav:block">{designation}</span>
+          <span className="mt-[0.3rem] hidden text-[0.8rem] text-ink-2 nav:block">
+            {designation}
+          </span>
         </span>
       </Link>
 
@@ -78,10 +83,13 @@ export function RailNav({
             <Link
               key={item.href}
               href={item.href}
+              prefetch={true}
               aria-current={current ? "page" : undefined}
               onClick={() => setOpen(false)}
               className={`relative flex items-center rounded-md py-[0.65rem] pl-[0.9rem] text-[0.92rem] no-underline transition-[color,padding-left] duration-200 ease-smooth before:absolute before:top-1/2 before:left-0 before:w-0.75 before:-translate-y-1/2 before:rounded-[3px] before:bg-accent before:transition-[height] before:duration-200 before:ease-smooth before:content-[''] hover:pl-[1.15rem] hover:text-ink hover:before:h-[55%] nav:py-2 ${
-                current ? "font-semibold text-ink before:h-full" : "font-medium text-ink-2 before:h-0"
+                current
+                  ? "font-semibold text-ink before:h-full"
+                  : "font-medium text-ink-2 before:h-0"
               }`}
             >
               {item.title}
@@ -107,7 +115,11 @@ export function RailNav({
                   rel="noopener noreferrer"
                   className="block text-ink-3 transition-[color,transform] duration-200 ease-smooth hover:-translate-y-0.5 hover:text-accent"
                 >
-                  <Icon name={item.icon} platform={item.platform} className="block size-4.25" />
+                  <Icon
+                    name={item.icon}
+                    platform={item.platform}
+                    className="block size-4.25"
+                  />
                   <span className="sr-only">{item.platform}</span>
                 </a>
               </li>
@@ -116,7 +128,9 @@ export function RailNav({
         ) : null}
 
         <div className="flex gap-1.5 nav:gap-2">
-          {askAiLabel && aiSettings ? <AskAiLauncher label={askAiLabel} settings={aiSettings} /> : null}
+          {askAiLabel && aiSettings ? (
+            <AskAiLauncher label={askAiLabel} settings={aiSettings} />
+          ) : null}
           <ThemeToggle />
           <Button
             variant="secondary"
@@ -127,7 +141,11 @@ export function RailNav({
             aria-label={open ? "Close navigation menu" : "Open navigation menu"}
             className="bg-transparent text-ink-2 hover:translate-y-0 hover:bg-surface-2 hover:text-ink nav:hidden"
           >
-            {open ? <LuX className="size-4" aria-hidden /> : <LuMenu className="size-4" aria-hidden />}
+            {open ? (
+              <LuX className="size-4" aria-hidden />
+            ) : (
+              <LuMenu className="size-4" aria-hidden />
+            )}
           </Button>
         </div>
       </div>

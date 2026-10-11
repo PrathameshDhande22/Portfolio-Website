@@ -1,4 +1,5 @@
 import * as React from "react"
+import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -44,6 +45,8 @@ function PaginationLink({
   size = "icon",
   ...props
 }: PaginationLinkProps) {
+  const { href, ...linkProps } = props
+
   return (
     <Button
       variant={isActive ? "secondary" : "tertiary"}
@@ -51,12 +54,22 @@ function PaginationLink({
       className={cn(className)}
       nativeButton={false}
       render={
-        <a
-          aria-current={isActive ? "page" : undefined}
-          data-slot="pagination-link"
-          data-active={isActive}
-          {...props}
-        />
+        href ? (
+          <Link
+            href={href}
+            aria-current={isActive ? "page" : undefined}
+            data-slot="pagination-link"
+            data-active={isActive}
+            {...linkProps}
+          />
+        ) : (
+          <a
+            aria-current={isActive ? "page" : undefined}
+            data-slot="pagination-link"
+            data-active={isActive}
+            {...props}
+          />
+        )
       }
     />
   )
