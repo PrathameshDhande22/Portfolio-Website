@@ -1,4 +1,4 @@
-FROM node:24.20.0-alpine AS deps
+FROM node:24-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json yarn.lock ./
@@ -23,7 +23,7 @@ COPY . .
 RUN --mount=type=secret,id=api_token,env=API_TOKEN \
     yarn build
 
-FROM node:24.20.0-alpine AS runner
+FROM node:24-alpine AS runner
 WORKDIR /app
 
 ARG BUILD_DATE
