@@ -53,6 +53,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
 
+      - name: Pull the base image from ECR
+        id: pull-base-image
+        run: |
+          docker pull ${{secrets.ECR_REGISTRY}}/portfolio/portfolio-client:latest || true
+
       - name: Build and Push the Image to ECR
         id: build-push-image
         uses: docker/build-push-action@v7
@@ -68,8 +73,6 @@ jobs:
           context: ./client
           secret-envs: |
             api_token=API_TOKEN
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
           provenance: false
           sbom: false
           build-args: |
